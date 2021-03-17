@@ -1,0 +1,467 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core" xmlns:p="http://primefaces.org/ui"
+    template="/WEB-INF/template.xhtml">
+
+    <ui:define name="title">Widgets</ui:define>
+
+    <ui:define name="viewname">
+        <li>UTILITIES</li>
+        <li><i class="pi pi-chevron-right"></i></li>
+        <li>
+            <p:link outcome="/widgets">WIDGETS</p:link>
+        </li>
+    </ui:define>
+
+    <ui:define name="head">
+        <script type="text/javascript">
+            $(function () {
+                var testimonials = $('.testimonials-content');
+                    $('.point').on('click', function (e) {
+                        var point = $(this);
+
+                        point.siblings('.active-point').removeClass('active-point');
+                        point.addClass('active-point');
+
+                        if (point.hasClass('point-1')) {
+                            testimonials.css('transform', 'translate3d(0, 0, 0)');
+                        } else if (point.hasClass('point-2')) {
+                            testimonials.css('transform', 'translate3d(-100%, 0, 0)');
+                        } else if (point.hasClass('point-3')) {
+                            testimonials.css('transform', 'translate3d(-200%, 0, 0)');
+                        }
+
+                        e.preventDefault();
+                });
+            });
+    </script>
+       
+    </ui:define>
+
+    <ui:define name="content">
+        <h:form>
+            <div class="layout-widgets">
+                <div class="p-grid">
+                    <div class="p-col-12 ">
+                        <div class="card overview-boxes">
+                            <div class="card-header">
+                                <h5>Overview Boxes</h5>
+                            </div>
+                            <div class="p-grid">
+                                <div class="p-col-12 p-md-6 p-xl-3">
+                                    <div class=" overview-box overview-box-blue">
+                                        <p:graphicImage name="images/dashboard/effect-useronline.svg" library="demo" />
+                                        <span class="overview-icon">
+                                            <p:graphicImage name="images/dashboard/icon-usersonline.png" library="demo" />
+                                        </span>
+                                        <div class="overview">
+                                            <span class="overview-title">USERS SIGNED UP</span>
+                                            <h3>3882</h3>
+                                            <span><span>72</span> new users since last visit</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="p-col-12 p-md-6 p-xl-3">
+                                    <div class="overview-box overview-box-yellow">
+                                        <p:graphicImage name="images/dashboard/effect-checkins.svg" library="demo" />
+                                        <span class="overview-icon">
+                                            <p:graphicImage name="images/dashboard/icon-checkins.png" library="demo" />
+                                        </span>
+                                        <div class="overview">
+                                            <span class="overview-title">REACHED LOCATIONS</span>
+                                            <h3>532</h3>
+                                            <span><span>48</span> new city since last visit</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="p-col-12 p-md-6 p-xl-3">
+                                    <div class=" overview-box overview-box-green">
+                                        <p:graphicImage name="images/dashboard/effect-filessynced.svg" library="demo" />
+                                        <span class="overview-icon">
+                                            <p:graphicImage name="images/dashboard/icon-filessynced.png" library="demo" />
+                                        </span>
+                                        <div class="overview">
+                                            <span class="overview-title">CONVERSION RATE</span>
+                                            <h3>12.6%</h3>
+                                            <span><span>1.8%</span> increase since last visit</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="p-col-12 p-md-6 p-xl-3">
+                                    <div class=" overview-box overview-box-purple">
+                                        <p:graphicImage name="images/dashboard/effect-messages.svg" library="demo" />
+                                        <span class="overview-icon">
+                                            <p:graphicImage name="images/dashboard/icon-messages.png" library="demo" />
+                                        </span>
+                                        <div class="overview">
+                                            <span class="overview-title">INTERACTIONS</span>
+                                            <h3>440</h3>
+                                            <span><span>24</span> new since last visit</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="p-col-12 p-md-12 p-xl-8">
+                        <div class="card chat">
+                            <div class="card-header">
+                                <h5>Chat</h5>
+                                <div class="header-buttons">
+                                    <p:commandButton type="button" icon="pi pi-search" styleClass="secondary-button outlined-button p-mr-2" />
+                                    <p:commandButton type="button" icon="pi pi-users" styleClass="secondary-button outlined-button  p-mr-2" />
+                                    <p:commandButton type="button" icon="pi pi-ellipsis-v" styleClass="secondary-button outlined-button " />
+                                </div>
+                            </div>
+                            <div class="chat-content">
+                                <div class="chat-message">
+                                    <p:graphicImage name="images/dashboard/avatar-message-1.png" library="demo" />
+                                    <div class="message">
+                                        <p>The analysis of satellite data has revealed the astounding loss of ice in just a few months of abnormally high...</p>
+                                        <span>3 mins ago</span>
+                                    </div>
+                                </div>
+                                <div class="chat-message">
+                                    <p:graphicImage name="images/dashboard/avatar-message-2.png" library="demo" />
+                                    <div class="message">
+                                        <p>Last year was the hottest on record for the Arctic, with the annual.</p>
+                                        <span>23 mins ago</span>
+                                    </div>
+                                </div>
+                                <div class="chat-message send">
+                                    <p:graphicImage name="images/dashboard/avatar-message-3.png" library="demo" />
+                                    <div class="message">
+                                        <p>Minimum extent of sea ice in the region its second-lowest on record.</p>
+                                        <span>24 mins ago</span>
+                                    </div>
+                                </div>
+                                <div class="chat-message">
+                                    <p:graphicImage name="images/dashboard/avatar-message-4.png" library="demo" />
+                                    <div class="message">
+                                        <p>Right… Right my friend. This is better. Right? Right my friend… 🏄‍♂️</p>
+                                        <span>25 mins ago</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="chat-input">
+                                <p:inputText placeholder="Type your message..." />
+                                <div class="input-buttons">
+                                    <p:commandButton type="button" icon="pi pi-heart" styleClass="secondary-button outlined-button p-mr-2" />
+                                    <p:commandButton type="button" icon="pi pi-paperclip" styleClass="secondary-button outlined-button p-mr-2" />
+                                    <p:commandButton type="button" icon="pi pi-reply" styleClass="success-button p-mr-2" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="p-col-12 p-md-12 p-xl-4">
+                        <div class="card actions">
+                            <div class="card-header">
+                                <h5>Quick Actions</h5>
+                                <div class="header-buttons">
+                                    <p:commandButton type="button" icon="pi pi-ellipsis-v" styleClass="secondary-button outlined-button "/>
+                                </div>
+                            </div>
+                            <div class="action-buttons">
+                                <div class="p-grid">
+                                    <div class="p-col-6 p-md-4">
+                                        <div class="action">
+                                            <span><i class="pi pi-pencil"></i>Manage Store</span>
+                                        </div>
+                                    </div>
+                                    <div class="p-col-6 p-md-4">
+                                        <div class="action">
+                                            <span><i class="pi pi-chart-bar"></i>Get Reports</span>
+                                        </div>
+                                    </div>
+                                    <div class="p-col-6 p-md-4">
+                                        <div class="action">
+                                            <span><i class="pi pi-chart-line"></i>Check Sales</span>
+                                        </div>
+                                    </div>
+                                    <div class="p-col-6 p-md-4">
+                                        <div class="action">
+                                            <span><i class="pi pi-cloud-upload"></i>Upload Products</span>
+                                        </div>
+                                    </div>
+                                    <div class="p-col-6 p-md-4">
+                                        <div class="action">
+                                            <span><i class="pi pi-id-card"></i>Account Info</span>
+                                        </div>
+                                    </div>
+                                    <div class="p-col-6 p-md-4">
+                                        <div class="action">
+                                            <span><i class="pi pi-bell"></i>Check Notifications</span>
+                                        </div>
+                                    </div>
+                                    <div class="p-col-6 p-md-4">
+                                        <div class="action">
+                                            <span><i class="pi pi-plus-circle"></i>Create Add</span>
+                                        </div>
+                                    </div>
+                                    <div class="p-col-6 p-md-4">
+                                        <div class="action">
+                                            <span><i class="pi pi-sitemap"></i>View Activity</span>
+                                        </div>
+                                    </div>
+                                    <div class="p-col-6 p-md-4">
+                                        <div class="action">
+                                            <span><i class="pi pi-download"></i>Download Listings</span>
+                                        </div>
+                                    </div>
+                                    <div class="p-col-6 p-md-4">
+                                        <div class="action">
+                                            <span><i class="pi pi-dollar"></i>Request Payment</span>
+                                        </div>
+                                    </div>
+                                    <div class="p-col-6 p-md-4">
+                                        <div class="action">
+                                            <span><i class="pi pi-briefcase"></i>View Case Log</span>
+                                        </div>
+                                    </div>
+                                    <div class="p-col-6 p-md-4">
+                                        <div class="action">
+                                            <span><i class="pi pi-power-off"></i>CLose Store</span>
+                                        </div>
+                                    </div>
+                                </div>
+                               
+                            </div>
+                        </div>
+                    </div>
+                    <div class="p-col-12 p-md-12 p-xl-4">
+                        <div class="card profile">
+                            <p:graphicImage name="images/dashboard/asset-avatar-jordi.png" library="demo" />
+                            <span class="profile-name">Jordi Santiago</span>
+                            <span><i class="pi pi-map-pin"></i> Chicago, USA</span>
+                            <div class="profile-infos">
+                                <div class="profile-info">
+                                    <span>Friends</span>
+                                    <h6>154</h6>
+                                </div>
+                                <div class="profile-info">
+                                    <span>Projects</span>
+                                    <h6>26</h6>
+                                </div>
+                                <div class="profile-info">
+                                    <span>Collections</span>
+                                    <h6>17</h6>
+                                </div>
+                            </div>
+                            <p:graphicImage name="images/dashboard/graph-profile.svg" styleClass="graph-profile" library="demo" />
+                        </div>
+                    </div>
+                    <div class="p-col-12 p-md-12 p-xl-8">
+                        <div class="card testimonials">
+                            <div class="testimonials-wrapper">
+                                <div class="testimonials-content">
+                                    <div class="testimonial testimonial-1 ">
+                                        <div class="testimonial-content">
+                                            <p:graphicImage name="images/pages/landing/asset-avatar-emmy.png" library="rain-layout" />
+                                            <span>"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla a enim et sem tempor volutpat nec eget nunc. Mauris ut elit cursus, varius diam sit amet, vulputate nisl. Quisque eget nulla a magna congue dignissim mollis sed justo. Aenean facilisis magna vitae erat posuere rutrum. Nullam non pretium orci, a laoreet elit. Phasellus commodo tempor sem ac suscipit. Sed volutpat diam eu dui efficitur consequat."</span>
+                                            <h5>Emmy Elsner</h5>
+                                            <h6>Santa Clara</h6>
+                                        </div>
+                                    </div>
+                                    <div class="testimonial testimonial-2 ">
+                                        <div class="testimonial-content">
+                                            <p:graphicImage name="images/pages/landing/asset-avatar-lucas.png" library="rain-layout" />
+                                            <span>"Vestibulum neque nibh, pharetra vel ante ac, pulvinar auctor justo. Mauris efficitur, dui id viverra efficitur, dolor turpis iaculis lorem, in posuere augue purus vel urna. Aenean pulvinar pellentesque ipsum non ornare. Praesent neque magna, condimentum quis ipsum nec, malesuada aliquam leo. Cras imperdiet elit vitae scelerisque molestie. In eget justo ut quam maximus scelerisque."</span>
+                                            <h5>Lucas Pacheco</h5>
+                                            <h6>Franklin</h6>
+                                        </div>
+                                    </div>
+                                    <div class="testimonial testimonial-3 ">
+                                        <div class="testimonial-content">
+                                            <p:graphicImage name="images/pages/landing/asset-avatar-abbie.png" library="rain-layout" />
+                                            <span>"Quisque a dui porta, volutpat metus sit amet, tincidunt velit. Suspendisse consequat lectus dui, sed ornare diam luctus vitae. In sapien risus, efficitur in mattis vitae, aliquam in lectus. Aliquam varius elit vel consequat tincidunt. Nunc et bibendum risus, id aliquam augue."</span>
+                                            <h5>Abbie Wilson</h5>
+                                            <h6>Belgrade</h6>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="link-points">
+                                    <div class="points">
+                                        <div class=" point point-1 active-point"></div>
+                                        <div class=" point point-2 "></div>
+                                        <div class=" point point-3 "></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                       
+                    </div>
+                    <div class="p-col-12 p-md-6 p-xl-4">
+                        <div class="card timeline">
+                            <div class="card-header">
+                                <h6>Timeline</h6>
+                                <div class="header-buttons">
+                                    <p:commandButton type="button" icon="pi pi-ellipsis-v" styleClass="secondary-button outlined-button "/>
+                                </div>
+                            </div>
+                            <ul>
+                                <li>
+                                    <span class="time">10.40</span>
+                                    <span class="event-icon"></span>
+                                    <div class="event-content">
+                                        <span class="event-title">New Sale</span>
+                                        <span>Richard Jones has purchased a blue t-shirt for $79.</span>
+                                    </div>
+                                </li>
+                                <li>
+                                    <span class="time">10.41</span>
+                                    <span class="event-icon"></span>
+                                    <div class="event-content">
+                                        <span class="event-title">Withdrawal Initiated</span>
+                                        <span>Your request for withdrawal of $2500 has been initiated.</span>
+                                    </div>
+                                </li>
+                                <li>
+                                    <span class="time">10.42</span>
+                                    <span class="event-icon"></span>
+                                    <div class="event-content">
+                                        <span class="event-title">Question Received</span>
+                                        <span>Jane Davis has posted a new question about your product.</span>
+                                    </div>
+                                </li>
+                                <li>
+                                    <span class="time">10.43</span>
+                                    <span class="event-icon"></span>
+                                    <div class="event-content">
+                                        <span class="event-title">Comment Received</span>
+                                        <span>Claire Smith has upvoted your store along with a comment.</span>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="p-col-12 p-md-6 p-xl-4">
+                        <div class="card persons">
+                            <div class="card-header">
+                                <h6>Persons</h6>
+                            </div>
+                            <ul>
+                                <li>
+                                    <div class="person-profile">
+                                        <p:graphicImage name="images/avatar/amyelsner.png" library="demo" />
+                                        <div class="person-info">
+                                            <span class="person-name">Alex Edwards</span>
+                                            <span class="person-title">Accounting</span>
+                                        </div>
+                                    </div>
+                                    <p:menuButton icon="pi pi-ellipsis-v" styleClass="secondary-button outlined-button " >
+                                        <p:menuitem value="View Profile" icon="pi pi-user"/>
+                                        <p:menuitem value="Update Profile" icon="pi pi-refresh"/>
+                                        <p:menuitem value="Delete Profile" icon="pi pi-trash"/>
+                                        <p:separator />
+                                        <p:menuitem value="Home" url="http://www.primefaces.org" icon="pi pi-home"/>
+                                    </p:menuButton>
+                                </li>
+                                <li>
+                                    <div class="person-profile">
+                                        <p:graphicImage name="images/avatar/bernardodominic.png" library="demo" />
+                                        <div class="person-info">
+                                            <span class="person-name">Charles Davies</span>
+                                            <span class="person-title">Accounting</span>
+                                        </div>
+                                    </div>
+                                    <p:menuButton icon="pi pi-ellipsis-v" styleClass="secondary-button outlined-button " >
+                                        <p:menuitem value="View Profile" icon="pi pi-user"/>
+                                        <p:menuitem value="Update Profile" icon="pi pi-refresh"/>
+                                        <p:menuitem value="Delete Profile" icon="pi pi-trash"/>
+                                        <p:separator />
+                                        <p:menuitem value="Home" url="http://www.primefaces.org" icon="pi pi-home"/>
+                                    </p:menuButton>
+                                </li>
+                                <li>
+                                    <div class="person-profile">
+                                        <p:graphicImage name="images/avatar/ionibowcher.png" library="demo" />
+                                        <div class="person-info">
+                                            <span class="person-name">Nayah Tantoh</span>
+                                            <span class="person-title">Procurement</span>
+                                        </div>
+                                    </div>
+                                    <p:menuButton icon="pi pi-ellipsis-v" styleClass="secondary-button outlined-button " >
+                                        <p:menuitem value="View Profile" icon="pi pi-user"/>
+                                        <p:menuitem value="Update Profile" icon="pi pi-refresh"/>
+                                        <p:menuitem value="Delete Profile" icon="pi pi-trash"/>
+                                        <p:separator />
+                                        <p:menuitem value="Home" url="http://www.primefaces.org" icon="pi pi-home"/>
+                                    </p:menuButton>
+                                </li>
+                                <li>
+                                    <div class="person-profile">
+                                        <p:graphicImage name="images/avatar/elwinsharvill.png" library="demo" />
+                                        <div class="person-info">
+                                            <span class="person-name">Nayah Tantoh</span>
+                                            <span class="person-title">Finance</span>
+                                        </div>
+                                    </div>
+                                    <p:menuButton icon="pi pi-ellipsis-v" styleClass="secondary-button outlined-button " >
+                                        <p:menuitem value="View Profile" icon="pi pi-user"/>
+                                        <p:menuitem value="Update Profile" icon="pi pi-refresh"/>
+                                        <p:menuitem value="Delete Profile" icon="pi pi-trash"/>
+                                        <p:separator />
+                                        <p:menuitem value="Home" url="http://www.primefaces.org" icon="pi pi-home"/>
+                                    </p:menuButton>
+                                </li>
+                                <li>
+                                    <div class="person-profile">
+                                        <p:graphicImage name="images/avatar/onyamalimba.png" library="demo" />
+                                        <div class="person-info">
+                                            <span class="person-name">Udom Paowsong</span>
+                                            <span class="person-title">Sales</span>
+                                        </div>
+                                    </div>
+                                    <p:menuButton icon="pi pi-ellipsis-v" styleClass="secondary-button outlined-button " >
+                                        <p:menuitem value="View Profile" icon="pi pi-user"/>
+                                        <p:menuitem value="Update Profile" icon="pi pi-refresh"/>
+                                        <p:menuitem value="Delete Profile" icon="pi pi-trash"/>
+                                        <p:separator />
+                                        <p:menuitem value="Home" url="http://www.primefaces.org" icon="pi pi-home"/>
+                                    </p:menuButton>
+                                </li>
+                                <li>
+                                    <div class="person-profile">
+                                        <p:graphicImage name="images/avatar/annafali.png" library="demo" />
+                                        <div class="person-info">
+                                            <span class="person-name">Loni Bowcher</span>
+                                            <span class="person-title">Management</span>
+                                        </div>
+                                    </div>
+                                    <p:menuButton icon="pi pi-ellipsis-v" styleClass="secondary-button outlined-button " >
+                                        <p:menuitem value="View Profile" icon="pi pi-user"/>
+                                        <p:menuitem value="Update Profile" icon="pi pi-refresh"/>
+                                        <p:menuitem value="Delete Profile" icon="pi pi-trash"/>
+                                        <p:separator />
+                                        <p:menuitem value="Home" url="http://www.primefaces.org" icon="pi pi-home"/>
+                                    </p:menuButton>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="p-col-12 p-md-12 p-xl-4">
+                        <div class="card pricing">
+                            <div class="pricing-card">
+                                <div class="pricing-header">
+                                    <span class="upper-title">UPPER TITLE</span>
+                                    <h6>ENTERPRISE</h6>
+                                    <span>Good starting point for startups</span>
+                                </div>
+                                <div class="pricing-content">
+                                    <ul>
+                                        <li><i class="pi pi-check"></i> Push Messages</li>
+                                        <li><i class="pi pi-check"></i> 10 Support Tickets</li>
+                                        <li><i class="pi pi-check"></i> Free Shipping</li>
+                                        <li><i class="pi pi-check"></i> Unlimited Space</li>
+                                        <li><i class="pi pi-check"></i> Responsive</li>
+                                    </ul>
+                                    <p:commandButton type="button" value="TRY FREE" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </h:form>
+    </ui:define>
+
+</ui:composition>

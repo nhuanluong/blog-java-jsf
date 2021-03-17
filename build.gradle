@@ -1,6 +1,4 @@
 plugins {
-    /*id 'org.springframework.boot' version '2.4.3'
-    id 'io.spring.dependency-management' version '1.0.11.RELEASE'*/
     id 'idea'
     id 'java'
     id 'war'
@@ -12,7 +10,6 @@ idea {
         generatedSourceDirs += file('generated/')
     }
 }
-
 
 group = 'com.pingpong'
 version = ''
@@ -61,7 +58,6 @@ dependencies {
     implementation group: 'org.primefaces.extensions', name: 'primefaces-extensions', version: '10.0.0'
 
     providedCompile group: 'javax.jcr', name: 'jcr', version: '2.0'
-    // provided dependencies
     providedCompile group: 'javax', name: 'javaee-api', version: '8.0.1'
     runtime  group: 'org.glassfish', name: 'javax.faces', version: '2.3.0'
     compile group: 'javax.enterprise', name: 'cdi-api', version: '2.0'
@@ -88,9 +84,9 @@ dependencies {
     implementation group: 'com.querydsl', name: 'querydsl-apt', version: '4.4.0'
 
     compile group: 'org.slf4j', name: 'slf4j-log4j12', version: '1.7.30'
-    /*providedCompile group: 'org.apache.openwebbeans', name: 'openwebbeans-spi', version: '2.0.21'
+    implementation group: 'org.apache.openwebbeans', name: 'openwebbeans-spi', version: '2.0.21'
     implementation group: 'org.apache.openwebbeans', name: 'openwebbeans-impl', version: '2.0.21'
-    implementation group: 'org.apache.openwebbeans', name: 'openwebbeans-web', version: '2.0.21'*/
+    implementation group: 'org.apache.openwebbeans', name: 'openwebbeans-web', version: '2.0.21'
     implementation group: 'org.apache.openwebbeans', name: 'openwebbeans-jsf', version: '2.0.21'
 
 }
