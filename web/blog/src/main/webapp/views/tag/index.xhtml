@@ -1,0 +1,150 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+                xmlns:h="http://java.sun.com/jsf/html"
+                template="/WEB-INF/template.xhtml"
+                xmlns:ipt="http://xmlns.jcp.org/jsf/composite/shared"
+                xmlns:o="http://omnifaces.org/ui"
+                xmlns:of="http://omnifaces.org/functions"
+                xmlns:jsf="http://xmlns.jcp.org/jsf"
+>
+    <ui:define name="content">
+        <f:metadata>
+            <f:viewAction action="#{tagController.preRenderView}" />
+        </f:metadata>
+
+        <h5>Manager Tags</h5>
+        <div class="p-grid">
+            <div class="p-md-5">
+                <h:form id="editForm">
+                    <div class="card">
+
+                        <div class="p-grid p-mb-2">
+                            <div class="p-col-3">Title</div>
+                            <div class="p-col" jsf:id="tagGroupName">
+                                <p:inputText value="#{tagController.tag.categoryName}"
+                                             id="categoryName"
+                                             styleClass="p-col-12"
+                                             onblur="updateSlug()"
+                                />
+                                <small>The name is how it appears on your site.</small>
+                                <p:remoteCommand name="updateSlug"
+                                                 actionListener="#{tagController.updateSlug}"
+                                                 update="slugInput"
+                                                 process="@form"
+                                />
+                            </div>
+                        </div>
+
+                        <div class="p-grid p-mb-2">
+                            <div class="p-col-3">Slug</div>
+                            <div class="p-col" jsf:id="slugInput">
+                                <p:inputText value="#{tagController.tag.categorySlug}"
+                                             styleClass="p-col-12"
+                                />
+                                <small>The “slug” is the URL-friendly version of the name. It is usually all lowercase and contains only letters, numbers, and hyphens.</small>
+                            </div>
+                        </div>
+
+                        <div class="p-grid p-mb-2">
+                            <div class="p-col-3">Description</div>
+                            <div class="p-col">
+                                <p:inputTextarea rows="6"
+                                                 value="#{tagController.tag.categoryDescription}"
+                                                 styleClass="p-col-12"
+                                />
+                                <small>The description is not prominent by default; however, some themes may show it.</small>
+                            </div>
+                        </div>
+
+                        <div class="p-grid p-jc-center p-mt-4">
+                            <div class="p-col-6">
+                                <p:commandButton value="Save"
+                                                 icon="pi pi-save"
+                                                 styleClass="p-mr-2"
+                                                 actionListener="#{tagController.addTag}"
+                                                 update="@form, :growl, treeData"
+                                                 process="@form"
+                                >
+                                    <p:focus for="tagGroupName"/>
+                                </p:commandButton>
+                                <p:commandButton value="Refresh"
+                                                 styleClass="ui-button-secondary"
+                                                 icon="pi pi-refresh"
+                                                 actionListener="#{tagController.initData}"
+                                                 update=":treeData:docs, @form"
+                                                 process="@this"
+                                >
+                                    <p:resetInput target="@form"/>
+                                </p:commandButton>
+                            </div>
+                        </div>
+                    </div>
+                </h:form>
+            </div>
+
+            <div class="p-md-7">
+                <h:form id="treeData">
+                    <p:treeTable id="docs"
+                                 value="#{tagController.root}"
+                                 var="document"
+                                 resizableColumns="true"
+                    >
+                        <p:column headerText="Name" styleClass="w-10 p-text-left">
+                            <h:outputText value="#{document.categoryName}"/>
+                        </p:column>
+
+                        <p:column headerText="Description" styleClass="w-10">
+                            <h:outputText value="#{document.categoryDescription}"/>
+                        </p:column>
+
+                        <p:column headerText="Slug" styleClass="w-20">
+                            <h:outputText value="#{document.categorySlug}"/>
+                        </p:column>
+
+                        <p:column headerText="Count" styleClass="w-5">
+                            <h:outputText value="#{document.categoryCount}"/>
+                        </p:column>
+
+                        <p:column styleClass="w-5 p-text-center" headerText="*">
+                            <p:commandButton id="btnAction"
+                                             type="button"
+                                             icon="pi pi-ellipsis-v"
+                                             styleClass="ui-button-flat"
+                            />
+                            <p:menu overlay="true"
+                                    trigger="btnAction"
+                                    my="left top"
+                                    at="left bottom">
+
+                                <p:menuitem value="Edit"
+                                            update="editForm"
+                                            icon="pi pi-pencil"
+                                            actionListener="#{tagController.editTag}"
+                                            global="true"
+                                >
+                                    <f:param name="categoryId" value="#{document.id}"/>
+                                    <p:resetInput target="editForm"/>
+                                </p:menuitem>
+
+                                <p:menuitem value="Delete"
+                                            update="editForm, @form"
+                                            icon="pi pi-trash"
+                                            actionListener="#{tagController.deleteTag}"
+                                >
+                                    <f:param name="categoryId" value="#{document.id}"/>
+                                    <p:confirm header="Confirmation" message="Are you sure?"
+                                               icon="pi pi-exclamation-triangle"/>
+                                </p:menuitem>
+                            </p:menu>
+                        </p:column>
+
+                    </p:treeTable>
+
+                </h:form>
+            </div>
+        </div>
+    </ui:define>
+</ui:composition>

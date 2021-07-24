@@ -1,0 +1,33 @@
+subprojects {
+    dependencies {
+
+        implementation "com.querydsl:querydsl-root:$querydslVersion"
+        implementation "com.querydsl:querydsl-apt:$querydslVersion:jpa"
+        implementation "com.querydsl:querydsl-core:${querydslVersion}"
+        implementation "com.querydsl:querydsl-jpa:${querydslVersion}"
+
+        implementation "org.hibernate:hibernate-core:${hibernateVersion}"
+        implementation "org.hibernate:hibernate-entitymanager:${hibernateVersion}"
+        implementation "org.hibernate:hibernate-envers:${hibernateVersion}"
+        implementation "org.hibernate.validator:hibernate-validator:${hibernateValidatorVersion}"
+        implementation "org.hibernate.validator:hibernate-validator-annotation-processor:${hibernateValidatorVersion}"
+
+        compileOnly "org.springframework.data:spring-data-jpa:${springDataVersion}"
+        compileOnly "org.springframework.data:spring-data-commons:${springDataVersion}"
+        compileOnly "org.springframework:spring-context:${springVersion}"
+        compileOnly "org.springframework:spring-web:${springVersion}"
+        compileOnly "org.springframework:spring-core:${springVersion}"
+        compileOnly "org.springframework:spring-orm:${springVersion}"
+        compileOnly "org.springframework:spring-tx:${springVersion}"
+        compileOnly "org.springframework:spring-beans:${springVersion}"
+        compileOnly "org.springframework:spring-expression:${springVersion}"
+        compileOnly "org.springframework:spring-aop:${springVersion}"
+        compileOnly "org.springframework:spring-jdbc:${springVersion}"
+
+        implementation group: 'net.sf.dozer', name: 'dozer', version: "${dozerVersion}"
+    }
+}
+
+gradle.buildFinished {
+    project.buildDir.deleteDir()
+}

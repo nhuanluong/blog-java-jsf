@@ -1,0 +1,14 @@
+plugins {
+    id 'java-library'
+}
+
+description = 'backend-blog'
+archivesBaseName = 'backend-blog'
+
+dependencies {
+    implementation project(':framework:framework-core')
+    implementation project(':framework:framework-backend')
+    implementation project(':framework:framework-common')
+
+    implementation project(':entity:entity-blog')
+}

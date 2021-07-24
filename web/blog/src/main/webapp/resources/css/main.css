@@ -1,0 +1,358 @@
+.background-full {
+    background-color: #F2F4F6 !important;
+}
+
+.ui-datalist .ui-datalist-content {
+    padding: 0.5rem !important;
+}
+
+.custom-scrolltop {
+    width: 2rem !important;
+    height: 2rem !important;
+    border-radius: 50%;
+    background: rgba(0, 0, 0, 0.7);
+}
+
+.custom-scrolltop:hover {
+    background: rgba(0, 0, 0, 0.8);
+}
+
+.custom-scrolltop .ui-scrolltop-icon {
+    font-size: 1rem !important;
+    color: #f8f9fa !important;
+}
+
+.portlet {
+    margin-bottom: 0px !important;
+}
+
+body .ui-state-disabled {
+    opacity: 0.8;
+}
+
+.fa.fa-icon {
+    font-size: initial !important;
+}
+
+.pi.ajax-loader {
+    font-size: 4em;
+}
+
+.center {
+    text-align: center !important;
+}
+
+.required {
+    color: red;
+    font-weight: bold;
+}
+
+/*
+
+.ui-datatable-tablewrapper .ui-chkbox-box {
+    font-size: 80% !important;
+}
+*/
+
+
+/*datatable*/
+
+.egov-datatable .icons-column > a {
+    font-size: 15px;
+    color: #a6a6a6;
+    float: left;
+    margin: 0 1px;
+}
+
+.egov-datatable .icons-column > a {
+    font-size: 15px;
+    color: #a6a6a6;
+}
+
+.egov-datatable .ui-state-hover .icons-column > a {
+    font-size: 15px;
+    color: #666;
+}
+
+.egov-datatable .icons-column > a.starred {
+    font-size: 15px;
+    color: #ffd76e;
+}
+
+.egov-datatable .icons-column > a.linked {
+    font-size: 15px;
+    color: #269ed5 !important;
+}
+
+/*end datatable*/
+
+.ui-fileupload-buttonbar {
+    border: none;
+    background: none;
+}
+
+.ui-fileupload-buttonbar .ui-fileupload-choose {
+    font-weight: normal !important;
+    margin-top: -3px;
+    height: 26px;
+}
+
+/*toolbar*/
+
+.ui-toolbar {
+    border: none !important;
+    background-color: inherit !important;
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+}
+
+.input-full input {
+    width: 100% !important;
+}
+
+/*panel file attach*/
+.attachFilePanel a button span {
+    font-size: 95% !important;
+    padding: 0 !important;
+    margin: 0 !important;
+}
+
+.attachFilePanel .ui-datatable-tablewrapper {
+    overflow: inherit;
+}
+
+.attachFilePanel .ui-datatable-tablewrapper th {
+    display: none !important;
+}
+
+.attachFilePanel .ui-datatable-tablewrapper table {
+    table-layout: auto;
+}
+
+.background-color-rgba {
+    background-color: plum;
+    color: black;
+}
+
+/*custom liferay*/
+/*#banner,*/
+#banner > div:first-child {
+    display: none;
+}
+
+#footer {
+    display: none !important;
+}
+
+.control-menu-container {
+    display: none !important;
+}
+
+.portlet-borderless .portlet-content {
+    padding: inherit !important;
+}
+
+.layout-content {
+    padding: inherit !important;
+}
+
+.layout-content-inner {
+    padding: 30px 15px !important;
+    padding-top: 15px !important;
+    padding-bottom: 15px !important;
+}
+
+.layout-main {
+    padding-top: 0 !important;
+}
+
+.ui-dialog-content {
+    padding: 1rem !important;
+    padding-top: 0 !important;
+}
+
+.tranfered-row {
+    background-color: #cdffdc !important;
+    background-image: none !important;
+    color: #000000 !important;
+}
+
+.ui-autocomplete .ui-autocomplete-multiple-container .ui-autocomplete-token .ui-autocomplete-token-icon {
+    margin-top: -0.7rem !important;
+}
+
+.ui-chkbox {
+    width: fit-content !important;
+    height: fit-content !important;
+}
+
+body .ui-autocomplete-panel .ui-autocomplete-items .ui-autocomplete-item.ui-autocomplete-row > td {
+    padding: 0.4rem !important;
+}
+
+.attachFilePanel .ui-datatable .ui-datatable-data > tr > td {
+    padding: 0 !important;
+    border: none;
+}
+
+body .ui-datatable .ui-datatable-data > tr.ui-state-highlight {
+    background: #F1F3F6 !important;
+    color: #4B576F !important;
+    border-color: transparent;
+}
+
+body .ui-datatable .ui-datatable-data > tr > td {
+    padding: 0.3rem;
+}
+
+body .ui-paginator .ui-paginator-rpp-options {
+    margin: 0;
+    vertical-align: inherit !important;
+}
+
+body .ui-autocomplete .ui-autocomplete-multiple-container {
+    padding: 0.4rem 0.5rem;
+}
+
+.chat {
+    padding: 10px 0 !important;
+}
+
+.pricing-card {
+    margin: 0 !important;
+    margin-bottom: 15px !important;
+}
+
+.pricing-card .pricing-header > h6 {
+    margin-bottom: 0 !important;
+}
+
+
+.ui-tabs .ui-tabs-panel {
+    padding: 1em 0 !important;
+}
+
+.dlgInfoIdoc .ui-datatable .ui-datatable-header {
+    text-align: center !important;
+}
+
+.ui-tree.ui-tree-horizontal table {
+    width: max-content !important;
+}
+
+.ui-tree.ui-tree-horizontal tr {
+    width: max-content !important;
+}
+
+body .ui-tree.ui-tree-horizontal .ui-treenode-content {
+    padding: .4em;
+}
+
+.ui-chk-deadline .ui-chkbox .ui-chkbox-box {
+    border: 1px solid #ff6666;
+}
+
+.ui-datatable .ui-paginator {
+    padding: 0 !important;
+}
+
+.ui-paginator.ui-paginator-bottom {
+    padding-top: 1rem !important;
+}
+
+.ui-paginator.ui-paginator-top {
+    padding-bottom: 0.5rem !important;
+}
+
+body .ui-toolbar {
+    padding-top: 0 !important;
+    padding-bottom: 0 !important;
+}
+
+.pricing-card .pricing-header {
+    padding: 12px !important;
+}
+
+.menu-button-wrapper i {
+    line-height: inherit;
+    font-size: 24px;
+}
+
+.dlgInfo div.ui-dialog-content {
+    padding: 1rem !important;
+    padding-top: 0 !important;
+}
+
+td p {
+    max-height: 45px;
+    overflow: hidden;
+}
+
+td p:hover {
+    /*max-height: inherit !important;*/
+}
+
+td button span {
+    /*padding: inherit!important;*/
+}
+
+tr td {
+    min-height: 51px;
+}
+
+.fileTable thead {
+    display: none;
+}
+
+.customers-table-header {
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-align: center;
+    align-items: center;
+    -ms-flex-pack: justify;
+    justify-content: space-between;
+    -ms-flex-wrap: wrap;
+    flex-wrap: wrap;
+}
+
+.ui-fileupload-files .ui-fileupload-row {
+
+}
+
+.ui-fileupload-files .ui-fileupload-preview {
+    display: none;
+}
+
+.ui-fileupload-files .ui-fileupload-progress {
+    display: none;
+}
+
+.ui-fileupload-files .ui-widget-content {
+    display: none;
+}
+
+.textFileDownload span {
+    padding-left: 0 !important;
+}
+
+.fileTable td {
+    padding-left: 0 !important;
+}
+
+.h30 {
+    height: 30px !important;
+    vertical-align: top;
+}
+
+.h25 {
+    height: 25px !important;
+    vertical-align: top;
+}
+/*custome p-button*/
+.p-button-sm {
+    font-size: 0.875rem;
+    padding: 0.4375rem 0.875rem;
+}
+.p-button.p-button-sm .p-button-icon {
+    font-size: 0.875rem;
+}

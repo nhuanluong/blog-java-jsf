@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      lang="en">
+
+<h:head>
+    <f:facet name="first">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"/>
+        <meta name="apple-mobile-web-app-capable" content="yes"/>
+        <link rel="icon" href="#{request.contextPath}/resources/rain-layout/images/favicon.ico" type="image/x-icon"/>
+    </f:facet>
+    <title><ui:insert name="title">PrimeFaces Rain</ui:insert></title>
+    <h:outputScript name="js/layout.js" library="rain-layout"/>
+    <h:outputScript name="sections.js" library="demo"/>
+    <ui:insert name="head"/>
+    <h:outputScript name="js/OverlayScrollbars.min.js" library="OverlayScrollbars"/>
+    <h:outputScript name="js/jquery.overlayScrollbars.min.js" library="OverlayScrollbars"/>
+    <h:outputStylesheet name="css/OverlayScrollbars.min.css" library="OverlayScrollbars"/>
+</h:head>
+
+<h:body styleClass="#{guestPreferences.inputStyleClass}">
+    <p:growl id="growl" showDetail="true" skipDetailIfEqualsSummary="true"/>
+    <div class="layout-wrapper layout-topbar-#{guestPreferences.topbarTheme} layout-menu-#{guestPreferences.menuTheme} #{guestPreferences.menuMode}">
+        <ui:include src="topbar.xhtml"/>
+        <ui:include src="menu.xhtml"/>
+
+        <ui:include src="rightpanel.xhtml"/>
+        <ui:include src="config.xhtml"/>
+
+        <div class="layout-main">
+            <ui:include src="breadcrumb.xhtml"/>
+            <div class="layout-content">
+                <p:outputPanel deferred="true">
+                    <ui:insert name="content"/>
+                </p:outputPanel>
+            </div>
+            <ui:include src="footer.xhtml"/>
+        </div>
+        <div class="layout-mask modal-in"></div>
+    </div>
+
+    <h:outputStylesheet name="css/primeicons.css" library="rain-layout"/>
+    <h:outputStylesheet name="primeflex.min.css" library="primeflex"/>
+    <h:outputStylesheet name="css/#{guestPreferences.layout}.css" library="rain-layout"/>
+    <h:outputStylesheet name="util.css" library="css"/>
+
+    <h:outputStylesheet name="css/demo-#{guestPreferences.darkMode}.css" library="demo"/>
+
+    <p:ajaxStatus>
+        <f:facet name="start">
+            <p:graphicImage value="#{resource['images/loading.gif']}"/>
+        </f:facet>
+
+        <f:facet name="complete">
+            <h:outputText value="Done!"/>
+        </f:facet>
+    </p:ajaxStatus>
+
+    <p:dialog id="exceptionDialog"
+              header="Exception '#{pfExceptionHandler.type}' occured!"
+              widgetVar="exceptionDialog"
+              height="500px">
+        Message: #{pfExceptionHandler.message} <br/>
+        StackTrace: <h:outputText value="#{pfExceptionHandler.formattedStackTrace}" escape="false"/> <br/>
+
+        <p:button onclick="document.location.href = document.location.href;"
+                  value="Reload!"
+                  rendered="#{pfExceptionHandler.type == 'javax.faces.application.ViewExpiredException'}"/>
+    </p:dialog>
+
+    <p:confirmDialog global="true"
+                     showEffect="fade"
+                     hideEffect="fade"
+                     width="350">
+        <p:commandButton value="Yes"
+                         type="button"
+                         styleClass="ui-confirmdialog-yes"
+                         icon="pi pi-check"/>
+        <p:commandButton value="No"
+                         type="button"
+                         styleClass="ui-confirmdialog-no ui-button-flat"
+                         icon="pi pi-times"/>
+    </p:confirmDialog>
+
+    <script>
+        $(function() {
+            //The passed argument has to be at least a empty object or a object with your desired options
+            $(".menu-wrapper .layout-menu-container").overlayScrollbars({ });
+            $("body").overlayScrollbars({ });
+            $(".ui-accordion").overlayScrollbars({ });
+        });
+    </script>
+</h:body>
+
+</html>

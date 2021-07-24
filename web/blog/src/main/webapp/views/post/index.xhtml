@@ -1,0 +1,134 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+                xmlns:jsf="http://xmlns.jcp.org/jsf"
+                template="/WEB-INF/template.xhtml"
+                xmlns:pe="http://primefaces.org/ui/extensions"
+>
+    <ui:define name="content">
+        <style>
+            body .ui-datatable .ui-datatable-data > tr.ui-state-highlight {
+                background: #F1F3F6 !important;
+                color: #f8fafc;
+            }
+
+            body .ui-datatable .ui-datatable-data > tr > td {
+                padding: 0.5rem !important;
+            }
+
+            body .ui-datatable thead th {
+                padding: 1rem 0.5rem !important;
+            }
+
+        </style>
+        <div class="card">
+
+            <div class="p-grid">
+                <div class="p-col">
+                    <p:button
+                            icon="pi pi-plus"
+                            styleClass="p-button-sm"
+                            href="#{request.contextPath}/post/add"
+                            value="Add new"/>
+                </div>
+            </div>
+            <div class="p-grid">
+                <div class="p-col"><p:divider styleClass="p-mt-2 p-mb-2"/></div>
+            </div>
+
+            <div class="p-grid">
+                <div class="p-col">
+                    <h:form id="formData">
+                        <!---->
+                        <p:dataTable id="dataGrid"
+                                     lazy="true"
+                                     rows="10"
+                                     var="post"
+                                     value="#{postController.posts}"
+                                     reflow="true"
+                                     pageLinks="5"
+                                     paginator="true"
+                                     paginatorPosition="bottom"
+                                     rowKey="#{post.id}"
+                                     paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown} {CurrentPageReport}"
+                                     rowsPerPageTemplate="5,10,15"
+                                     currentPageReportTemplate="Trang hiện tại: {currentPage}/{totalPages} | Tổng số dòng: {totalRecords}"
+                                     selectionMode="multiple"
+                                     selection="#{postController.selectedPosts}"
+                                     widgetVar="wgvPost"
+                        >
+                            <p:column selectionMode="multiple" styleClass="w20 p-text-center"/>
+
+                            <p:column headerText="Title" sortBy="#{post.postTitle}" styleClass="w-25">
+                                <p:link href="#{request.contextPath}/post/edit/#{post.id}"
+                                        value="#{post.postTitle}"
+                                        styleClass="ui-button-flat"
+                                />
+                            </p:column>
+
+                            <p:column headerText="Categories" styleClass="w-10">
+                                <h:panelGroup rendered="#{!(post.categories eq null) and post.categories.size() > 0}">
+                                    <ui:repeat var="o"
+                                               value="#{post.categories}"
+                                               varStatus="status">
+                                        <p:link href="#{request.contextPath}/post/filter/#{o.categorySlug}"
+                                                value="#{o.name}"
+                                                styleClass="ui-button-flat"
+                                        />
+                                        <c:set var="i"
+                                               value="#{status.index lt post.categories.size() - 1 and post.categories.size() > 1}"/>
+                                        <h:outputText rendered="#{i}" value=", "/>
+                                    </ui:repeat>
+                                </h:panelGroup>
+                            </p:column>
+
+                            <p:column headerText="Tags" styleClass="w-10">
+                                <h:outputText value=""/>
+                            </p:column>
+
+                            <p:column headerText="Count" styleClass="w-10">
+                                <h:outputText value=""/>
+                            </p:column>
+
+                            <p:column headerText="Date" styleClass="w-10">
+                                <h:outputText value=""/>
+                            </p:column>
+                            <!--actionListener="#{postController.editPost(post, '/views/post/edit.xhtml')}"-->
+                            <p:column styleClass="w30 p-text-center" headerText="*">
+                                <p:commandButton id="btnAction"
+                                                 type="button"
+                                                 icon="pi pi-ellipsis-v"
+                                                 styleClass="ui-button-flat"
+                                />
+                                <p:menu overlay="true"
+                                        trigger="btnAction"
+                                        my="left top"
+                                        at="left bottom">
+                                    <p:menuitem value="Edit"
+                                                icon="pi pi-pencil"
+                                                url="#{request.contextPath}/post/edit/#{post.id}"
+                                                global="true"
+                                    >
+                                    </p:menuitem>
+
+                                    <p:menuitem value="Delete"
+                                                update="@form"
+                                                icon="pi pi-trash"
+                                                actionListener="#{postController.deletePost(post.id)}"
+                                    >
+                                        <f:param name="categoryId" value="#{post.id}"/>
+                                        <p:confirm header="Confirmation" message="Are you sure?"
+                                                   icon="pi pi-exclamation-triangle"/>
+                                    </p:menuitem>
+                                </p:menu>
+                            </p:column>
+                        </p:dataTable>
+                    </h:form>
+                </div>
+            </div>
+        </div>
+    </ui:define>
+</ui:composition>

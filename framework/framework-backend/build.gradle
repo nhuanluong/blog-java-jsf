@@ -1,0 +1,13 @@
+description = 'framework-backend'
+archivesBaseName = 'framework-backend'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation project(':framework:framework-core')
+
+    compileOnly "javax.servlet:javax.servlet-api:${servletVersion}"
+    compileOnly group: 'org.springframework', name: 'spring-webmvc', version: "${springVersion}"
+}

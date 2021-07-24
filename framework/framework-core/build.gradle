@@ -1,0 +1,11 @@
+description = 'framework-core'
+archivesBaseName = 'framework-core'
+
+dependencies {
+    compileOnly group: 'javax.servlet', name: 'javax.servlet-api', version: "${servletVersion}"
+    compileOnly group: 'cglib', name: 'cglib', version: '3.3.0'
+    compileOnly group: 'aopalliance', name: 'aopalliance', version: '1.0'
+    compileOnly group: 'org.aspectj', name: 'aspectjrt', version: '1.9.6'
+    runtimeOnly group: 'org.aspectj', name: 'aspectjweaver', version: '1.9.6'
+    implementation "org.graylog2:gelfclient:1.5.1"
+}

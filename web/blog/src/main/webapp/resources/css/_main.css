@@ -1,0 +1,986 @@
+.btn-action {
+    margin-bottom: 10px !important;
+    margin-left: 10px !important;
+}
+
+.ui-paginator.ui-paginator-top {
+    border: none;
+    background: transparent;
+}
+
+.ui-paginator .ui-paginator-last {
+    margin-right: 30px;
+}
+
+.ui-paginator {
+    width: 100%;
+    text-align: left;
+}
+
+.ui-paginator .ui-paginator-pages {
+    vertical-align: top;
+}
+
+.ui-paginator .ui-paginator-current {
+    float: right;
+}
+
+.ui-paginator.ui-paginator-bottom {
+    border: none;
+    background: transparent;
+    margin-top: 7px;
+    float: left;
+}
+
+.ui-paginator .ui-paginator-current, .ui-paginator .ui-paginator-rpp-options {
+    background: transparent;
+}
+
+.ui-paginator .ui-paginator-rpp-options {
+    margin-top: -2px;
+    height: 26px;
+}
+
+.aui select {
+    width: auto !important;
+}
+
+
+.ui-datatable table {
+    table-layout: fixed;
+}
+
+.ui-datatable-auto table {
+    table-layout: auto;
+}
+
+.ui-datatable thead tr {
+    border-bottom: none;
+    background: #f9f9f9 linear-gradient(to bottom, #f9f9f9, #ececec) repeat-x;
+}
+
+.ui-datatable thead th:first-child {
+    border-left: 1px solid #E1E1E1 !important;
+}
+
+.ui-datatable thead th {
+    overflow: hidden;
+    white-space: nowrap;
+    text-align: center;
+    border-top: 1px solid #E1E1E1 !important;
+    border-bottom: 0 none;
+    border-right: 1px solid #E1E1E1 !important;
+    height: 50px;
+    padding: 0 2px 0 2px;
+    font-size: 13px;
+    line-height: 15px;
+    font-weight: bold;
+    color: #1963aa;
+    text-shadow: none;
+}
+
+.ui-datatable tbody tr {
+    border: none;
+    text-align: left;
+    font-size: 13px
+}
+
+.ui-datatable tbody td {
+    border-bottom: 1px solid;
+    border-color: #E1E1E1;
+    font-weight: normal;
+    border-radius: 0 !important;
+}
+
+.ui-datatable tbody td p {
+    overflow: hidden;
+    position: relative;
+    line-height: 1.4em;
+    max-height: 2.8em;
+    text-align: justify;
+    margin: 0px 0px 0px;
+}
+
+.ui-datatable tbody td p:before {
+    content: '';
+    position: relative;
+}
+
+.ui-datatable tbody td p:after {
+    content: '';
+    position: relative;
+    right: 0;
+
+}
+
+.ui-datatable tbody td p:hover {
+    overflow: hidden;
+    position: relative;
+    line-height: 1.4em;
+    max-height: 1000em;
+    text-align: justify;
+}
+
+
+.ui-datatable tfoot td {
+    border-bottom: 1px solid;
+    /*padding: 8px 4px;*/
+    border-color: #E1E1E1 !important;
+    font-weight: normal;
+    /*height: 22px;*/
+    border-radius: 0 !important;
+}
+
+
+.ui-datatable-auto tbody td:hover {
+    white-space: inherit;
+}
+
+.ui-datatable-auto tbody td {
+    border-bottom: 1px solid;
+    /*padding: 8px 4px;*/
+    border-color: #E1E1E1;
+    font-weight: normal;
+    white-space: normal;
+    height: 22px;
+    border-radius: 0 !important;
+}
+
+.ui-datatable .ui-datatable-data tr.ui-state-hover {
+    background-image: none;
+    background-color: #EFF4F7;
+    opacity: 1;
+}
+
+.ui-datatable tbody td:hover {
+    white-space: normal;
+}
+
+.ui-datatable tr.ui-state-highlight {
+    background-color: #E4EFC9;
+}
+
+.ui-state-highlight, .ui-widget-content .ui-state-highlight, .ui-widget-header .ui-state-highlight {
+    background: #2283c5;
+    /*color: #F9F9F9;*/
+    color: black;
+    text-shadow: none;
+}
+
+.ui-datatable-odd {
+    background: #F9F9F9 none;
+    opacity: 1;
+}
+
+.ui-paginator .ui-paginator-current, .ui-paginator .ui-paginator-rpp-options {
+    margin-left: 1em;
+    margin-right: 1em;
+    font-weight: normal;
+    vertical-align: middle;
+    padding: 1px;
+}
+
+.ui-icon {
+    display: block;
+    text-indent: -99999px !important;
+    overflow: hidden !important;
+    background-repeat: no-repeat;
+}
+
+.ui-datatable .ui-datatable-header {
+    border: none;
+    background: transparent;
+    height: 0;
+    padding-bottom: 30px;
+}
+
+.ui-datatable-header .ui-outputpanel input {
+    position: absolute;
+    /*top: 85px;*/
+    left: 81%;
+    margin-top: -7.5%;
+}
+
+.action-button {
+    background: transparent !important;
+    border: none !important;
+    background-repeat: no-repeat;
+    background-image: url('../../images/setting3.png') !important;
+    width: 20px;
+    height: 20px;
+    margin: auto !important;
+    box-shadow: none !important;
+}
+
+.action-button:focus {
+    outline: none;
+}
+
+.aui label {
+    text-align: right;
+    padding-right: 5px;
+    font-size: 13px;
+}
+
+
+.btn-search-fix {
+    position: relative;
+    float: right;
+}
+
+/*AutoComplete*/
+.aui .ui-autocomplete {
+    box-shadow: none !important;
+    border: none !important;
+}
+
+.ui-autocomplete {
+    position: static !important;
+    margin-left: 0 !important;
+}
+
+.ui-autocomplete .ui-autocomplete-input {
+    margin-bottom: 0 !important;
+    width: 100%;
+    box-sizing: border-box;
+    min-height: 30px;
+}
+
+.ui-autocomplete-multiple-container {
+    width: 100%;
+    box-sizing: border-box;
+    margin-left: 0 !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+}
+
+.ui-autocomplete-input-token input[type="text"] {
+    margin-bottom: 0;
+    border: none !important;
+    box-shadow: none !important;
+}
+
+.ui-autocomplete-multiple select, .ui-autocomplete-multiple textarea {
+    display: none !important;
+    width: 100% !important;
+}
+
+/*DataList*/
+.ui-datalist {
+    margin: 0 !important;
+}
+
+
+.ui-datalist-content {
+    border: none;
+}
+
+.ui-state-default, .ui-widget-content .ui-state-default, .ui-widget-header .ui-state-default {
+    border: #a7d3f1 1px solid;
+}
+
+.ui-datalist-data {
+    list-style-type: none !important;
+}
+
+.ui-datalist-data .ui-datalist-item {
+    display: inline !important;
+    margin: 0 1px;
+}
+
+/*AutoComplete*/
+.ui-autocomplete-panel {
+    z-index: 2000 !important;
+    height: 200px;
+}
+
+.ui-state-hover {
+    box-shadow: 0 0 5px #2283c5 !important;
+    border: 1px solid #a7d3f1;
+    background: none;
+}
+
+.ui-selectonemenu {
+    width: 100% !important;
+    border-radius: 0;
+    border: #a7d3f1 1px solid;
+}
+
+.ui-selectonemenu .ui-selectonemenu-label {
+    width: 100% !important;
+    margin-bottom: 0;
+    box-shadow: none;
+    border-radius: 0;
+    text-align: left;
+}
+
+.ui-state-focus {
+    color: #696969;
+    border-color: #a7d3f1;
+    background: none;
+    box-shadow: 0 0 5px #2283c5 !important;
+}
+
+.ui-state-active {
+    background: none !important;
+}
+
+.ui-state-default {
+    background: none;
+}
+
+.ui-selectonemenu-trigger {
+    background: none;
+}
+
+.datePicker input[type ="text"] {
+    width: 100% !important;
+    box-sizing: border-box;
+    height: 30px;
+}
+
+/*fileUpload*/
+.ui-fileupload-buttonbar {
+    border: none;
+    background: none;
+}
+
+.ui-fileupload-content {
+    border: none;
+    background: none;
+}
+
+.ui-fileupload-buttonbar .ui-fileupload-choose input {
+    transform: none !important;
+    right: -304px;
+}
+
+.ui-fileupload-buttonbar .ui-fileupload-choose {
+    font-weight: normal !important;
+    margin-top: -3px;
+    height: 26px;
+}
+
+.aui .ui-menu {
+    z-index: 2000 !important;
+}
+
+/*dialog*/
+.ui-dialog-titlebar {
+    padding: 9px 15px !important;
+    border-bottom: 1px solid #eee !important;
+    background-color: #fff !important;
+    font-size: 16px !important;
+    color: inherit !important;
+}
+
+.ui-dialog .ui-dialog-titlebar-close span {
+    display: none !important;
+}
+
+.ui-dialog-content {
+    padding: 15px !important;
+}
+
+.ui-state-default, .ui-widget-content .ui-state-default, .ui-widget-header .ui-state-default {
+    background: none;
+    box-shadow: none;
+}
+
+.ui-inputfield.ui-state-focus {
+    box-shadow: 0 0 5px #2283c5;
+}
+
+/*Treetable*/
+.ui-treetable-toggler {
+    float: left !important;
+}
+
+.ui-treetable.ui-treetable-scrollable table {
+    table-layout: auto;
+}
+
+.ui-selectonemenu-items .ui-state-hover {
+    background: #1E90FF;
+    box-shadow: none;
+    border-radius: 0;
+    color: white;
+}
+
+.ui-sortable-column.ui-state-hover {
+    box-shadow: none !important;
+}
+
+.ui-datatable-selectable.ui-state-hover, .ui-chkbox-box.ui-state-hover {
+    box-shadow: none !important;
+}
+
+.image-right {
+    width: 19px;
+    position: relative;
+    top: 4px;
+    right: 23px;
+}
+
+.ui-selectoneradio label {
+    margin-left: 10px;
+}
+
+#list-toolbar {
+    min-height: 40px;
+}
+
+.ui-growl-item {
+    background: rgba(49, 81, 133, 0.92)
+}
+
+.ui-growl-message {
+    color: #eee;
+}
+
+.ui-growl-item-container {
+    box-shadow: none !important;
+    opacity: 1;
+}
+
+.ui-menu-list {
+    margin: 0 !important;
+}
+
+.ui-menu-list a {
+    padding-left: 10px !important;
+}
+
+.ui-menu .ui-menuitem-link:hover {
+    color: white;
+    background: #578EBE !important;
+}
+
+.menu-other-action-buttons {
+    float: right;
+}
+
+.groupFileUpload .ui-datatable thead th {
+    height: 0px !important;
+}
+
+/*Tree table*/
+
+section.flow-section {
+    position: relative;
+    border: 1px solid #E1E1E1;
+    padding-top: 0;
+    background: #f3f3f3 linear-gradient(to bottom, #f8f8f8, #ececec) repeat-x;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+.flow-container {
+    /*max-height: 240px*/
+}
+
+.flow-container td, .flow-container th {
+    border: 1px solid #E1E1E1 !important;
+    color: #000;
+    padding: 10px 10px !important;
+}
+
+.flow-container th {
+    height: 10px;
+    /*line-height: 0;
+    padding-top: 0 !important;
+    padding-bottom: 0 !important;
+    color: transparent !important;*/
+    border: none !important;
+    white-space: nowrap !important;
+}
+
+
+.flow-container th div {
+    position: absolute;
+    background: transparent;
+    padding: 8px 10px;
+    top: 0;
+    margin-left: -10px;
+    line-height: normal;
+    border-left: 1px solid #E1E1E1;
+    font-size: 13px;
+    font-weight: bold;
+    color: #777;
+}
+
+.flow-container th:first-child div {
+    border: none;
+}
+
+.ui-treetable table tr td {
+    font-size: 13px;
+    padding: 0 !important;
+}
+
+.received-list {
+    border: 1px solid #d5d5d5;
+    margin-bottom: 10px !important;
+    height: 80px;
+    overflow: auto;
+}
+
+.received-list ul {
+    margin: 1px 0;
+}
+
+.flow-calendar input {
+    width: 100px;
+}
+
+.ui-chkbox .ui-chkbox-label {
+    margin: 0 0 0 6px;
+    font-size: 13px;
+}
+
+.vcenter {
+    display: flex !important;
+    align-items: center;
+}
+
+.btn-action .ui-button-text {
+    display: inline !important;
+}
+
+.small-column {
+    width: 30px !important;
+}
+
+.ui-confirm-dialog .ui-icon {
+    display: inline-block;
+}
+
+.egov-datatable .icons-column > a {
+    font-size: 15px;
+    color: #a6a6a6;
+    float: left;
+    margin: 0 1px;
+}
+
+.egov-datatable .icons-column > a {
+    font-size: 15px;
+    color: #a6a6a6;
+}
+
+.egov-datatable .ui-state-hover .icons-column > a {
+    font-size: 15px;
+    color: #666;
+}
+
+.egov-datatable .icons-column > a.starred {
+    font-size: 15px;
+    color: #ffd76e;
+}
+
+.egov-datatable .icons-column > a.linked {
+    font-size: 15px;
+    color: #269ed5 !important;
+}
+
+.fa-file-pdf-o {
+    color: red;
+}
+
+.fa-file-excel-o {
+    color: green;
+}
+
+.fa-file-word-o {
+    color: blue;
+}
+
+.fa-file-o {
+    color: black;
+}
+
+.ui-panel {
+    border: none;
+}
+
+.ui-panel .ui-panel-content {
+    padding: 0;
+}
+
+.btn-search-fix img {
+    vertical-align: top;
+}
+
+.btn-search-fix .search-filter {
+    margin-right: 5px;
+}
+
+.required {
+    color: red;
+    font-weight: bold;
+}
+
+/* tagview*/
+.ui-tabs {
+    position: inherit;
+    padding: 0;
+    zoom: 0;
+}
+
+.ui-tabs.ui-corner-all {
+    -webkit-border-radius: 0;
+    border-radius: 0;
+}
+
+.ui-tabs.ui-widget-content {
+    border: none;
+    background: none;
+    color: transparent;
+}
+
+
+.aui .ui-tabs .ui-tabs-nav {
+    border-color: #C5D0DC;
+    margin-bottom: 0;
+    position: relative;
+    top: 1px;
+    border-bottom: 1px solid #ddd;
+    margin-left: 0;
+    list-style: none;
+    background: none;
+}
+
+.aui .ui-tabs .ui-tabs-nav li.ui-state-default > a {
+    border-radius: 0 !important;
+    background-color: #F9F9F9;
+    color: #999 !important;
+    font-size: 13px;
+    margin-right: -1px !important;
+    line-height: 16px !important;
+    position: relative !important;
+    top: 0 !important;
+    z-index: 11;
+    border-color: #c5d0dc;
+}
+
+.ui-tabs .ui-tabs-nav li.ui-tabs-selected a {
+    margin-right: 0 !important;
+    position: static !important;
+    color: #576373 !important;
+    border: none #c5d0dc !important;
+    border-top: 2px solid #4c8fbd !important;
+    border-bottom-color: transparent !important;
+    background-color: #FFF !important;
+    z-index: 12 !important;
+    line-height: 16px !important;
+    margin-top: 0 !important;
+    box-shadow: 0 -2px 3px 0 rgba(0, 0, 0, 0.15) !important;
+}
+
+.aui .ui-tabs .ui-tabs-nav li.ui-state-default {
+    border: none
+}
+
+
+.ui-tabs .ui-tabs-nav li {
+    list-style: none;
+    float: left;
+    position: static;
+    padding: 0;
+    white-space: nowrap;
+    margin: 0 0 -1px;
+}
+
+.ui-progressbar-red {
+    background: #FD0505 -webkit-gradient(linear, left top, left bottom, from(rgba(255, 255, 255, 0.8)), to(rgba(255, 255, 255, 0))) !important;
+}
+
+
+.colorNodeDelay {
+    color: #ff0202;
+}
+
+.colorNodeOnTime {
+    color: #0040FF;
+}
+
+.colorNodeTree {
+    color: #000000;
+}
+
+.hideColumn {
+    display: none;
+}
+
+.ui-treetable-scrollable-body {
+    min-height: 200px !important;
+}
+
+.ui-dialog-content.ui-widget-content {
+    overflow: auto !important;
+    /*padding: 1px 10px !important;*/
+}
+
+.ui-tree.ui-tree-horizontal.egov-horizontal-tree {
+    padding: 10px;
+}
+
+.ui-tree.ui-tree-horizontal.egov-horizontal-tree .ui-treenode {
+    padding: 5px 20px;
+}
+
+.ui-tree.ui-tree-horizontal.egov-horizontal-tree .ui-treenode.ui-treenode-leaf,
+.ui-tree.ui-tree-horizontal.egov-horizontal-tree .ui-treenode.ui-treenode-collapsed {
+    padding-right: 0;
+}
+
+.egov-horizontal-tree.process-flow td[data-rowkey="root"] {
+    display: none;
+}
+
+.ui-tree.ui-tree-horizontal.egov-horizontal-tree.process-flow .ui-treenode[data-rowkey="0"] {
+    padding-left: 0;
+}
+
+.userIcon {
+    background: url("../images/status_online.png") repeat scroll 0 0 rgba(0, 0, 0, 0) !important;
+    margin-top: 2px;
+}
+
+.egov-horizontal-tree.process-flow.itemtip .itemtip-detail {
+    font-family: "Segoe UI";
+    font-size: 12px;
+    max-width: 450px;
+}
+
+.egov-horizontal-tree.process-flow.itemtip .itemtip-detail tr td:nth-child(odd) {
+    font-weight: 700;
+    white-space: nowrap;
+}
+
+.ui-autocomplete-panel .ui-autocomplete-table th, .ui-autocomplete-panel .ui-autocomplete-table td {
+    border-color: #DDD;
+}
+
+.egov-horizontal-tree .ui-treenode-content {
+    border: 1px solid #aed0ea;
+    background: #d7ebf9;
+}
+
+.aui .ui-tooltip {
+    background-color: whitesmoke !important;
+    color: #FFF;
+}
+
+.ui-treetable .ui-treetable-data tr.ui-state-hover {
+    background: #E4EFC9;
+    border: none;
+}
+
+.ui-selection-column .ui-chkbox .ui-chkbox-box {
+    width: 10px;
+    height: 10px;
+    border: #2283c5 1px solid;
+}
+
+
+.ui-selection-column .ui-icon.ui-icon-check {
+    width: 16px;
+    height: 16px;
+    margin: -3px -2px 0;
+}
+
+.auto-number.ui-chkbox .ui-chkbox-box {
+    width: 15px;
+    height: 15px;
+    border: #2283c5 1px solid;
+}
+
+
+.auto-number .ui-icon.ui-icon-check {
+    width: 20px;
+    height: 20px;
+    margin: -1px 0 0;
+}
+
+.display-none {
+    display: none;
+}
+
+.w100p {
+    width: 100%;
+    max-width: 100%;
+}
+
+.fa-icon {
+    margin-right: 4px;
+}
+
+@media screen and (max-width: 780px) {
+    .right-panel {
+        margin-left: 5px;
+        margin-right: 5px;
+    }
+}
+
+@media screen and (min-width: 781px) {
+    /* tablet, landscape iPad, lo-res laptops ands desktops */
+    .auto-complete-dropdown input {
+        width: 80% !important;
+    }
+
+    .right-panel {
+        margin-left: 5px;
+        margin-right: 5px;
+    }
+}
+
+@media screen and (min-width: 961px) {
+    /* tablet, landscape iPad, lo-res laptops ands desktops */
+    .auto-complete-dropdown input {
+        width: 85% !important;
+    }
+
+    .right-panel {
+        margin-left: 226px;
+        margin-right: 5px;
+    }
+}
+
+@media screen and (min-width: 1100px) {
+    /* tablet, landscape iPad, lo-res laptops ands desktops */
+    .auto-complete-dropdown input {
+        width: 87% !important;
+    }
+}
+
+@media screen and (min-width: 1281px) {
+    /* hi-res laptops and desktops */
+    .auto-complete-dropdown input {
+        width: 89% !important;
+    }
+
+    .span3 .auto-complete-dropdown input {
+        width: 85% !important;
+    }
+
+    .span2 .auto-complete-dropdown input {
+        width: 80% !important;
+    }
+
+}
+
+.aui .ui-state-error {
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+.ui-autocomplete-items {
+    margin: 0 0 10px 0 !important;
+}
+
+.background-color-rgba {
+    background-color: plum;
+    color: black;
+}
+
+
+@media (min-width: 979px) {
+    .task-toggle-button {
+        display: none;
+    }
+}
+
+#worklist .worklist-tree {
+    width: 98%;
+    border: 0 none;
+}
+
+.worklist-tree .hascount-label {
+    font-weight: bold;
+}
+
+.worklist-tree .count-label {
+    padding-left: 3px;
+    font-weight: bold;
+    color: red;
+}
+
+.right-pane1 {
+    float: right;
+    width: 79%;
+    background-color: #fff;
+    padding: 2px;
+    border: 1px solid #ddd;
+}
+
+.ie .right-pane1 {
+    margin-left: -6px;
+}
+
+.left-pane {
+    float: left;
+    width: 20%;
+    /*margin-left: -200px;*/
+    /*padding: 2px;*/
+    border: 1px solid #ddd;
+}
+
+.active.left-pane {
+    display: block;
+}
+
+.ui-datatable thead th, .ui-datatable tbody td, .ui-datatable tfoot td {
+    overflow: hidden;
+    padding: 4px 5px;
+}
+
+@media (max-width: 979px) {
+    .left-pane.inactive > .left-pane-form {
+        display: none;
+    }
+
+    .left-pane.inactive {
+        border: medium none;
+        line-height: 28px;
+        margin-left: -42px;
+        width: 28px;
+        padding: 2px;
+        background: rgba(0, 0, 0, 0) url("../images/navbg.jpg") repeat-x scroll 0 0;
+        text-align: center;
+    }
+
+    #worklist-body {
+        margin-left: 32px;
+    }
+
+    #worklist-body.active {
+        position: relative;
+        right: -160px;
+    }
+
+    #worklist .action-toolbar a {
+        display: inline-block
+    }
+
+    .ui-dialog {
+        max-width: 100% !important;
+        max-height: 100% !important;
+        overflow: auto !important;
+    }
+
+    #banner .Banner1 .banner-text {
+        display: none !important;
+    }
+
+    #banner .banner-image {
+        display: none !important;
+    }
+
+    body {
+        min-width: 650px;
+    }
+
+
+}
+
+

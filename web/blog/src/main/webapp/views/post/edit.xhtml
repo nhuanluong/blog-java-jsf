@@ -1,0 +1,371 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/template.xhtml"
+                xmlns:o="http://omnifaces.org/ui"
+                xmlns:of="http://omnifaces.org/functions"
+>
+    <ui:define name="content">
+        <style>
+            .ui-tabs .ui-tabs-panels .ui-tabs-panel {
+                padding: 1rem 0 !important;
+            }
+
+            .ui-tree {
+                border: 0px solid #DFE3EA !important;
+                background: #ffffff;
+                color: #4B576F;
+                padding: 0 !important;
+                width: 100%;
+                border-radius: 4px;
+            }
+
+            body .ui-tree .ui-tree-container .ui-treenode .ui-treenode-content .ui-chkbox {
+                margin-right: 0 !important;
+            }
+
+            body .ui-accordion .ui-accordion-header.ui-state-active {
+                border-color: #DFE3EA;
+                background: none !important;
+                color: #4B576F;
+            }
+
+            /*body .ui-accordion .ui-accordion-header {
+                border-bottom: 0 !important;
+            }*/
+
+            .ui-accordion .ui-accordion-content {
+                border-bottom: 0 solid #DFE3EA !important;
+            }
+
+            .ui-accordion:last-child {
+                border-bottom: 1px solid #DFE3EA !important;
+            }
+        </style>
+
+        <f:metadata>
+            <f:viewAction action="#{postController.preRenderView}"/>
+        </f:metadata>
+
+        <h:form id="editForm">
+            <div class="card">
+                <div class="p-grid">
+                    <div class="p-col">
+                        <div class="p-grid p-mb-3">
+                            <div class="p-col-1">Title</div>
+                            <div class="p-col">
+                                <p:inputText value="#{postController.post.postTitle}"
+                                             styleClass="p-col-12"
+                                             onblur="updatePostSlug()"
+                                />
+                                <p:remoteCommand name="updatePostSlug"
+                                                 actionListener="#{postController.makeSlug}"
+                                                 update="postSlug"
+                                />
+                            </div>
+                        </div>
+
+                        <div class="p-grid p-mb-3">
+                            <div class="p-col-1">Slug</div>
+                            <div class="p-col">
+                                <h:panelGroup id="postSlug">
+                                    <p:inputText value="#{postController.post.postSlug}"
+                                                 styleClass="p-col-12"
+                                    />
+                                </h:panelGroup>
+                                <small>The “slug” is the URL-friendly version of the name. It is usually all lowercase and contains only letters, numbers, and hyphens.</small>
+                            </div>
+                        </div>
+
+                        <div class="p-grid p-mb-3">
+                            <div class="p-col-1">Excerpt</div>
+                            <div class="p-col">
+                                <p:textEditor value="#{postController.post.postExcerpt}"
+                                              height="100"
+                                              secure="false"
+                                              placeholder="Enter summary"
+                                >
+                                    <f:facet name="toolbar">
+                                         <span class="ql-formats">
+                                            <button class="ql-bold"/>
+                                            <button class="ql-italic"/>
+                                            <button class="ql-underline"/>
+                                            <button class="ql-strike"/>
+                                        </span>
+                                        <span class="ql-formats">
+                                            <select class="ql-font"/>
+                                            <select class="ql-size"/>
+                                        </span>
+                                    </f:facet>
+                                </p:textEditor>
+                            </div>
+                        </div>
+
+                        <div class="p-grid p-mb-3">
+                            <div class="p-col-1">Content</div>
+                            <div class="p-col">
+                                <p:textEditor value="#{postController.post.postContent}"
+                                              height="650"
+                                              secure="false"
+                                />
+                            </div>
+                        </div>
+
+                        <div class="p-grid p-jc-center p-mt-4">
+                            <div class="p-col-10">
+                                <p:commandButton value="Save"
+                                                 styleClass="p-mr-2"
+                                                 icon="pi pi-save"
+                                                 actionListener="#{postController.add}"
+                                                 update="@form, :growl"
+                                                 process="@form"
+                                                 id="btnAdd"
+                                />
+                                <p:hotkey bind="ctrl+shift+s"
+                                          action="#{postController.add}"
+                                          onstart="PF('blEditForm').show()"
+                                          oncomplete="PF('blEditForm').hide()"
+                                          update="@form, :growl"
+                                          process="@form"
+                                />
+                                <p:tooltip position="bottom"
+                                           for="btnAdd"
+                                           value="press `ctrl+shift+s` to save"/>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="p-col-fixed" style="min-width: 265px">
+                        <p:tabView>
+                            <p:tab title="Post">
+                                <p:accordionPanel widgetVar="wgvPost">
+                                    <p:tab title="Status &amp; Visibility">
+                                        <div class="p-grid p-mb-2 p-ai-center">
+                                            <div class="p-col-fixed w100">Publish</div>
+                                            <div class="p-col">
+
+                                            </div>
+                                        </div>
+
+                                        <div class="p-grid p-mb-2 p-ai-center">
+                                            <div class="p-col-fixed w100">Visibility</div>
+                                            <div class="p-col">
+                                                <p:selectOneMenu value="#{postController.post.postStatus}"
+                                                                 style="width: 100%">
+                                                    <f:selectItem itemValue="public" itemLabel="Public"/>
+                                                    <f:selectItem itemValue="private" itemLabel="Private"/>
+                                                    <f:selectItem itemValue="password" itemLabel="Password"/>
+                                                </p:selectOneMenu>
+                                            </div>
+                                        </div>
+
+                                        <div class="p-grid p-mb-2 p-ai-center">
+                                            <div class="p-col-fixed w100">Post Format</div>
+                                            <div class="p-col">
+                                                <p:selectOneMenu style="width: 100%"
+                                                                 value="#{postController.post.postType}"
+                                                >
+                                                    <f:selectItem itemValue="post" itemLabel="Standard"/>
+                                                    <f:selectItem itemValue="aside" itemLabel="Aside"/>
+                                                    <f:selectItem itemValue="audio" itemLabel="Audio"/>
+                                                    <f:selectItem itemValue="chat" itemLabel="Chat"/>
+                                                    <f:selectItem itemValue="gallery" itemLabel="Gallery"/>
+                                                    <f:selectItem itemValue="image" itemLabel="Image"/>
+                                                    <f:selectItem itemValue="link" itemLabel="Link"/>
+                                                    <f:selectItem itemValue="quote" itemLabel="Quote"/>
+                                                    <f:selectItem itemValue="video" itemLabel="Video"/>
+                                                </p:selectOneMenu>
+                                            </div>
+                                        </div>
+                                        <div class="p-grid p-mb-2 p-ai-center">
+                                            <div class="p-col-fixed w70">
+                                                <p:toggleSwitch/>
+                                            </div>
+                                            <div class="p-col">
+                                                <p>Stick to the top of the blog</p>
+                                            </div>
+                                        </div>
+                                        <div class="p-grid p-mb-2 p-ai-center">
+                                            <div class="p-col-fixed w70">
+                                                <p:toggleSwitch/>
+                                            </div>
+                                            <div class="p-col">
+                                                <p>Pending review</p>
+                                            </div>
+                                        </div>
+                                    </p:tab>
+                                </p:accordionPanel>
+
+                                <p:accordionPanel widgetVar="wgvCategories" id="accPnlCat" style="categoryScroll">
+                                    <p:tab title="Categories">
+                                        <div class="p-grid p-ai-center p-m-0 p-p-0">
+                                            <div class="p-col-fixed" style="padding-top: 0">Add new category</div>
+                                            <div class="p-col">
+                                                <p:commandButton icon="pi pi-plus"
+                                                                 oncomplete="PF('wgvNewCat').show();"
+                                                                 update=":dlgNewCat"
+                                                                 actionListener="#{categoryComponent.initCat}"
+                                                                 styleClass="rounded-button ui-button-success"
+                                                                 id="addCategory"
+                                                />
+                                                <p:hotkey bind="alt+c"
+                                                          update=":dlgNewCat"
+                                                          action="#{categoryComponent.initCat}"
+                                                          oncomplete="PF('wgvNewCat').show();"
+                                                />
+                                                <p:tooltip position="top"
+                                                           for="addCategory"
+                                                           value="press `alt+c` to show the dialog"/>
+                                            </div>
+                                        </div>
+                                        <p:tree id="categories"
+                                                style="padding-top: 0; max-height: 250px"
+                                                required="true"
+                                                requiredMessage="Please choose at least one category"
+                                                value="#{categoryComponent.root}"
+                                                var="cat"
+                                                resizableColumns="true"
+                                                selectionMode="checkbox"
+                                                selection="#{postController.selectedNodes}"
+                                                propagateSelectionUp="false"
+                                                propagateSelectionDown="false"
+                                                animate="true"
+                                        >
+                                            <p:treeNode>
+                                                <h:outputText value="#{cat.name}"/>
+                                            </p:treeNode>
+                                        </p:tree>
+                                    </p:tab>
+                                </p:accordionPanel>
+
+                                <p:accordionPanel widgetVar="wgvTags">
+                                    <p:tab title="Tags">
+                                        <div class="p-grid">
+                                            <div class="p-col">
+                                                <p:autoComplete id="tagComplete"
+                                                                multiple="true"
+                                                                value="#{postController.post.tagsStr}"
+                                                                completeMethod="#{postController.completeTag}"
+                                                                var="t"
+                                                                itemLabel="#{t}"
+                                                                itemValue="#{t}"
+                                                                forceSelection="true"
+                                                                scrollHeight="250"
+                                                                style="max-width: 265px"
+                                                                minQueryLength="3"
+                                                                queryDelay="5"
+                                                                itemStyleClass="p-m-1 p-p-1"
+                                                >
+                                                    <p:column>
+                                                        <h:outputText value="#{t}"/>
+                                                    </p:column>
+                                                    <p:ajax event="itemUnselect"
+                                                            listener="#{postController.handleTagUnSelect}"/>
+                                                    <p:ajax event="itemSelect"
+                                                            listener="#{postController.handleTagSelect}"/>
+                                                </p:autoComplete>
+                                                <br/>
+                                                <small>Typing the tag name and press the Enter key.</small>
+                                            </div>
+                                        </div>
+                                    </p:tab>
+                                </p:accordionPanel>
+
+                                <p:accordionPanel widgetVar="wgvFeaturedImage">
+                                    <p:tab title="Featured Image">
+                                    </p:tab>
+                                </p:accordionPanel>
+
+                                <p:accordionPanel widgetVar="wgvDisscusion">
+                                    <p:tab title="Discussion">
+                                        <div class="p-grid p-mb-2 p-ai-center">
+                                            <div class="p-col-fixed w70">
+                                                <p:toggleSwitch/>
+                                            </div>
+                                            <div class="p-col">
+                                                <p>Allow comments</p>
+                                            </div>
+                                        </div>
+                                        <div class="p-grid p-mb-2 p-ai-center">
+                                            <div class="p-col-fixed w70">
+                                                <p:toggleSwitch/>
+                                            </div>
+                                            <div class="p-col">
+                                                <p>Allow pingbacks &amp; trackbacks</p>
+                                            </div>
+                                        </div>
+                                    </p:tab>
+                                </p:accordionPanel>
+
+                            </p:tab>
+                        </p:tabView>
+                    </div>
+                </div>
+            </div>
+
+            <p:blockUI block="editForm"
+                       widgetVar="blEditForm"
+                       trigger=":editForm:btnAdd"
+            >
+                <p:graphicImage value="#{resource['images/loading.gif']}"/>
+            </p:blockUI>
+        </h:form>
+
+        <p:dialog id="dlgNewCat"
+                  widgetVar="wgvNewCat"
+                  header="Add new Category"
+                  width="330"
+                  modal="true"
+                  closeOnEscape="true"
+        >
+            <h:form>
+                <p:panel>
+                    <div class="p-grid p-mt-1 p-ai-center">
+                        <div class="p-col">
+                            <p:inputText value="#{categoryComponent.category.categoryName}"
+                                         placeholder="type new category name"
+                                         styleClass="p-col-12"
+                                         id="catName"
+                            />
+                            <p:focus for="catName"/>
+                        </div>
+                        <div class="p-col-12">Parent</div>
+                        <div class="p-col-12">
+                            <p:selectOneMenu id="option"
+                                             value="#{categoryComponent.category.categoryParent}"
+                                             converter="omnifaces.SelectItemsConverter"
+                                             style="width: 100%"
+                            >
+                                <f:selectItem itemLabel="None" itemValue="#{null}" noSelectionOption="true"/>
+                                <f:selectItems value="#{categoryComponent.categories}"
+                                               var="c"
+                                               itemLabel="#{c.categoryName}"
+                                               itemValue="#{c}"
+                                />
+                            </p:selectOneMenu>
+                        </div>
+                    </div>
+                </p:panel>
+                <div class="p-grid p-mt-2">
+                    <div class="p-col p-text-center">
+                        <p:commandButton styleClass="rounded-button"
+                                         icon="pi pi-plus"
+                                         actionListener="#{categoryComponent.addCatFromPost}"
+                                         oncomplete="if (args &amp;&amp; !args.validationFailed) {
+                                                        addCatToPost(); PF('wgvNewCat').hide();
+                                                     }"
+                                         update="@([id$=accPnlCat])"
+                        />
+                    </div>
+                    <p:remoteCommand name="addCatToPost"
+                                     actionListener="#{postController.addCat}"
+                                     update="@([id$=accPnlCat])"
+                    />
+                </div>
+            </h:form>
+        </p:dialog>
+    </ui:define>
+</ui:composition>

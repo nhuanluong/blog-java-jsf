@@ -1,0 +1,1121 @@
+/* __Note: CSS canh chỉnh các component JSF và Primefaces(4.0 - phiên bản hiện tại) */
+/* __Author: DSnake */
+/* __Create date: 2014 - 08 - 21 (yyyy - MM - dd) */
+/* __Rules: Viết thêm 1 thuộc tính CSS phải khai báo đúng Task tương ứng dựa vào bố cục trong Task 'Decription content'
+		được khai báo bên dưới. Khi thêm 1 Task lớn hay nhỏ cũng cập nhật vào Task 'Decription content'.
+		Task lớn: (nameTask)-(START)  ...  (nameTask)-(END)
+		Task nhỏ: ------------nameTask------------- ... ------------/nameTask-------------
+*/
+/* __Decription content:
+		- COMMON BASE ATTRIBUTES - Các khai báo thuộc tính CSS cơ bản dùng chung
+		- SIZE COMPONENT - Các khai báo kích thước của khung hiển thị và các component bên trong
+		- HTML ATTRIBUTES - Các khai báo thuộc tính CSS cho các thẻ dạng HTML
+			+ Table
+			+ Div
+			+ Label
+			+ Button
+			+ DataTable
+			+
+		- COMPONENT OVERRIDE - Các thuộc tính ghi đè hay chỉnh sửa mới chung cho tất cả các Component được sử dụng
+			+ Common
+			+ Form
+			+ Fieldset Legend
+			+ Calendar
+			+ SelectOneMenu
+			+ Autocomplete
+			+ SelecOneRadio
+			+ SelectBooleanCheckbox
+			+ DataTable
+			+ Menu
+			+ Button
+			+ Dialog
+			+
+*/
+/* -------------------------------------------------------------------------------------------------------------------- */
+
+
+/* (COMMON BASE ATTRIBUTES)-(START) */
+.f-left {
+    float: left;
+}
+
+.f-right {
+    float: right;
+}
+
+.pos-relative {
+    position: relative;
+}
+
+.pos-absolute {
+    position: absolute;
+}
+
+.clear {
+    clear: both;
+}
+
+.bold {
+    font-weight: bold !important;
+}
+
+.border-none {
+    border: none;
+}
+
+.height-auto {
+    height: auto !important;
+}
+
+.color-ff8000 {
+    color: #FF8000;
+}
+
+.padding-left-5p {
+    padding-left: 5% !important;
+}
+
+.padding-left-5 {
+    padding-left: 5px;
+}
+
+.padding-left-12 {
+    padding-left: 12px;
+}
+
+.padding-left-40 {
+    padding-left: 40px;
+}
+
+.padding-left-46 {
+    padding-left: 46px;
+}
+
+.padding-top-5 {
+    padding-top: 5px;
+}
+
+.padding-left-30 {
+    padding-left: 30px;
+}
+
+.padding-left-3p {
+    padding-left: 3%;
+}
+
+.cell-top-left {
+    vertical-align: top !important;
+    text-align: left;
+}
+
+.cell-top-right {
+    vertical-align: top !important;
+    text-align: right;
+}
+
+.cell-middle {
+    display: table-cell !important;
+    vertical-align: middle;
+}
+
+.cell-middle-title {
+    display: table-cell !important;
+    margin-top: 5px;
+}
+
+.cell-middle-left {
+    vertical-align: middle;
+    text-align: left;
+}
+
+.align-center {
+    text-align: center !important;
+}
+
+.align-left {
+    text-align: left !important;
+}
+
+.align-right {
+    text-align: right !important;
+}
+
+.required {
+    color: red;
+    font-weight: bold;
+}
+
+.status-loading {
+    width: 64px;
+    height: 64px;
+    position: fixed;
+    right: 5px;
+    bottom: 5px;
+}
+
+/* Width % */
+.w2p {
+    width: 2%;
+}
+
+.w3p {
+    width: 3%;
+}
+
+.w5p {
+    width: 5%;
+}
+
+.w10p {
+    width: 10%;
+}
+
+.w15p {
+    width: 15%;
+    min-width: 15%;
+    max-width: 15%;
+}
+
+.w20p {
+    width: 20%;
+}
+
+.w23p {
+    width: 23%;
+}
+
+.w24p {
+    width: 24%;
+}
+
+.w25p {
+    width: 25%;
+}
+
+.w30p {
+    width: 30%;
+}
+
+.w34p {
+    width: 34%;
+}
+
+.w35p {
+    width: 35%;
+    min-width: 35%;
+    max-width: 35%;
+}
+
+.w38p {
+    width: 38%;
+}
+
+.w40p {
+    width: 40%;
+    min-width: 40%;
+    max-width: 40%;
+}
+
+.w50p {
+    width: 50%;
+    min-width: 50%;
+    max-width: 50%;
+}
+
+.w60p {
+    width: 60%;
+    min-width: 60%;
+    max-width: 60%;
+}
+
+.w65p {
+    width: 65%;
+    min-width: 65%;
+    max-width: 65%;
+}
+
+.w70p {
+    width: 70%;
+}
+
+.w75p {
+    width: 75%;
+}
+
+.w80p {
+    width: 80%;
+}
+
+.w83p {
+    width: 83%;
+}
+
+.w85p {
+    width: 85%;
+}
+
+.w90p {
+    width: 90%;
+}
+
+.w93p {
+    width: 93%;
+}
+
+.w94p {
+    width: 94%;
+}
+
+.w98p {
+    width: 98%;
+}
+
+.w100p {
+    width: 100%;
+    min-width: 100%;
+    max-width: 100%;
+}
+
+/* /Width % */
+.w10 {
+    width: 10px;
+}
+
+.w15 {
+    width: 15px;
+}
+
+.w16 {
+    width: 16px;
+}
+
+.w20 {
+    width: 20px;
+}
+
+/* (COMMON BASE ATTRIBUTES)-(END) */
+
+
+/* (SIZE COMPONENT)-(START) */
+.ui-selectonemenu, .ui-selectonemenu > .ui-selectonemenu-label, .ui-selectonemenu > .ui-helper-hidden-accessible > input,
+.table-custom tr td .size-standard .ui-inputfield, .table-custom tr td .size-standard .btn-calendar-custom {
+    height: 22px !important;
+    margin: 0px;
+}
+
+.ui-selectonemenu > .ui-selectonemenu-trigger {
+    height: 24px;
+}
+
+.table-normal tr td .size-standard, .table-custom tr td .size-standard {
+    width: 90%;
+}
+
+.table-custom tr td .size-standard .ui-inputfield {
+    width: 96.1%;
+    /*padding: 0px 2% 0px 2%;*/
+    padding-top: 2px;
+}
+
+.table-custom tr td .size-standard .ui-inputtextarea {
+    min-height: 60px;
+}
+
+.table-custom tr td .size-standard .ui-selectonemenu, .table-custom tr td .size-standard .ui-toolbar {
+    width: 99% !important;
+}
+
+/* .table-custom tr td .size-standard .ui-toolbar { */
+/* 	width: 99% !important; */
+/* } */
+
+/* .table-custom tr td .ui-inputfield { */
+/* 	width: 90%; */
+/* } */
+.table-custom .padding-left-2p {
+    padding-right: 3%;
+}
+
+.table-custom .size-component-col-3 .size-standard {
+    width: 95.8%;
+}
+
+.table-custom .size-component-col-85p .size-standard {
+    width: 60%;
+    text-align: right;
+
+}
+
+.table-custom .size-component-col-3 .size-standard .ui-inputfield {
+    padding: 3px 0.7% 3px 0.7%;
+    width: 98.5%;
+    margin: 0px;
+}
+
+.table-custom tr td button {
+    margin-right: 3px;
+}
+
+.table-custom tr td .size-component .ui-autocomplete {
+    width: 95%;
+}
+
+.table-custom .size-component-col-4t .size-standard {
+    width: 96.6%;
+}
+
+/* .table-custom .size-component-col-3 .ui-inputfield { */
+/* 	width: 96%; */
+/* } */
+.table-custom tr td .size-component, .table-custom tr td .size-standard .btn-calendar-custom {
+    width: 100%;
+}
+
+/* .table-custom tr td .size-component .ui-autocomplete-input { */
+/* 	width: 145%; */
+/* } */
+
+/* SelectOneMenu */
+/* .ui-selectonemenu, .ui-selectonemenu > .ui-helper-hidden-accesible, .ui-selectonemenu > .ui-selectonemenu-trigger { */
+/* 	line-height: 15px; */
+/* 	height: 25px; */
+/* 	max-height: 25px; */
+/* } */
+/* .table-custom tr td .ui-selectonemenu, .table-custom tr td .ui-toolbar { */
+/* 	width: 95% !important; */
+/* } */
+/* .table-75-100 tr td .ui-selectonemenu, .table-75-100 tr td .ui-toolbar { */
+/* 	width: 91% !important; */
+/* } */
+/* .table-900 tr td .ui-selectonemenu, .table-900 tr td .ui-toolbar { */
+/* 	width: 92% !important; */
+/* } */
+.ui-selectonemenu > .ui-selectonemenu-label {
+    width: 97% !important;
+}
+
+/* .ui-datatable, .ui-fileupload, .ui-datalist { */
+/* 	width: 100% !important; */
+/* } */
+.table-custom tr td .ui-datatable, .table-custom tr td .ui-fileupload, .table-custom tr td .ui-datalist {
+    width: 100% !important;
+}
+
+.table-normal tr td .ui-datatable, .table-normal tr td .ui-fileupload, .table-normal tr td .ui-datalist {
+    width: 100% !important;
+}
+
+/* .table-75-100 tr td .ui-datatable, .table-75-100 tr td .ui-fileupload, .table-75-100 tr td .ui-datalist { */
+/* 	width: 91.5% !important; */
+/* } */
+/* .table-900 tr td .ui-datatable, .table-900 tr td .ui-fileupload, .table-900 tr td .ui-datalist { */
+/* 	width: 92% !important; */
+/* } */
+.table-custom tr td .ui-selectonemenu-panel {
+    width: 17%;
+    min-width: 100px;
+    overflow: auto;
+}
+
+/* .table-900 tr td .ui-selectonemenu-panel { */
+/* 	width: 44% !important; */
+/* } */
+.ui-selectonemenu-panel > .ui-selectonemenu-items-wrapper > ul {
+    margin: 0px;
+    padding: 0px;
+}
+
+.ui-selectonemenu-panel > .ui-selectonemenu-items-wrapper > ul > li {
+    padding-left: 10px;
+}
+
+/* /SelectOneMenu */
+
+/* .table-size tr .cell-child-size-w96p .ui-inputfield, .table-size tr .cell-child-size-w96p .ui-inputtextarea { */
+/* 	width: 96% !important; */
+/* } */
+/* .table-size tr .cell-child-size-w98p .ui-inputfield{ */
+/* 	width: 98% !important; */
+/* } */
+/* (SIZE COMPONENT)-(END) */
+
+
+/* (HTML ATTRIBUTES)-(START) */
+/* ------------Table------------- */
+table tr td button {
+    margin-right: 3px;
+}
+
+/* table-custom */
+.table-custom, .table-custom tr, .table-custom tr td, .table-custom tr th, .table-custom tr td .size-standard {
+    vertical-align: middle;
+}
+
+.table-custom, .table-custom tr, .table-custom tr td, .table-custom tr th {
+    border: none;
+}
+
+.table-custom tr td .size-standard {
+    display: inline-block;
+    line-height: 0px;
+}
+
+.table-custom tr td .size-standard table, .table-custom tr td .size-standard div,
+.table-custom tr td .size-standard span {
+    line-height: 20px;
+}
+
+.table-custom tr td .size-standard .data-table-border, .table-custom tr td .size-standard .data-table-border tr,
+.table-custom tr td .size-standard .data-table-border tr td {
+    border: 1px solid gray;
+}
+
+.table-custom tr th {
+    padding-right: 1%;
+    font-weight: normal;
+    text-align: right !important;
+}
+
+.table-custom tr td, .table-custom tr th {
+    padding-top: 2px;
+    padding-bottom: 0px;
+    text-align: left;
+}
+
+.table-custom tr td .ui-inputfield {
+    border-radius: 6px;
+    height: 25px;
+    padding-bottom: 0px;
+    padding-top: 0px;
+    border-color: #AED0EA;
+}
+
+.table-custom tr td .ui-selectonemenu .ui-inputfield {
+    /*padding-top: 2px;*/
+}
+
+.table-custom tr td .ui-autocomplete-multiple ul {
+    height: auto !important;
+}
+
+.table-custom tr td .ui-datalist {
+    line-height: 15px;
+}
+
+.table-custom tr td .button-icon-add, .table-custom tr td .ui-button-file {
+    background: none;
+    border: none;
+    background-repeat: no-repeat;
+}
+
+.table-custom tr td .button-icon-add {
+    background-image: url('../../images/btn-add.png');
+    width: 24px;
+    height: 24px;
+}
+
+.table-custom tr td .ui-button-file {
+    cursor: pointer;
+    margin-right: 0.1em;
+    text-align: center;
+    text-decoration: none;
+}
+
+.table-size tr tr td .div-btn {
+    margin-left: 10px;
+}
+
+.table-columns-6 tr th {
+    padding-left: 1% !important;
+}
+
+/* /table-custom */
+
+/* table-normal */
+.table-normal tr th, .table-normal tr td {
+    text-align: left;
+    vertical-align: middle;
+}
+
+.table-normal tr td span, .table-normal tr td label {
+    line-height: 20px;
+}
+
+.table-normal tr td .size-standard {
+    display: inline-block;
+}
+
+.table-normal tr td .size-standard label {
+    line-height: 10px;
+}
+
+/* /table-normal */
+/* ------------Div------------- */
+.div-input-number .ui-inputfield {
+    text-align: right;
+}
+
+.div-margin-t10-b10 {
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+.div-margin-t10-b10 button {
+    margin-right: 3px;
+}
+
+.size-standard .ui-selectonemenu > .ui-helper-hidden-accessible > input {
+    line-height: 0px;
+}
+
+.ui-autocomplete-button > .ui-autocomplete > button {
+    margin-top: 0px;
+}
+
+/* ------------/Div------------- */
+
+
+/* ------------Label------------- */
+.title-portlet {
+    padding: 0px;
+    font-weight: bold;
+    color: #1266FF;
+}
+
+.barcode-font {
+    font-family: IDAutomationHC39M !important;
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+/* ------------/Label------------- */
+
+
+/* ------------Button------------- */
+/* ------------/Button------------- */
+
+
+/* ------------Datatable------------- */
+.ui-datatable table tr td .action-button {
+    background: none;
+    border: none;
+    background-color: transparent;
+    background-repeat: no-repeat;
+    background-image: url('../../images/setting3.png');
+    width: 28px;
+    height: 28px;
+    margin: auto;
+}
+
+/* ------------/Datatable------------- */
+
+.table-custom tr .cell-title, .cell-title {
+    text-align: left !important;
+    font-weight: bold !important;
+    padding-left: 8% !important;
+}
+
+.icon-export {
+    width: 24px !important;
+}
+
+.icon-item {
+    width: 40px !important;
+}
+
+center > button {
+    margin-right: 3px;
+}
+
+/* (HTML ATTRIBUTES)-(END) */
+
+
+/* (COMPONENT OVERRIDE)-(START) */
+/* ------------Common------------- */
+.aui label, .aui input, .aui button, .aui select, .aui textarea, .aui input[type="text"], .aui input[type="password"],
+.aui input[type="datetime-local"], .aui input[type="date"], .aui input[type="month"], .aui input[type="time"],
+.aui input[type="week"], .aui input[type="number"], .aui input[type="email"], .aui input[type="url"],
+.aui input[type="search"], .aui input[type="tel"], .aui input[type="color"], .aui .uneditable-input,
+.aui input[type="datetime"],
+.ui-fieldset-toggleable .ui-fieldset-legend, .aui form, .ui-widget,
+.table-custom tr td, .table-custom tr th,
+.ui-datepicker .ui-datepicker-header span, .ui-datepicker .ui-timepicker-div dl dt, .ui-selectoneradio tr td label {
+    font-size: 13px !important;
+    font-family: Arial !important;
+}
+
+/* ------------/Common------------- */
+
+/* ------------Form------------- */
+.aui form {
+    width: 100%;
+    min-width: 300px;
+    max-width: 100%;
+    padding: 0px;
+    margin: 0px;
+    margin-bottom: 10px;
+}
+
+/* ------------/Form------------- */
+
+/* ------------Fieldset Legend------------- */
+/* Fieldset */
+.aui fieldset {
+
+}
+
+/* /Fieldset */
+
+/* Legend */
+.ui-fieldset .ui-fieldset-legend {
+    margin: 0px;
+    padding: 0px;
+    line-height: 30px;
+    border: none !important;
+}
+
+.ui-fieldset .ui-fieldset-legend .ui-fieldset-toggler {
+    margin-top: 6px !important;
+}
+
+/* /Legend */
+
+/* Content Fieldset */
+.ui-fieldset .ui-fieldset-content {
+    padding: 15px 10px 15px 10px;
+}
+
+/* /Content Fieldset */
+/* ------------/Fieldset Legend------------- */
+
+
+/* ------------Calendar------------- */
+/* Button Select Calendar */
+.btn-calendar-custom span .ui-datepicker-trigger, .icon-calendar-custom {
+    position: absolute;
+    right: 1.5%;
+}
+
+.table-900 tr td .btn-calendar-custom span .ui-datepicker-trigger, .table-900 tr td .icon-calendar-custom {
+    right: 3.5%;
+}
+
+.icon-calendar-custom {
+    top: 1px;
+}
+
+.btn-calendar-custom span .ui-datepicker-trigger {
+    top: 5px;
+}
+
+.btn-calendar-custom span .ui-datepicker-trigger .ui-icon-calendar {
+    background: none;
+}
+
+.btn-calendar-custom span .ui-datepicker-trigger {
+    background: none;
+    border: none;
+    width: 16px;
+    height: 16px;
+    z-index: 1000;
+}
+
+.btn-calendar-custom span .ui-datepicker-trigger:HOVER {
+    background: none;
+    border: none;
+}
+
+/* /Button Select Calendar */
+
+/* Calendar Popup */
+.ui-datepicker {
+    width: 20%;
+    min-width: 225px;
+}
+
+.ui-datepicker table {
+    font-size: 10px;
+}
+
+.ui-datepicker table tr th, .ui-datepicker table tr td {
+    width: 10px;
+}
+
+.ui-datepicker table tr th, .ui-datepicker table tr td, .ui-datepicker table tr td a, .ui-datepicker table tr td a:LINK {
+    padding: 0px;
+}
+
+.ui-datepicker table tr td a, .ui-datepicker table tr td a:LINK {
+    text-align: center;
+    width: 30px;
+}
+
+/* /Calendar Popup */
+/* ------------/Calendar------------- */
+
+
+/* ------------SelecOneMenu------------- */
+.ui-selectonemenu > .ui-selectonemenu-label {
+    margin: 0px;
+}
+
+.ui-selectonemenu > .ui-helper-hidden-accessible, .ui-selectonemenu > .ui-helper-hidden-accessible > input {
+    width: 100%;
+}
+
+.ui-selectonemenu > .ui-helper-hidden-accessible > input {
+    border: none;
+    margin: 0px;
+    padding: 0px;
+}
+
+/* ------------/SelecOneMenu------------- */
+
+/* ------------Autocomplete------------- */
+.ui-autocomplete-multiple ul, .ui-autocomplete-multiple ul li, .ui-autocomplete-multiple ul li input {
+    width: 100%;
+}
+
+.ui-autocomplete-multiple ul {
+    margin: 0px !important;
+    padding: 0px !important;
+}
+
+.autocomplete-multi .ui-autocomplete-multiple ul {
+    height: auto !important;
+}
+
+.ui-autocomplete-multiple ul li input {
+    margin: 0px !important;
+    border: none !important;
+    box-shadow: none !important;
+    background: none !important;
+    margin-left: -2px !important;
+    margin-top: -1px !important;
+}
+
+.aui .autocomplete-multi select, .aui .autocomplete-multi textarea {
+    display: none !important;
+    width: 100% !important;
+}
+
+.ui-autocomplete-multiple ul li, .ui-autocomplete-multiple .ui-autocomplete-multiple-container .ui-autocomplete-input-token {
+    width: auto;
+    margin-left: 0px;
+    float: left;
+}
+
+.ui-autocomplete-multiple ul {
+    height: auto !important;
+}
+
+.ui-autocomplete > button {
+    margin-top: 0px !important;
+    margin-left: -6% !important;
+    height: 30px;
+    line-height: 22px;
+    width: 6%;;
+}
+
+/* ------------/Autocomplete------------- */
+
+/* ------------SelecOneRadio------------- */
+.ui-selectoneradio td {
+    padding-right: 10px;
+}
+
+.ui-selectoneradio td label {
+    padding: 0px;
+    margin: 0px;
+}
+
+.ui-selectoneradio td .ui-radiobutton {
+    margin-top: -1px;
+}
+
+/* ------------/SelecOneRadio------------- */
+
+/* ------------p:selectBooleanCheckbox------------- */
+.ui-chkbox .ui-chkbox-label {
+    margin: 0px;
+    margin-left: 7px;
+}
+
+/* ------------/p:selectBooleanCheckbox------------- */
+
+/* ------------DataTable------------- */
+/* SelectOneMenu Paginator */
+.ui-datatable > .ui-paginator > .ui-paginator-rpp-options {
+    height: 25px;
+    width: auto;
+    padding-bottom: 0px;
+    padding-top: 0px;
+    margin-bottom: 0px;
+    margin-top: -18px;
+}
+
+.ui-datatable .ui-paginator {
+    text-align: left;
+    height: 28px;
+    padding: 3px;
+}
+
+.ui-datatable .ui-paginator .ui-paginator-current {
+    float: right;
+    margin-top: 0px;
+}
+
+/* /SelectOneMenu Paginator */
+.ui-datatable th {
+    text-align: center !important;
+    padding: 0px;
+    padding-left: 3px;
+    padding-right: 3px;
+}
+
+.ui-datatable th .ui-inputfield {
+    width: 90%;
+    height: 15px;
+    border-radius: 6px;
+    border: 1px solid #AED0EA;
+    margin: auto;
+    box-shadow: 0 2px 2px #8f8f8f inset;
+}
+
+.ui-datatable .ui-datatable-tablewrapper table thead tr .ui-state-default {
+    text-align: center !important;
+    white-space: pre-wrap !important;
+}
+
+/* ------------/DataTable------------- */
+
+/* ------------Menu------------- */
+.ui-menu, .ui-menu ul {
+    padding: 0px;
+    margin: 0px;
+}
+
+.ui-menu ul {
+}
+
+/* ------------/Menu------------- */
+
+/* ------------Button------------- */
+.ui-widget button {
+    margin-right: 3px;
+}
+
+.ui-button {
+    margin-right: 7px;
+}
+
+/* ------------/Button------------- */
+
+/* ------------Dialog------------- */
+.ui-dialog {
+    min-height: 100px;
+    max-height: 600px;
+    min-width: 100px;
+    max-width: 90%;
+    width: auto;
+    height: auto;
+}
+
+.ui-dialog > .ui-dialog-content {
+    max-height: 500px;
+}
+
+/* ------------/Dialog------------- */
+
+/* ------------DataList------------- */
+.ui-datalist .ui-datalist-content {
+    background: none;
+    border: none;
+}
+
+.ui-datalist .ui-datalist-content .ui-datalist-data {
+    margin: 0px;
+}
+
+/* ------------/DataList------------- */
+
+/* ------------Picklist------------- */
+.ui-picklist td select {
+    display: none;
+}
+
+.ui-picklist td .ui-picklist-filter-container input {
+    margin: 0px;
+}
+
+.jqplot-data-label {
+    color: #ffffff;
+}
+
+tr:hover {
+    background-color: transparent;
+}
+
+.icon-refesh-next {
+    width: 12px !important;
+}
+
+.absolute-title {
+    z-index: 10;
+    top: 4px;
+    left: 15px;
+    width: 80% !important;
+    min-width: 82%;
+}
+
+.absolute-title-z {
+    z-index: 3;
+}
+
+.div-new-info .ui-datalist .ui-paginator {
+    height: 30px;
+    background: none;
+    border: none;
+    border-bottom: 1px solid #d2d5d0;
+    text-align: right;
+    margin-bottom: 0px;
+}
+
+.div-new-info-title .ui-datalist .ui-paginator .ui-corner-all {
+    float: right;
+    margin-right: 10px;
+    background: none;
+    border: none;
+}
+
+.div-new-info-icon-next .ui-datalist .ui-paginator .ui-paginator-next .ui-icon {
+    /*background: none;*/
+    /*background-color: blue;*/
+    background-position: -32px -48px;
+    text-align: center;
+}
+
+.div-new-info-icon-pre .ui-datalist .ui-paginator .ui-paginator-prev .ui-icon {
+    /*background: none;*/
+    background-position: -96px -48px;;
+    text-align: center;
+}
+
+.output-text {
+    font-size: 13px;
+    font-weight: normal !important;
+}
+
+.size-images {
+    margin: 15px;
+    width: 24px
+}
+
+.aui hr {
+    margin: 0px 0;
+    border: 0;
+    border-top: 1px solid #B6B3B3;
+}
+
+.div-new-info-item .ui-datalist .ui-datalist-content .ui-datalist-data .ui-datalist-item {
+    padding: 0px;
+    margin: 0px;
+    display: inline;
+    border: none;
+}
+
+.div-data-item-bg {
+    color: #ffffff;
+    font-size: 12px;
+    padding-right: 5px;
+    padding-left: 5px;
+    border-radius: 5px;
+    margin-top: 2px;
+}
+
+.margin-items {
+    width: 98% !important;
+    min-width: 98% !important;
+    margin: 0px;
+}
+
+.f-left-w10p {
+    padding: 0px;
+    height: 70px;
+    width: 70px;
+}
+
+.f-right-w75p {
+    padding: 0px;
+    margin: 0px;
+}
+
+. sub-text-doc {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+/*Height*/
+.h60 {
+    height: 60px;
+}
+
+.h70 {
+    height: 70px;
+}
+
+/* ------------/Picklist------------- */
+.ui-state-error, .ui-widget-content .ui-state-error, .ui-widget-header .ui-state-error {
+    border: 1px solid red !important;
+}
+
+/* (COMPONENT OVERRIDE)-(END) */
+
+/* fieldset */
+fieldset {
+    /*-webkit-border-radius: 6px !important;*/
+    /*-moz-border-radius: 6px!important;*/
+    /*border-radius: 6px!important;*/
+    padding-left: 5px !important;
+    margin-top: 5px !important;
+    border: silver solid 1px !important;
+    /*box-shadow: 6px 7px 8px silver!important;	/*box-shadow: 6px 7px 8px silver!important;*/
+}
+
+.fieldset-custom legend {
+    border: none !important;
+    background: none !important;
+
+}
+
+.fieldset-background {
+
+}
+
+.aui .ui-icon {
+    float: left !important;
+}
+
+.aui legend {
+    display: table-header-group !important;
+    width: auto !important;
+    /*padding: 0;*/
+    /*margin-bottom: 20px;*/
+    /*font-size: 21px;*/
+    /*line-height: 40px;*/
+    /*color: #333;*/
+    /*border: 0;*/
+    /*border-bottom: 1px solid #e5e5e5;*/
+}
+
+/*Custom style 13/1/2017*/
+.incomeWidth {
+    width: 100% !important;
+}
+
+.incomeWidth .incomeInput input {
+    width: 98.5% !important;
+}
+
+

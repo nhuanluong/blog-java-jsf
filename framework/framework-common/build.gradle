@@ -1,0 +1,6 @@
+description = 'framework-common'
+archivesBaseName = 'framework-common'
+
+dependencies {
+    implementation group: 'com.github.slugify', name: 'slugify', version: "${slugify}"
+}

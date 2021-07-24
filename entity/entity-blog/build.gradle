@@ -1,0 +1,11 @@
+description = 'entity-blog'
+archivesBaseName = 'entity-blog'
+
+dependencies {
+    implementation project(':framework:framework-core')
+    implementation project(':framework:framework-backend')
+    implementation project(':framework:framework-frontend')
+    implementation project(':framework:framework-common')
+
+    compileOnly group: 'javax', name: 'javaee-api', version: "${javaEEApi}"
+}

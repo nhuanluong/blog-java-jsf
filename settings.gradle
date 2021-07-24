@@ -1,8 +1,45 @@
-rootProject.name = 'blog'
+rootProject.name = 'coursevm.com'
+
+include ':framework'
+include ':framework:framework-core'
+include ':framework:framework-backend'
+include ':framework:framework-frontend'
+include ':framework:framework-common'
+
+include ':backend'
+include ':backend:backend-blog'
+
+include ':entity'
+include ':entity:entity-blog'
+
+include ':service'
+include ':service:service-blog'
+
+include ':web'
+include ':web:blog'
 
 buildscript {
+    dependencies {
+        classpath "org.zeroturnaround:gradle-jrebel-plugin:1.1.10"
+    }
     repositories {
+
         mavenCentral()
+
+        maven {
+            url "https://repository-cdn.liferay.com/nexus/content/groups/public"
+            allowInsecureProtocol = true
+        }
+
+        maven {
+            url "https://plugins.gradle.org/m2/"
+            allowInsecureProtocol = true
+        }
+
+        maven {
+            url "https://repo1.maven.org/maven2/"
+            allowInsecureProtocol = true
+        }
     }
 }
 

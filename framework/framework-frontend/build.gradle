@@ -1,0 +1,27 @@
+description = 'framework-frontend'
+archivesBaseName = 'framework-frontend'
+
+dependencies {
+    implementation project(':framework:framework-core')
+    implementation project(':framework:framework-common')
+    implementation project(':framework:framework-backend')
+
+    implementation "io.github.openfeign:feign-okhttp:${feignVersion}"
+    implementation "io.github.openfeign:feign-gson:${feignVersion}"
+    implementation "io.github.openfeign:feign-jackson:${feignVersion}"
+    implementation "io.github.openfeign:feign-slf4j:${feignVersion}"
+    implementation "io.github.openfeign:feign-spring4:${feignVersion}"
+    implementation "io.github.openfeign.form:feign-form:${feignFormVersion}"
+    implementation "io.github.openfeign.form:feign-form-spring:${feignFormVersion}"
+
+    implementation "org.primefaces:primefaces:${primefaceVersion}"
+
+    compileOnly "javax.el:javax.el-api:${javaxElVersion}"
+    compileOnly "javax.faces:javax.faces-api:${javaxFacesVersion}"
+    compileOnly "javax.portlet:portlet-api:${portletVersion}"
+    compileOnly "javax.servlet:javax.servlet-api:${servletVersion}"
+    compileOnly "javax.annotation:javax.annotation-api:${javaxVersion}"
+    compileOnly group: 'org.omnifaces', name: 'omnifaces', version: "${omnifacesVersion}"
+
+    compileOnly group: 'org.springframework', name: 'spring-webmvc', version: "${springVersion}"
+}

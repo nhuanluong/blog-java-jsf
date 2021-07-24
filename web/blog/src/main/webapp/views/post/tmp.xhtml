@@ -1,0 +1,107 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+                xmlns:jsf="http://xmlns.jcp.org/jsf"
+                template="/WEB-INF/template.xhtml"
+                xmlns:pe="http://primefaces.org/ui/extensions"
+                xmlns:o="http://omnifaces.org/ui"
+                xmlns:of="http://omnifaces.org/functions"
+>
+    <ui:define name="content">
+        <style>
+            .codex-editor__redactor {
+                padding-bottom: 20px !important;
+            }
+        </style>
+        <div class="card">
+            <div class="p-grid">
+                <div class="p-col-6">
+                    <h:form id="editForm">
+                        <p:linkButton value="category" href="#{request.contextPath}/category" icon="pi pi-pencil"/>
+                        <p:separator/>
+                        <div class="p-grid p-mb-2">
+                            <div class="p-col-3">Title</div>
+                            <div class="p-col">
+                                <p:inputText value="#{postController.post.postTitle}"
+                                             styleClass="p-col-12"
+                                             onblur="updatePostSlug()"
+                                />
+                                <p:remoteCommand name="updatePostSlug"
+                                                 actionListener="#{postController.makeSlug}"
+                                                 process="@form"
+                                                 update="postSlug"
+                                />
+                            </div>
+                        </div>
+                        <div class="p-grid p-mb-2">
+                            <div class="p-col-3">Slug</div>
+                            <div class="p-col">
+                                <h:panelGroup id="postSlug">
+                                    <p:inputText value="#{postController.post.postSlug}"
+                                                 styleClass="p-col-12"
+                                    />
+                                </h:panelGroup>
+                                <small>The “slug” is the URL-friendly version of the name. It is usually all lowercase and contains only letters, numbers, and hyphens.</small>
+                            </div>
+                        </div>
+                        <!--<div class="p-grid">
+                            <div class="p-col-3">Content</div>
+                            <div class="p-col" jsf:id="textEditorContent">
+                                <p:panel>
+                                    <div id="editorjs"
+                                         onmouseup="save();  return false;"
+                                         onchange="save(); return false;"
+                                    >
+                                    </div>
+                                    <input type="text"
+                                           id="blockJsData"
+                                           value="#{postController.post.postContent}"
+                                           name="blockJsData"/>
+                                    <div style="display: none">
+                                        <p:remoteCommand name="saveData"
+                                                         process="@this"
+                                                         actionListener="#{postController.saveBlock}"
+                                        />
+                                        <p:remoteCommand name="autoSave"
+                                                         process="@form"
+                                                         actionListener="#{postController.add}"
+                                        />
+                                    </div>
+                                </p:panel>
+                            </div>
+                        </div>-->
+                        <div class="p-grid p-jc-center p-mt-4">
+                            <div class="p-col-6">
+                                <p:commandButton value="Save"
+                                                 styleClass="p-mr-2"
+                                                 icon="pi pi-save"
+                                                 actionListener="#{postController.add}"
+                                                 update="@form, :growl, :formData"
+                                                 process="@form"
+                                />
+                                <p:commandButton value="Refresh"
+                                                 styleClass="ui-button-secondary p-mr-2"
+                                                 icon="pi pi-refresh"
+                                                 actionListener="#{postController.initData}"
+                                                 update="@form, :formData"
+                                                 process="@this"
+                                >
+                                    <p:resetInput target="@form"/>
+                                </p:commandButton>
+                                <p:commandButton value="Reload"
+                                                 styleClass="ui-button-info"
+                                                 icon="pi pi-save"
+                                                 onclick="reload()"
+                                                 update="textEditorContent"
+                                />
+                            </div>
+                        </div>
+                    </h:form>
+                </div>
+            </div>
+        </div>
+    </ui:define>
+</ui:composition>

@@ -1,0 +1,135 @@
+plugins {
+	id 'org.springframework.boot' version '2.5.2'
+	id 'io.spring.dependency-management' version '1.0.11.RELEASE'
+	id 'java'
+	id 'war'
+	id 'com.bmuschko.docker-remote-api' version '6.7.0'
+}
+
+import com.bmuschko.gradle.docker.tasks.container.DockerCreateContainer
+import com.bmuschko.gradle.docker.tasks.container.DockerRemoveContainer
+import com.bmuschko.gradle.docker.tasks.container.DockerStartContainer
+import com.bmuschko.gradle.docker.tasks.image.DockerBuildImage
+import com.bmuschko.gradle.docker.tasks.image.DockerPushImage
+import com.bmuschko.gradle.docker.tasks.image.Dockerfile
+
+sourceCompatibility = '11'
+
+description = 'service-blog'
+archivesBaseName = 'service-blog'
+
+dependencies {
+	implementation project(':entity:entity-blog')
+
+	implementation project(':framework:framework-core')
+	implementation project(':framework:framework-backend')
+	implementation project(':framework:framework-frontend')
+	implementation project(':framework:framework-common')
+
+	implementation 'org.springframework.boot:spring-boot-starter'
+	implementation 'org.springframework.boot:spring-boot-starter-data-jdbc'
+	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+	implementation 'org.springframework.boot:spring-boot-starter-data-rest'
+	implementation 'org.springframework.boot:spring-boot-starter-jdbc'
+	implementation 'org.springframework.boot:spring-boot-starter-mail'
+	implementation 'org.springframework.boot:spring-boot-starter-validation'
+	implementation 'org.springframework.boot:spring-boot-starter-web'
+	implementation "de.siegmar:logback-gelf:${logbackGelf}"
+
+	compileOnly 'org.projectlombok:lombok'
+	developmentOnly 'org.springframework.boot:spring-boot-devtools'
+	runtimeOnly 'mysql:mysql-connector-java'
+	annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
+	annotationProcessor 'org.projectlombok:lombok'
+
+	implementation group: 'com.squareup.okhttp3', name: 'okhttp', version: '3.2.0'
+	implementation group: 'mysql', name: 'mysql-connector-java', version: '8.0.22'
+	implementation group: 'javax.xml.bind', name: 'jaxb-api', version: '2.3.1'
+}
+
+dependencyManagement {
+	imports {
+		mavenBom "io.pivotal.spring.cloud:spring-cloud-services-dependencies:${springCloudServicesVersion}"
+		mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
+	}
+}
+
+
+task copyJar(type: Copy) {
+	dependsOn(build)
+	from "build/libs/" + getPackageFileName()
+	into 'build/docker'
+}
+
+task createDockerfile(type: Dockerfile) {
+	dependsOn copyJar
+	from('openjdk:11-jre-slim')
+	def port = getPortApp()
+	if (port != null) {
+		exposePort(Integer.parseInt(port.toString()))
+	}
+	runCommand('mkdir /app')
+	copyFile(getPackageFileName(), '/app/' + getPackageFileName())
+	entryPoint('java', '-jar', '/app/' + getPackageFileName())
+}
+
+task buildImage(type: DockerBuildImage) {
+	dependsOn createDockerfile
+	images.add(getUserName() + "/" + archivesBaseName + ':latest')
+}
+
+task removeContainer(type: DockerRemoveContainer) {
+	force = true
+	removeVolumes = true
+	targetContainerId archivesBaseName
+	onError { exception ->
+		// Ignore exception if container does not exist otherwise throw it
+		if (!exception.message.contains('No such container'))
+			throw exception
+	}
+}
+
+task createContainer(type: DockerCreateContainer) {
+	dependsOn buildImage, removeContainer
+	targetImageId buildImage.getImageId()
+	containerName = archivesBaseName
+	def port = getPortApp()
+	if (port != null) {
+		withEnvVar('port', port.toString())
+		hostConfig.portBindings = [port.toString() + ':' + port.toString()]
+	}
+	hostConfig.autoRemove = true
+}
+
+task startContainer(type: DockerStartContainer) {
+	dependsOn createContainer
+	targetContainerId createContainer.getContainerId()
+}
+
+task pushImage(type: DockerPushImage) {
+	dependsOn buildImage
+	registryCredentials.url = 'https://index.docker.io/v2'
+	registryCredentials.username = getUserName()
+	def password = System.getenv('password')
+	if (password != null) {
+		registryCredentials.password = password
+	}
+	registryCredentials.email = System.getenv('email')
+	images.add(getUserName() + "/" + archivesBaseName + ':latest')
+}
+
+private String getUserName() {
+	System.getenv('username')
+}
+
+private String getPortApp() {
+	System.getenv('port')
+}
+
+private String getPackageFileName() {
+	war.archiveFileName.get()
+}
+
+test {
+	useJUnitPlatform()
+}
