@@ -106,7 +106,7 @@ public class PostController {
             id = post.getId();
         }
 
-        if (selectedNodes != null && selectedNodes.length > 0 && post != null) {
+        if (selectedNodes != null && selectedNodes.length > 0) {
             List<CategoryDTO> categories = Arrays.stream(selectedNodes)
                     .collect(Collectors.toList())
                     .stream()
@@ -162,24 +162,19 @@ public class PostController {
     public void checkRoot(Set<CategoryDTO> sub, TreeNode node) {
         List<TreeNode> child = node.getChildren();
 
-        if (CollectionUtils.isEmpty(child)) {
-            System.err.println("Cannot get child of category...");
-            return;
-        }
+        if (CollectionUtils.isEmpty(child)) return;
 
         child.forEach(c -> {
-            if (c != null) {
-                sub.forEach(s -> {
-                    CategoryDTO cat = (CategoryDTO) c.getData();
-                    Long categoryId = s.getCategoryId();
-                    Long categoryId1 = cat.getCategoryId();
-                    if (categoryId.equals(categoryId1)) {
-                        c.setSelected(true);
-                    }
-                });
-                if (CollectionUtils.isNotEmpty(c.getChildren())) {
-                    checkRoot(sub, c);
+            sub.forEach(s -> {
+                CategoryDTO cat = (CategoryDTO) c.getData();
+                Long categoryId = s.getCategoryId();
+                Long categoryId1 = cat.getCategoryId();
+                if (categoryId.equals(categoryId1)) {
+                    c.setSelected(true);
                 }
+            });
+            if (CollectionUtils.isNotEmpty(c.getChildren())) {
+                checkRoot(sub, c);
             }
         });
     }
@@ -206,38 +201,35 @@ public class PostController {
         };
     }
 
-    public void onNodeSelect(NodeSelectEvent event) {
-        Object node = event.getTreeNode().getData();
-        System.out.printf(selectedNodes != null ? selectedNodes.toString() : "");
-    }
-
     public void addCat() {
 
         CategoryDTO category = categoryComponent.getCategory();
 
-        if (category != null) {
-
-            if (CollectionUtils.isEmpty(post.getCategories())) {
-                post.setCategories(new HashSet<>());
-            }
-            post.getCategories().add(category);
-
-            Set<CategoryDTO> cat = post.getCategories();
-
-            if (CollectionUtils.isNotEmpty(cat)) {
-
-                TreeNode root = categoryComponent.getRoot();
-                checkRoot(cat, root);
-
-                List<TreeNode> nodeList = new ArrayList<>();
-                updateSelectedNodes(nodeList, root);
-
-                TreeNode[] nodesSelected = new TreeNode[nodeList.size()];
-                nodeList.toArray(nodesSelected);
-
-                selectedNodes = nodesSelected;
-            }
+        if (category == null) {
+            FacesContextUtil.showError("Category is null!");
+            return;
         }
+
+        if (CollectionUtils.isEmpty(post.getCategories())) {
+            post.setCategories(new HashSet<>());
+        }
+
+        post.getCategories().add(category);
+
+        Set<CategoryDTO> cat = post.getCategories();
+
+        if (CollectionUtils.isEmpty(cat)) return;
+
+        TreeNode root = categoryComponent.getRoot();
+        checkRoot(cat, root);
+
+        List<TreeNode> nodeList = new ArrayList<>();
+        updateSelectedNodes(nodeList, root);
+
+        TreeNode[] nodesSelected = new TreeNode[nodeList.size()];
+        nodeList.toArray(nodesSelected);
+
+        selectedNodes = nodesSelected;
     }
 
     private void updateSelectedNodes(List<TreeNode> nodeList, TreeNode root) {
@@ -246,7 +238,9 @@ public class PostController {
                 .filter(TreeNode::isSelected)
                 .collect(Collectors.toList());
 
-        if (CollectionUtils.isNotEmpty(r)) nodeList.addAll(r);
+        if (CollectionUtils.isNotEmpty(r)) {
+            nodeList.addAll(r);
+        }
 
         root.getChildren().forEach(c -> {
             if (CollectionUtils.isNotEmpty(c.getChildren())) {
@@ -257,17 +251,17 @@ public class PostController {
 
     public List<String> completeTag(String query) {
 
-        List<TagDTO> complete = tagRestService.complete(query,10).getResult();
+        List<TagDTO> tagsSearchResult = tagRestService.complete(query, 10).getResult();
 
-        if (CollectionUtils.isEmpty(complete)) return new ArrayList<>();
+        if (CollectionUtils.isEmpty(tagsSearchResult)) return new ArrayList<>();
 
-        List<String> collect = complete.stream().map(TermDTO::getName).collect(Collectors.toList());
-        List<TagDTO> tags = post.getTags();
-        if (CollectionUtils.isNotEmpty(tags)) {
-            List<String> tagsPost = tags.stream().map(TermDTO::getName).collect(Collectors.toList());
-            collect.removeAll(tagsPost);
+        List<String> tagsName = tagsSearchResult.stream().map(TermDTO::getName).collect(Collectors.toList());
+        List<TagDTO> tagsPost = post.getTags();
+        if (CollectionUtils.isNotEmpty(tagsPost)) {
+            List<String> tagsPostName = tagsPost.stream().map(TermDTO::getName).collect(Collectors.toList());
+            tagsName.removeAll(tagsPostName);
         }
-        return new ArrayList<>(new HashSet<>(collect));
+        return new ArrayList<>(new HashSet<>(tagsName));
     }
 
     public void handleTagUnSelect(UnselectEvent<String> event) {
@@ -285,15 +279,15 @@ public class PostController {
     }
 
     public void handleTagSelect(SelectEvent<String> event) {
-        String tag = event.getObject();
-        if (StringUtils.isNotBlank(tag) && CollectionUtils.isNotEmpty(post.getTags())) {
+        String tagSelect = event.getObject();
+        if (StringUtils.isNotBlank(tagSelect) && CollectionUtils.isNotEmpty(post.getTags())) {
             for (int i = 0; i < post.getTags().size(); i++) {
 
-                if (post.getTags().get(i).getCategoryName().equalsIgnoreCase(tag)) continue;
+                if (post.getTags().get(i).getCategoryName().equalsIgnoreCase(tagSelect)) continue;
 
-                TagDTO t = tagRestService.findByName(tag).getResult();
-                if (t != null){
-                    getPost().getTags().add(t);
+                TagDTO tag = tagRestService.findByName(tagSelect).getResult();
+                if (tag != null) {
+                    getPost().getTags().add(tag);
                 }
             }
         }
