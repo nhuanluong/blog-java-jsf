@@ -21,10 +21,8 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
+import java.time.ZonedDateTime;
+import java.util.*;
 
 /**
  * @author Nhuan Luong
@@ -55,16 +53,15 @@ public class TagService extends AbstractBaseService<Tag, Long> {
 
     public Tag save(Tag entity) {
 
-        Tag byName = findByName(entity.getName());
+        Tag byName = findByName(entity.getName(), entity.getId());
 
         if (byName != null) return byName;
 
-        if (entity != null) {
-            NodeType nodeType = entity;
-            if (StringUtils.isBlank(nodeType.getSlug())) {
-                nodeType.setSlug(makeSlug(nodeType.getId(), nodeType.getName()));
-            }
+        NodeType nodeType = entity;
+        if (StringUtils.isBlank(nodeType.getSlug())) {
+            nodeType.setSlug(makeSlug(nodeType.getId(), nodeType.getName()));
         }
+
         if (entity instanceof MarkUpdated) {
             MarkUpdated n = (MarkUpdated) entity;
             n.setLastUpdated(LocalDateTime.now());
@@ -142,10 +139,11 @@ public class TagService extends AbstractBaseService<Tag, Long> {
         return result;
     }
 
-    public Tag findByName(String tag) {
-        BooleanBuilder builder = new BooleanBuilder();
-        builder.and(qTag.categoryName.equalsIgnoreCase(StringUtils.trimToEmpty(tag)));
-
+    public Tag findByName(String tag, Long id) {
+        BooleanBuilder builder = new BooleanBuilder(qTag.categoryName.equalsIgnoreCase(StringUtils.trimToEmpty(tag)));
+        if (id != null) {
+            builder.and(qTag.categoryId.ne(id));
+        }
         return getQuery().selectFrom(qTag).where(builder).fetchFirst();
     }
 }

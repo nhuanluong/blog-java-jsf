@@ -2,12 +2,12 @@ subprojects {
     dependencies {
         implementation project(":framework:framework-backend")
         annotationProcessor("org.hibernate.javax.persistence:hibernate-jpa-2.1-api:${hibernateJpaVersion}")
-        annotationProcessor("com.querydsl:querydsl-apt:${querydslVersion}:jpa")
+        annotationProcessor("com.querydsl:querydsl-apt:${queryDslVersion}:jpa")
 
-        implementation "com.querydsl:querydsl-root:$querydslVersion"
-        implementation "com.querydsl:querydsl-apt:$querydslVersion:jpa"
-        implementation "com.querydsl:querydsl-core:${querydslVersion}"
-        implementation "com.querydsl:querydsl-jpa:${querydslVersion}"
+        implementation "com.querydsl:querydsl-root:$queryDslVersion"
+        implementation "com.querydsl:querydsl-apt:$queryDslVersion:jpa"
+        implementation "com.querydsl:querydsl-core:${queryDslVersion}"
+        implementation "com.querydsl:querydsl-jpa:${queryDslVersion}"
 
         implementation "org.hibernate:hibernate-core:${hibernateVersion}"
         implementation "org.hibernate:hibernate-entitymanager:${hibernateVersion}"
@@ -17,6 +17,7 @@ subprojects {
 
         compileOnly "org.springframework.data:spring-data-jpa:${springDataVersion}"
         compileOnly "org.springframework.data:spring-data-commons:${springDataVersion}"
+        implementation group: 'org.springframework.data', name: 'spring-data-keyvalue', version: "${springDataVersion}"
         compileOnly "org.springframework:spring-context:${springVersion}"
         compileOnly "org.springframework:spring-web:${springVersion}"
         compileOnly "org.springframework:spring-core:${springVersion}"

@@ -7,13 +7,14 @@
  */
 package com.coursevm.backend.blog.service;
 
+import com.coursevm.backend.blog.dto.PostRequestDTO;
 import com.coursevm.core.backend.dao.BaseDAO;
 import com.coursevm.core.backend.service.AbstractBaseService;
 import com.coursevm.core.common.util.TextUtil;
-import com.coursevm.entity.blog.entity.Post;
-import com.coursevm.entity.blog.entity.QPost;
-import com.coursevm.entity.blog.entity.Tag;
+import com.coursevm.entity.blog.entity.*;
 import com.querydsl.core.BooleanBuilder;
+import com.querydsl.core.types.dsl.BooleanExpression;
+import com.querydsl.jpa.impl.JPAQuery;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,6 +31,7 @@ import java.util.Set;
  */
 interface PostDAO extends BaseDAO<Post, Long> {
 }
+
 @Service
 @Transactional
 public class PostService extends AbstractBaseService<Post, Long> {
@@ -41,10 +43,8 @@ public class PostService extends AbstractBaseService<Post, Long> {
     private TagService tagService;
 
     static QPost qPost = QPost.post;
-
-    public Page<Post> findAll(Pageable pageable) {
-        return postDAO.findAll(pageable);
-    }
+    static QCategory qCategory = QCategory.category;
+    static QTag qTag = QTag.tag;
 
     @Override
     public PostDAO getRepository() {
@@ -56,25 +56,21 @@ public class PostService extends AbstractBaseService<Post, Long> {
     }
 
     public Optional<Post> checkSlugNotById(String slug, Long id) {
-        BooleanBuilder builder = new BooleanBuilder();
-        builder.and(qPost.postSlug.equalsIgnoreCase(slug));
+        BooleanBuilder builder = new BooleanBuilder(qPost.postSlug.equalsIgnoreCase(slug));
         if (id != null && id > 0) {
             builder.and(qPost.postId.ne(id));
         }
-        Post value = getQuery().selectFrom(qPost).where(builder).fetchFirst();
+        Post post = getQuery().selectFrom(qPost).where(builder).fetchFirst();
 
-        return Optional.ofNullable(value);
+        return Optional.ofNullable(post);
     }
 
     public Optional<Post> findBySlug(String slug) {
-        BooleanBuilder builder = new BooleanBuilder()
-                .and(qPost.postSlug.equalsIgnoreCase(slug));
-
-        return Optional.ofNullable(getQuery().selectFrom(qPost).where(builder).fetchFirst());
-    }
-
-    public Optional<Post> findById(Long id) {
-        return postDAO.findById(id);
+        return Optional.ofNullable(getQuery()
+                .selectFrom(qPost)
+                .where(qPost.postSlug.equalsIgnoreCase(slug))
+                .fetchFirst()
+        );
     }
 
     public String makeSlug(Long id, String name) {
@@ -94,7 +90,7 @@ public class PostService extends AbstractBaseService<Post, Long> {
 
         String slug = slugFriendly.substring(0, length) + "-" + (++count);
 
-        slug = makeSlug(categoryId, slug, count, length);
+        slug = makeSlug(categoryId, slug, count, length);//recursion
 
         return slug;
     }
@@ -106,5 +102,20 @@ public class PostService extends AbstractBaseService<Post, Long> {
             entity.setTags(tags);
         }
         return super.save(entity);
+    }
+
+    public Page<Post> findAll(PostRequestDTO param, Pageable pageable) {
+        JPAQuery<Post> query = getQuery()
+                .selectFrom(qPost)
+                .distinct();
+        if (StringUtils.isNotBlank(param.getCateQuery())) {
+            query.join(qPost.categories, qCategory)
+                    .where(qCategory.categorySlug.equalsIgnoreCase(param.getCateQuery()));
+        }
+        if (StringUtils.isNotBlank(param.getTagQuery())) {
+            query.join(qPost.tags, qTag)
+                    .where(qTag.categorySlug.equalsIgnoreCase(param.getTagQuery()));
+        }
+        return super.findAll(query, pageable);
     }
 }

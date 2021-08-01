@@ -1,9 +1,11 @@
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
                 xmlns:f="http://xmlns.jcp.org/jsf/core"
                 xmlns:h="http://xmlns.jcp.org/jsf/html"
                 xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
                 xmlns:p="http://primefaces.org/ui"
                 template="/WEB-INF/template.xhtml"
+                xmlns:sc="http://xmlns.jcp.org/jsf/composite/shared"
                 xmlns:o="http://omnifaces.org/ui"
                 xmlns:of="http://omnifaces.org/functions"
 >
@@ -43,6 +45,14 @@
             .ui-accordion:last-child {
                 border-bottom: 1px solid #DFE3EA !important;
             }
+
+            .ui-dataview .ui-paginator.ui-paginator-bottom {
+                clear: both;
+            }
+
+            .ui-dataview .ui-dataview-header {
+                display: none;
+            }
         </style>
 
         <f:metadata>
@@ -50,34 +60,46 @@
         </f:metadata>
 
         <h:form id="editForm">
-            <div class="card">
+
+            <input type="hidden" value="#{postController.post.postId ne null ? postController.post.postId : '0'}" id="idPost"/>
+
+            <div class="card" id="formInside">
                 <div class="p-grid">
                     <div class="p-col">
-                        <div class="p-grid p-mb-3">
-                            <div class="p-col-1">Title</div>
-                            <div class="p-col">
-                                <p:inputText value="#{postController.post.postTitle}"
-                                             styleClass="p-col-12"
-                                             onblur="updatePostSlug()"
-                                />
-                                <p:remoteCommand name="updatePostSlug"
-                                                 actionListener="#{postController.makeSlug}"
-                                                 update="postSlug"
-                                />
-                            </div>
-                        </div>
-
-                        <div class="p-grid p-mb-3">
-                            <div class="p-col-1">Slug</div>
-                            <div class="p-col">
-                                <h:panelGroup id="postSlug">
-                                    <p:inputText value="#{postController.post.postSlug}"
+                        <h:panelGroup id="panelUpdate" layout="block">
+                            <div class="p-grid p-mb-3">
+                                <div class="p-col-1">Title</div>
+                                <div class="p-col">
+                                    <p:inputText value="#{postController.post.postTitle}"
                                                  styleClass="p-col-12"
+                                                 onblur="updatePostSlug()"
+                                                 immediate="true"
+                                                 binding="#{postController.inputTextTitle}"
+                                                 id="idTitle"
                                     />
-                                </h:panelGroup>
-                                <small>The “slug” is the URL-friendly version of the name. It is usually all lowercase and contains only letters, numbers, and hyphens.</small>
+                                    <p:remoteCommand name="updatePostSlug"
+                                                     actionListener="#{postController.createSlug}"
+                                                     update="postSlug"
+                                                     process="panelUpdate"
+                                                     immediate="true"
+                                    />
+                                </div>
                             </div>
-                        </div>
+
+                            <div class="p-grid p-mb-3">
+                                <div class="p-col-1">Slug</div>
+                                <div class="p-col">
+                                    <h:panelGroup id="postSlug">
+                                        <p:inputText value="#{postController.post.postSlug}"
+                                                     styleClass="p-col-12"
+                                                     immediate="true"
+                                                     binding="#{postController.inputTextSlug}"
+                                        />
+                                    </h:panelGroup>
+                                    <small>The “slug” is the URL-friendly version of the name. It is usually all lowercase and contains only letters, numbers, and hyphens.</small>
+                                </div>
+                            </div>
+                        </h:panelGroup>
 
                         <div class="p-grid p-mb-3">
                             <div class="p-col-1">Excerpt</div>
@@ -122,12 +144,15 @@
                                                  update="@form, :growl"
                                                  process="@form"
                                                  id="btnAdd"
+                                                 onclick="unBindUnload()"
+                                                 onstart="PF('blEditForm').show()"
+                                                 oncomplete="PF('blEditForm').hide(); #{postController.post.id ne null ? 'serializeForm();' : ''}"
                                 />
                                 <p:hotkey bind="ctrl+shift+s"
                                           action="#{postController.add}"
-                                          onstart="PF('blEditForm').show()"
-                                          oncomplete="PF('blEditForm').hide()"
-                                          update="@form, :growl"
+                                          onstart="unBindUnload(); PF('blEditForm').show()"
+                                          oncomplete="PF('blEditForm').hide(); serializeForm()"
+                                          update=":growl"
                                           process="@form"
                                 />
                                 <p:tooltip position="bottom"
@@ -138,15 +163,19 @@
 
                     </div>
 
-                    <div class="p-col-fixed" style="min-width: 265px">
-                        <p:tabView>
-                            <p:tab title="Post">
-                                <p:accordionPanel widgetVar="wgvPost">
+                    <div class="p-col-fixed" style="min-width: 265px;">
+                        <p:tabView id="idTabView">
+                            <p:tab title="Post" id="idTab">
+                                <p:accordionPanel>
                                     <p:tab title="Status &amp; Visibility">
                                         <div class="p-grid p-mb-2 p-ai-center">
                                             <div class="p-col-fixed w100">Publish</div>
                                             <div class="p-col">
-
+                                                <p:datePicker value="#{postController.post.postCreatedDate}"
+                                                              inputStyleClass="p-text-right"
+                                                              size="13"
+                                                              pattern="dd-MM-yyy HH:mm"
+                                                />
                                             </div>
                                         </div>
 
@@ -182,7 +211,7 @@
                                         </div>
                                         <div class="p-grid p-mb-2 p-ai-center">
                                             <div class="p-col-fixed w70">
-                                                <p:toggleSwitch/>
+                                                <p:toggleSwitch value="#{postController.post.isTickToTop}"/>
                                             </div>
                                             <div class="p-col">
                                                 <p>Stick to the top of the blog</p>
@@ -190,7 +219,7 @@
                                         </div>
                                         <div class="p-grid p-mb-2 p-ai-center">
                                             <div class="p-col-fixed w70">
-                                                <p:toggleSwitch/>
+                                                <p:toggleSwitch value="#{postController.post.isPendingReview}"/>
                                             </div>
                                             <div class="p-col">
                                                 <p>Pending review</p>
@@ -199,7 +228,7 @@
                                     </p:tab>
                                 </p:accordionPanel>
 
-                                <p:accordionPanel widgetVar="wgvCategories" id="accPnlCat" style="categoryScroll">
+                                <p:accordionPanel id="accPnlCat">
                                     <p:tab title="Categories">
                                         <div class="p-grid p-ai-center p-m-0 p-p-0">
                                             <div class="p-col-fixed" style="padding-top: 0">Add new category</div>
@@ -241,7 +270,7 @@
                                     </p:tab>
                                 </p:accordionPanel>
 
-                                <p:accordionPanel widgetVar="wgvTags">
+                                <p:accordionPanel>
                                     <p:tab title="Tags">
                                         <div class="p-grid">
                                             <div class="p-col">
@@ -274,16 +303,46 @@
                                     </p:tab>
                                 </p:accordionPanel>
 
-                                <p:accordionPanel widgetVar="wgvFeaturedImage">
+                                <p:accordionPanel id="accPanelImage">
                                     <p:tab title="Featured Image">
+                                        <p:commandButton value="Set Featured Image"
+                                                         icon="pi pi-pencil"
+                                                         styleClass="ui-button-secondary"
+                                                         actionListener="#{postController.initFeaturedImage}"
+                                                         oncomplete="PF('wgvFeaturedImage').show();"
+                                                         update="dlgFeaturedImage"
+                                        />
+                                        <p:hotkey bind="alt+i"
+                                                  oncomplete="PF('wgvFeaturedImage').show(); "
+                                                  update="dlgFeaturedImage"
+                                        />
+                                        <h:panelGroup id="idFeaturedImage"
+                                                      rendered="#{postController.post.featuredImage ne null and postController.post.featuredImage.length() > 0}">
+                                            <div class="p-grid p-mt-2 p-mb-2">
+                                                <div class="p-col">
+                                                    <p:graphicImage
+                                                            style="max-width: 265px;"
+                                                            value="#{mediaController.getPath(postController.post.featuredImage)}"
+                                                            width="100%"
+                                                    />
+                                                </div>
+                                            </div>
+                                            <p:commandButton value="Remove image"
+                                                             icon="pi pi-times"
+                                                             styleClass="ui-button-flat ui-button-warning"
+                                                             update="accPanelImage"
+                                                             actionListener="#{postController.removeFeaturedImage}"
+                                                             immediate="true"
+                                            />
+                                        </h:panelGroup>
                                     </p:tab>
                                 </p:accordionPanel>
 
-                                <p:accordionPanel widgetVar="wgvDisscusion">
+                                <p:accordionPanel>
                                     <p:tab title="Discussion">
                                         <div class="p-grid p-mb-2 p-ai-center">
                                             <div class="p-col-fixed w70">
-                                                <p:toggleSwitch/>
+                                                <p:toggleSwitch value="#{postController.post.isAllowComment}"/>
                                             </div>
                                             <div class="p-col">
                                                 <p>Allow comments</p>
@@ -291,7 +350,7 @@
                                         </div>
                                         <div class="p-grid p-mb-2 p-ai-center">
                                             <div class="p-col-fixed w70">
-                                                <p:toggleSwitch/>
+                                                <p:toggleSwitch value="#{postController.post.isAllowPingBack}"/>
                                             </div>
                                             <div class="p-col">
                                                 <p>Allow pingbacks &amp; trackbacks</p>
@@ -305,13 +364,7 @@
                     </div>
                 </div>
             </div>
-
-            <p:blockUI block="editForm"
-                       widgetVar="blEditForm"
-                       trigger=":editForm:btnAdd"
-            >
-                <p:graphicImage value="#{resource['images/loading.gif']}"/>
-            </p:blockUI>
+            <sc:blockUI for="editForm" widgetVar="blEditForm"/>
         </h:form>
 
         <p:dialog id="dlgNewCat"
@@ -367,5 +420,113 @@
                 </div>
             </h:form>
         </p:dialog>
+
+        <p:dialog id="dlgFeaturedImage"
+                  widgetVar="wgvFeaturedImage"
+                  modal="true"
+                  maximizable="true"
+                  header="Featured image"
+                  width="90%"
+                  closeOnEscape="true"
+                  responsive="true"
+        >
+            <h:form id="uploadImages">
+                <p:tabView styleClass="p-mt-1">
+                    <p:tab title="Media library">
+                        <div class="p-grid p-jc-lg-end">
+                            <div class="p-col-2 p-text-right">
+                                <p:inputText placeholder="search"/>
+                            </div>
+                        </div>
+                        <div class="p-col-12" style="max-height: 600px">
+                            <p:dataView var="media"
+                                        value="#{mediaComponent.lstMedia}"
+                                        lazy="true"
+                                        paginator="true"
+                                        paginatorPosition="bottom"
+                                        rows="50"
+                                        rowsPerPageTemplate="10,50,100,200"
+                                        paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown} {CurrentPageReport}"
+                                        currentPageReportTemplate="Trang hiện tại: {currentPage}/{totalPages} | Tổng số dòng: {totalRecords}"
+                                        layout="list"
+                                        listIcon="pi pi-bars"
+                                        flex="true"
+                                        paginatorAlwaysVisible="false"
+                            >
+                                <p:ajax event="page" oncomplete="reFormat()"/>
+                                <p:dataViewListItem>
+                                    <div class="flex align-items-center justify-content-center m-2"
+                                         style="width: 132px; height: 180px;">
+                                        <div class="p-grid">
+                                            <div class="p-col-12" style="height: 132px!important; overflow: hidden">
+                                                <p:graphicImage value="#{mediaController.getPath(media.postGUID)}"
+                                                                width="132"/>
+                                            </div>
+                                            <div class="p-col p-text-center">
+                                                <p:commandButton value="Chọn"
+                                                                 actionListener="#{postController.chooseImage}"
+                                                                 icon="pi pi-check"
+                                                                 styleClass="ui-button-icon-only ui-button-flat rounded-button"
+                                                                 oncomplete="PF('wgvFeaturedImage').hide()"
+                                                                 update=":editForm:idTabView:accPanelImage"
+                                                >
+                                                    <f:param value="${media.postGUID}" name="imageUrl"/>
+                                                </p:commandButton>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </p:dataViewListItem>
+                            </p:dataView>
+                        </div>
+                    </p:tab>
+
+                    <p:tab title="Upload files">
+                        <p:fileUpload listener="#{mediaController.upload}"
+                                      multiple="true"
+                                      auto="true"
+                                      mode="advanced"
+                                      styleClass="p-mb-4"
+                                      update="@form"
+                                      oncomplete="reFormat()"
+                        />
+                    </p:tab>
+                </p:tabView>
+
+            </h:form>
+
+            <script>
+                function reFormat() {
+                    $('.ui-dataview-list-container').addClass("flex flex-wrap-reverse md:flex-wrap")
+                }
+
+                $(function () {
+                    reFormat()
+                });
+            </script>
+
+        </p:dialog>
+
+        <script>
+            function serializeForm() {
+                $('#editForm').data('serializeDataForm', $('#editForm').serialize());
+            }
+
+            function unBindUnload() {
+                let id = $('#idPost').val();
+                if (id === '0') {
+                    $(window).unbind('beforeunload');
+                }
+            }
+
+            $(function () {
+                serializeForm();// On load save form current state
+                $(window).bind('beforeunload', function (e) {
+                    if ($('#editForm').serialize() !== $('#editForm').data('serializeDataForm'))
+                        return true;
+                    else
+                        e = null; // i.e; if form state change show warning box, else don't show it.
+                });
+            })
+        </script>
     </ui:define>
 </ui:composition>

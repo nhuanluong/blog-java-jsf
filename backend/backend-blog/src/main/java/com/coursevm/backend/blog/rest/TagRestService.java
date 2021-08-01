@@ -54,7 +54,7 @@ public class TagRestService {
         return tagService.delete(id);
     }
 
-    public ObjectResult<TagDTO> findByName(String tag) {
-        return ObjectResult.of(tagService.findByName(tag), TagDTO.class);
+    public ObjectResult<TagDTO> findByName(String tag, Long id) {
+        return ObjectResult.of(tagService.findByName(tag, id), TagDTO.class);
     }
 }

@@ -1,10 +1,10 @@
 subprojects {
     dependencies {
 
-        implementation "com.querydsl:querydsl-root:$querydslVersion"
-        implementation "com.querydsl:querydsl-apt:$querydslVersion:jpa"
-        implementation "com.querydsl:querydsl-core:${querydslVersion}"
-        implementation "com.querydsl:querydsl-jpa:${querydslVersion}"
+        implementation "com.querydsl:querydsl-root:$queryDslVersion"
+        implementation "com.querydsl:querydsl-apt:$queryDslVersion:jpa"
+        implementation "com.querydsl:querydsl-core:${queryDslVersion}"
+        implementation "com.querydsl:querydsl-jpa:${queryDslVersion}"
 
         implementation "org.hibernate:hibernate-core:${hibernateVersion}"
         implementation "org.hibernate:hibernate-entitymanager:${hibernateVersion}"

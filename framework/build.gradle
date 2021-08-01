@@ -1,13 +1,13 @@
 subprojects {
     dependencies {
         implementation "javax.annotation:javax.annotation-api:$javaxVersion"
-        implementation "com.querydsl:querydsl-root:${querydslVersion}"
-        implementation "com.querydsl:querydsl-apt:${querydslVersion}:jpa"
-        implementation "com.querydsl:querydsl-core:${querydslVersion}"
-        implementation "com.querydsl:querydsl-jpa:${querydslVersion}"
+        implementation "com.querydsl:querydsl-root:${queryDslVersion}"
+        implementation "com.querydsl:querydsl-apt:${queryDslVersion}:jpa"
+        implementation "com.querydsl:querydsl-core:${queryDslVersion}"
+        implementation "com.querydsl:querydsl-jpa:${queryDslVersion}"
 
         annotationProcessor("org.hibernate.javax.persistence:hibernate-jpa-2.1-api:${hibernateJpaVersion}")
-        annotationProcessor("com.querydsl:querydsl-apt:${querydslVersion}:jpa")
+        annotationProcessor("com.querydsl:querydsl-apt:${queryDslVersion}:jpa")
         annotationProcessor("javax.annotation:javax.annotation-api:${javaxVersion}")
 
         implementation "com.zaxxer:HikariCP:${hikariCPVersion}"
@@ -29,6 +29,8 @@ subprojects {
 
         implementation group: 'org.jdbi', name: 'jdbi3-core', version: '3.18.0'
         implementation group: 'net.sf.dozer', name: 'dozer', version: "${dozerVersion}"
+        implementation group: 'io.craftsman', name: 'dozer-jdk8-support', version: '1.0.6'
+
     }
 }
 

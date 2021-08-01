@@ -119,7 +119,7 @@ public class TagController {
             return false;
         }
 
-        TagDTO tagName = tagService.findByName(tag.getName()).getResult();
+        TagDTO tagName = tagService.findByName(tag.getName(), tag.getId()).getResult();
 
         if (tagName != null) {
             FacesContextUtil.showError("Duplicated tag name!");

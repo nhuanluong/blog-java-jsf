@@ -17,6 +17,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import java.io.Serializable;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * @author Nhuan Luong
@@ -30,6 +31,10 @@ public abstract class AbstractBaseService<T, ID extends Serializable> {
 
     public T findOne(ID id) {
         return getRepository().getOne(id);
+    }
+
+    public Optional<T> findById(ID id) {
+        return getRepository().findById(id);
     }
 
     public T save(T entity) {
@@ -59,6 +64,10 @@ public abstract class AbstractBaseService<T, ID extends Serializable> {
 
     public List<T> findAll(JPQLQuery<T> query) {
         return getRepository().findAll(query);
+    }
+
+    public Page<T> findAll(Pageable pageable) {
+        return getRepository().findAll(pageable);
     }
 
     public Page<T> findAll(JPQLQuery<T> query, Pageable pageable) {

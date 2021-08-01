@@ -31,11 +31,15 @@ public class RouterConfigurationProvider extends HttpConfigurationProvider {
 
         return ConfigurationBuilder.begin()
                 .addRule(Join.path("/").to("/views/post/index.xhtml"))
-                .addRule(Join.path("/post/filter/{p}").to("/views/post/index.xhtml?term={p}"))
+                .addRule(Join.path("/post").to("/views/post/index.xhtml"))
+                .addRule(Join.path("/post?cat={p}").to("/views/post/index.xhtml"))
+                .addRule(Join.path("/post?tag={p}").to("/views/post/index.xhtml"))
                 .addRule(Join.path("/post/add").to("/views/post/edit.xhtml?status=new"))
                 .addRule(Join.path("/post/edit/{p}").to("/views/post/edit.xhtml?postId={p}"))
                 .addRule(Join.path("/category").to("/views/category/index.xhtml"))
                 .addRule(Join.path("/tag").to("/views/tag/index.xhtml"))
+                .addRule(Join.path("/media").to("/views/media/index.xhtml"))
+                .addRule(Join.path("/media/edit/{p}").to("/views/media/edit.xhtml?mediaId={p}"))
                 ;
     }
 }

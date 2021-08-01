@@ -24,7 +24,4 @@ import java.util.Set;
 @Setter
 @DiscriminatorValue("tag")
 public class Tag extends Term {
-
-    /*@ManyToMany(mappedBy = "tags")
-    private Set<Post> posts;*/
 }

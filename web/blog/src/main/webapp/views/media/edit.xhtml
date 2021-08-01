@@ -1,0 +1,341 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/template.xhtml"
+                xmlns:o="http://omnifaces.org/ui"
+                xmlns:of="http://omnifaces.org/functions"
+                xmlns:jsf="http://xmlns.jcp.org/jsf"
+                xmlns:pe="http://primefaces.org/ui/extensions"
+>
+    <ui:define name="content">
+        <style>
+            .ui-tabs .ui-tabs-panels .ui-tabs-panel {
+                padding: 1rem 0 !important;
+            }
+
+            .ui-tree {
+                border: 0px solid #DFE3EA !important;
+                background: #ffffff;
+                color: #4B576F;
+                padding: 0 !important;
+                width: 100%;
+                border-radius: 4px;
+            }
+
+            body .ui-tree .ui-tree-container .ui-treenode .ui-treenode-content .ui-chkbox {
+                margin-right: 0 !important;
+            }
+
+            body .ui-accordion .ui-accordion-header.ui-state-active {
+                border-color: #DFE3EA;
+                background: none !important;
+                color: #4B576F;
+            }
+
+            /*body .ui-accordion .ui-accordion-header {
+                border-bottom: 0 !important;
+            }*/
+
+            .ui-accordion .ui-accordion-content {
+                border-bottom: 0 solid #DFE3EA !important;
+            }
+
+            .ui-accordion:last-child {
+                border-bottom: 1px solid #DFE3EA !important;
+            }
+
+            #imageEdit .ui-panel .ui-panel-titlebar {
+                background-color: inherit !important;
+            }
+
+            #imageEdit .ui-panel .ui-panel-content {
+                border-top-width: 0 !important;
+                padding-top: 0 !important;
+            }
+        </style>
+
+        <f:metadata>
+            <f:viewAction action="#{mediaController.preRenderView}"/>
+        </f:metadata>
+
+        <h:form id="editForm">
+            <div class="card">
+                <div class="p-grid">
+                    <div class="p-col">
+                        <div class="p-grid">
+                            <div class="p-field p-col">
+                                <p:outputLabel value="File name"/>
+                                <h:inputText value="#{mediaController.media.postTitle}"
+                                             styleClass="p-col-12"
+                                />
+                            </div>
+                        </div>
+
+                        <div class="p-grid">
+                            <div class="p-field p-col" jsf:id="imageContent">
+                                <p:outputLabel value="Content"/>
+                                <p:panel>
+                                    <h:panelGroup rendered="#{!mediaController.isEditImage}">
+                                        <p:graphicImage
+                                                value="#{mediaController.getPath(mediaController.media.postGUID)}"
+                                                width="100%"/>
+                                        <p:commandButton value="Edit"
+                                                         icon="pi pi-pencil"
+                                                         styleClass="p-mt-2 ui-button-secondary"
+                                                         actionListener="#{mediaController.switchEdit}"
+                                                         update="imageContent"
+                                        />
+                                    </h:panelGroup>
+                                    <h:panelGroup rendered="#{mediaController.isEditImage}">
+                                        <p:toolbarGroup>
+                                            <p:toolbar>
+                                                <f:facet name="left">
+                                                    <p:commandButton value="Crop"
+                                                                     icon="fa fa-crop-alt"
+                                                                     styleClass="p-mr-2"
+                                                                     actionListener="#{mediaController.crop}"
+                                                                     update=":growl, imageContent"
+                                                                     id="cropImage"
+                                                    />
+                                                    <div class="ui-button-group p-mr-2">
+                                                        <p:commandButton value="Rotate left"
+                                                                         icon="pi pi-refresh"
+                                                                         onclick="PF('imageCropperMedia').image.cropper('rotate', 45);"
+                                                                         styleClass="ui-button-success"
+                                                        />
+                                                        <p:commandButton value="Rotate right"
+                                                                         icon="pi pi-replay"
+                                                                         styleClass="ui-button-success"
+                                                                         onclick="PF('imageCropperMedia').image.cropper('rotate', -45);"
+                                                        />
+                                                    </div>
+                                                    <script>
+                                                        var x = -1;
+                                                        var y = -1
+                                                    </script>
+                                                    <div class="ui-button-group p-mr-2">
+                                                        <p:commandButton value="Flip vertical"
+                                                                         icon="fa fa-fw fa-arrows-alt-v"
+                                                                         onclick="PF('imageCropperMedia').image.cropper('scaleX', x); x = -x; "
+                                                        />
+                                                        <p:commandButton value="Flip horizontal"
+                                                                         icon="fa fa-fw fa-arrows-alt-h"
+                                                                         onclick="PF('imageCropperMedia').image.cropper('scaleY', y); y = -y; "
+                                                        />
+                                                    </div>
+                                                    <p:commandButton value="100%"
+                                                                     icon="pi pi-search"
+                                                                     onclick="PF('imageCropperMedia').image.cropper('zoomTo', 1); "
+                                                    />
+                                                </f:facet>
+                                            </p:toolbar>
+
+                                            <div class="p-grid p-mt-2">
+                                                <div class="p-col">
+                                                    <p:imageCropper widgetVar="imageCropperMedia"
+                                                                    image="#{mediaController.getPath(mediaController.media.postGUID)}"
+                                                                    value="#{mediaController.croppedImage}"
+                                                                    boxWidth="1024"
+                                                                    viewMode="3"
+                                                    />
+                                                </div>
+                                                <div class="p-col-fixed" style="width: 265px" id="imageEdit">
+                                                    <p:panel header="Image Crop">
+                                                        <div class="p-grid">
+                                                            <div class="p-col-12">
+                                                                <p:outputLabel value="Aspect ratio:"/>
+                                                            </div>
+
+                                                            <div class="p-col-6">
+                                                                <p:inputNumber inputStyle="width: 90%"
+                                                                               decimalPlaces="0"/>
+                                                            </div>
+                                                            <div class="p-col-6">
+                                                                <p:inputNumber inputStyle="width: 90%"
+                                                                               decimalPlaces="0"/>
+                                                            </div>
+                                                        </div>
+                                                        <div class="p-grid">
+                                                            <div class="p-col-12">
+                                                                <p:outputLabel value="Selection:"/>
+                                                            </div>
+
+                                                            <div class="p-col-6">
+                                                                <p:inputNumber inputStyle="width: 90%"
+                                                                               decimalPlaces="0"
+                                                                />
+                                                            </div>
+                                                            <div class="p-col-6">
+                                                                <p:inputNumber inputStyle="width: 90%"
+                                                                               decimalPlaces="0"
+                                                                />
+                                                            </div>
+                                                        </div>
+                                                    </p:panel>
+                                                </div>
+                                            </div>
+                                            <div class="p-grid p-mt-1">
+                                                <div class="p-col-fixed" style="width: 200px;">
+                                                    <div class="ui-button-group">
+                                                        <p:commandButton value="Cancel"
+                                                                         icon="pi pi-times"
+                                                                         styleClass="ui-button-secondary"
+                                                                         actionListener="#{mediaController.switchEdit}"
+                                                                         update="@([id$=imageContent])"
+                                                        />
+                                                        <p:commandButton value="Restore"
+                                                                         icon="fa fa-reply"
+                                                                         styleClass="ui-button-help"
+                                                                         actionListener="#{mediaController.restoreImage}"
+                                                                         update="@([id$=imageContent])"
+                                                        />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </p:toolbarGroup>
+                                    </h:panelGroup>
+
+                                </p:panel>
+                            </div>
+                        </div>
+
+                        <div class="p-grid">
+                            <div class="p-field p-col">
+                                <p:outputLabel value="Caption"/>
+                                <p:inputText value="#{mediaController.media.postExcerpt}"
+                                             styleClass="p-col-12"
+                                />
+                            </div>
+                        </div>
+
+                        <div class="p-grid">
+                            <div class="p-field p-col">
+                                <p:outputLabel value="Description"/>
+                                <p:textEditor value="#{mediaController.media.postContent}"
+                                              height="100"
+                                              secure="false"
+                                              placeholder="Enter Description"
+                                >
+                                    <f:facet name="toolbar">
+                                         <span class="ql-formats">
+                                            <button class="ql-bold"/>
+                                            <button class="ql-italic"/>
+                                            <button class="ql-underline"/>
+                                            <button class="ql-strike"/>
+                                        </span>
+                                        <span class="ql-formats">
+                                            <select class="ql-font"/>
+                                            <select class="ql-size"/>
+                                        </span>
+                                    </f:facet>
+                                </p:textEditor>
+                            </div>
+                        </div>
+
+                        <div class="p-grid p-jc-center p-mt-2">
+                            <div class="p-col">
+                                <p:commandButton value="Save"
+                                                 styleClass="p-mr-2"
+                                                 icon="pi pi-save"
+                                                 actionListener="#{mediaController.add}"
+                                                 update="@form, :growl"
+                                                 process="@form"
+                                                 id="btnAdd"
+                                />
+                                <p:hotkey bind="ctrl+shift+s"
+                                          actionListener="#{mediaController.add}"
+                                          onstart="PF('blEditForm').show()"
+                                          oncomplete="PF('blEditForm').hide()"
+                                          update="@form, :growl"
+                                          process="@form"
+                                />
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="p-col-fixed" style="min-width: 265px">
+                        <p:tabView>
+                            <p:tab title="Post">
+                                <p:accordionPanel widgetVar="wgvPost">
+                                    <p:tab title="Status &amp; Visibility">
+                                        <div class="p-grid p-mb-2 p-ai-center">
+                                            <div class="p-col-fixed w100">Visibility</div>
+                                            <div class="p-col">
+                                                <p:selectOneMenu value="#{mediaController.media.postStatus}"
+                                                                 style="width: 100%">
+                                                    <f:selectItem itemValue="public" itemLabel="Public"/>
+                                                    <f:selectItem itemValue="private" itemLabel="Private"/>
+                                                    <f:selectItem itemValue="password" itemLabel="Password"/>
+                                                </p:selectOneMenu>
+                                            </div>
+                                        </div>
+                                    </p:tab>
+                                </p:accordionPanel>
+                            </p:tab>
+                        </p:tabView>
+                    </div>
+                </div>
+            </div>
+
+        </h:form>
+
+        <p:blockUI block="editForm"
+                   widgetVar="blEditForm"
+                   trigger=":editForm:btnAdd, :editForm:cropImage"
+        >
+            <p:graphicImage value="#{resource['images/loading-message.svg']}"/>
+        </p:blockUI>
+
+        <p:dialog id="dlgNewCat"
+                  widgetVar="wgvNewCat"
+                  header="Add new Category"
+                  width="330"
+                  modal="true"
+                  closeOnEscape="true"
+        >
+            <h:form>
+                <p:panel>
+                    <div class="p-grid p-mt-1 p-ai-center">
+                        <div class="p-col">
+                            <p:inputText value="#{categoryComponent.category.categoryName}"
+                                         placeholder="type new category name"
+                                         styleClass="p-col-12"
+                                         id="catName"
+                            />
+                            <p:focus for="catName"/>
+                        </div>
+                        <div class="p-col-12">Parent</div>
+                        <div class="p-col-12">
+                            <p:selectOneMenu id="option"
+                                             value="#{categoryComponent.category.categoryParent}"
+                                             converter="omnifaces.SelectItemsConverter"
+                                             style="width: 100%"
+                            >
+                                <f:selectItem itemLabel="None" itemValue="#{null}" noSelectionOption="true"/>
+                                <f:selectItems value="#{categoryComponent.categories}"
+                                               var="c"
+                                               itemLabel="#{c.categoryName}"
+                                               itemValue="#{c}"
+                                />
+                            </p:selectOneMenu>
+                        </div>
+                    </div>
+                </p:panel>
+                <div class="p-grid p-mt-2">
+                    <div class="p-col p-text-center">
+                        <p:commandButton styleClass="rounded-button"
+                                         icon="pi pi-plus"
+                                         actionListener="#{categoryComponent.addCatFromPost}"
+                                         oncomplete="if (args &amp;&amp; !args.validationFailed) {
+                                                        addCatToPost(); PF('wgvNewCat').hide();
+                                                     }"
+                                         update="@([id$=accPnlCat])"
+                        />
+                    </div>
+                </div>
+            </h:form>
+        </p:dialog>
+    </ui:define>
+</ui:composition>

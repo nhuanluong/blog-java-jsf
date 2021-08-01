@@ -1,0 +1,24 @@
+<ui:component xmlns="http://www.w3.org/1999/xhtml"
+              xmlns:cc="http://xmlns.jcp.org/jsf/composite"
+              xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+              xmlns:p="http://primefaces.org/ui"
+>
+    <cc:interface>
+        <cc:attribute name="for" required="true" type="java.lang.String"/>
+        <cc:attribute name="widgetVar" required="true" type="java.lang.String"/>
+    </cc:interface>
+
+    <cc:implementation>
+        <style>
+            #editForm .ui-shadow {
+                box-shadow: none !important;
+            }
+        </style>
+        <p:blockUI block="#{cc.attrs.for}"
+                   widgetVar="#{cc.attrs.widgetVar}"
+        >
+            <p:graphicImage value="#{resource['images/loading-message.svg']}"/>
+        </p:blockUI>
+    </cc:implementation>
+
+</ui:component>

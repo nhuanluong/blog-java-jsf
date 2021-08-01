@@ -8,12 +8,10 @@
 package com.coursevm.backend.blog.dto;
 
 import com.coursevm.core.component.TermTree;
-import com.coursevm.entity.blog.entity.Term;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -28,9 +26,6 @@ public class CategoryDTO extends TermDTO implements TermTree<CategoryDTO> {
 	private CategoryDTO categoryParent;
 
 	private Set<CategoryDTO> subCategories = new HashSet<>();
-
-	/*@ManyToMany(mappedBy = "categories")
-	private Set<Post> posts;*/
 
 	@Override
 	public CategoryDTO getParent() {

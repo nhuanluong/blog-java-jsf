@@ -4,11 +4,14 @@ import com.coursevm.entity.blog.schema.BlogSchema;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
-import java.util.List;
-import java.util.Set;
+import java.time.ZonedDateTime;
+import java.util.*;
 
 @Entity
 @Getter
@@ -38,4 +41,10 @@ public class Post extends Node {
 
     @Transient
     private List<String> tagsStr;
+
+    @ElementCollection(fetch = FetchType.EAGER)
+    @MapKeyColumn(name = "metaKey")
+    @Column(name = "metaValue")
+    @CollectionTable(name = BlogSchema.postMeta, schema = BlogSchema.name, joinColumns = @JoinColumn(name = "postId"))
+    Map<String, String> attributes = new HashMap<>();
 }

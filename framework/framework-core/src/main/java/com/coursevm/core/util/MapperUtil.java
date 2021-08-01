@@ -9,12 +9,19 @@ package com.coursevm.core.util;
 
 import org.dozer.DozerBeanMapper;
 
+import java.util.Arrays;
+
 /**
  * @author Nhuan Luong
  */
 public class MapperUtil {
 
-    private static final DozerBeanMapper instance = new DozerBeanMapper();
+    private final static DozerBeanMapper instance;
+
+    static {
+        //Arrays.asList("dozerJdk8Converters.xml")
+        instance = new DozerBeanMapper(Arrays.asList("dozerJdk8Converters.xml"));
+    }
 
     public static DozerBeanMapper getMapper() {
         return instance;

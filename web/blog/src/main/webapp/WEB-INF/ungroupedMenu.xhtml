@@ -5,11 +5,14 @@
 
     <pr:menu widgetVar="RainMenuWidget">
         <p:submenu id="sbx_homepage" label="Main Menu" icon="pi pi-home">
+
             <p:submenu id="category_group" label="Category" icon="pi pi-star">
-                <p:menuitem id="posts" value="Form Layout" icon="pi pi-id-card" url="${request.contextPath}/"/>
+                <p:menuitem id="posts" value="Form Layout" icon="pi pi-id-card" url="${request.contextPath}/post"/>
                 <p:menuitem id="category" value="Form Layout" icon="pi pi-id-eye" url="${request.contextPath}/category"/>
                 <p:menuitem id="tags" value="Tags" icon="pi pi-id-pencil" url="${request.contextPath}/tag"/>
+                <p:menuitem id="media" value="Media" icon="pi pi-mobile" url="${request.contextPath}/media"/>
             </p:submenu>
+
             <p:menuitem id="om_dashboard" value="Dashboard" icon="pi pi-home" outcome="/dashboard"/>
             <p:submenu id="om_components" label="UI Kit" icon="pi pi-star">
                 <p:menuitem id="om_formlayout" value="Form Layout" icon="pi pi-id-card" outcome="/formlayout"/>

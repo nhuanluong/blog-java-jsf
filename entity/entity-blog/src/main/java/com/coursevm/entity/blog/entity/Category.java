@@ -34,9 +34,6 @@ public class Category extends Term implements TermTree<Category> {
 	@OneToMany(mappedBy="categoryParent", fetch = FetchType.EAGER)
 	private Set<Category> subCategories = new HashSet<>();
 
-	/*@ManyToMany(mappedBy = "categories")
-	private Set<Post> posts;*/
-
 	@Override
 	public Category getParent() {
 		return getCategoryParent();

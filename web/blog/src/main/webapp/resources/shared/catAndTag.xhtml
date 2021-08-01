@@ -1,0 +1,32 @@
+<ui:component xmlns="http://www.w3.org/1999/xhtml"
+              xmlns:h="http://java.sun.com/jsf/html"
+              xmlns:cc="http://xmlns.jcp.org/jsf/composite"
+              xmlns:f="http://xmlns.jcp.org/jsf/core"
+              xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+              xmlns:p="http://primefaces.org/ui"
+              xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+              xmlns:jsf="http://xmlns.jcp.org/jsf"
+>
+    <cc:interface>
+        <cc:attribute name="data" required="true" type="java.lang.Object"/>
+        <cc:attribute name="type" required="true" type="java.lang.String"/>
+    </cc:interface>
+
+    <cc:implementation>
+        <h:panelGroup rendered="#{!(cc.attrs.data eq null) and cc.attrs.data.size() > 0}">
+            <ui:repeat value="#{cc.attrs.data}"
+                       var="o"
+                       varStatus="status"
+            >
+                <p:link href="#{request.contextPath}/post?#{cc.attrs.type}=#{o.categorySlug}"
+                        value="#{o.name}"
+                        styleClass="ui-button-flat"
+                />
+                <c:set var="isShow"
+                       value="#{status.index lt cc.attrs.data.size() - 1 and cc.attrs.data.size() > 1}"/>
+                <h:outputText rendered="#{isShow}" value=", "  style="color: #adadad"/>
+            </ui:repeat>
+        </h:panelGroup>
+    </cc:implementation>
+
+</ui:component>

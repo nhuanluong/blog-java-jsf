@@ -8,6 +8,7 @@
 package com.coursevm.core.base.entity;
 
 import java.time.LocalDateTime;
+import java.util.Date;
 
 /**
  * @author Nhuan Luong

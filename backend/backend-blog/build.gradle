@@ -11,4 +11,6 @@ dependencies {
     implementation project(':framework:framework-common')
 
     implementation project(':entity:entity-blog')
+
+    implementation group: 'com.github.marlonlom', name: 'timeago', version: '4.0.3'
 }

@@ -6,25 +6,13 @@
                 xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
                 xmlns:jsf="http://xmlns.jcp.org/jsf"
                 template="/WEB-INF/template.xhtml"
-                xmlns:o="http://omnifaces.org/ui"
-                xmlns:of="http://omnifaces.org/functions"
                 xmlns:pe="http://primefaces.org/ui/extensions"
-                xmlns:sc="http://xmlns.jcp.org/jsf/composite/shared"
 >
     <ui:define name="content">
-        <f:metadata>
-            <f:viewAction action="#{postController.preRenderIndex}"/>
-        </f:metadata>
-
         <style>
-            /*body .ui-datatable .ui-datatable-data > tr.ui-state-highlight {
+            body .ui-datatable .ui-datatable-data > tr.ui-state-highlight {
                 background: #F1F3F6 !important;
                 color: #f8fafc;
-            }*/
-
-            .ui-state-highlight .ui-commandlink,
-            .ui-state-highlight .ui-link {
-                color: #ffffff!important;
             }
 
             body .ui-datatable .ui-datatable-data > tr > td {
@@ -34,46 +22,26 @@
             body .ui-datatable thead th {
                 padding: 1rem 0.5rem !important;
             }
-
         </style>
         <div class="card">
-
-            <div class="p-grid">
-                <div class="p-col">
-                    <h:form id="formControl">
-                        <p:button
-                                icon="pi pi-plus"
-                                styleClass="p-button-sm p-mr-2"
-                                href="#{request.contextPath}/post/add"
-                                value="Add new"/>
-
-                        <h:panelGroup id="groupBtnDelete"
-                                      rendered="#{postController.selectedPosts ne null and postController.selectedPosts.size() > 0}">
-                            <p:commandButton value="Delete (#{postController.selectedPosts.size()})"
-                                             actionListener="#{postController.deletePosts}"
-                                             styleClass="ui-button-danger"
-                                             icon="pi pi-trash"
-                                             update="@form, :formData:dataGrid"
-                            >
-                                <p:confirm header="Confirmation" message="Are you sure?"
-                                           icon="pi pi-exclamation-triangle"/>
-                            </p:commandButton>
-                        </h:panelGroup>
-                    </h:form>
-                </div>
-            </div>
-            <div class="p-grid">
-                <div class="p-col"><p:divider styleClass="p-mt-2 p-mb-2"/></div>
-            </div>
-
             <div class="p-grid">
                 <div class="p-col">
                     <h:form id="formData">
+                        <p:fileUpload listener="#{mediaController.upload}"
+                                      multiple="true"
+                                      auto="true"
+                                      mode="advanced"
+                                      update="dataGrid"
+                                      dragDropSupport="true"
+                                      styleClass="p-mb-4"
+                                      skinSimple="true"
+                        />
+
                         <p:dataTable id="dataGrid"
                                      lazy="true"
                                      rows="10"
                                      var="post"
-                                     value="#{postController.posts}"
+                                     value="#{mediaController.lstMedia}"
                                      reflow="true"
                                      pageLinks="5"
                                      paginator="true"
@@ -82,50 +50,38 @@
                                      paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown} {CurrentPageReport}"
                                      rowsPerPageTemplate="5,10,15"
                                      currentPageReportTemplate="Trang hiện tại: {currentPage}/{totalPages} | Tổng số dòng: {totalRecords}"
-                                     selection="#{postController.selectedPosts}"
+                                     selectionMode="multiple"
                                      widgetVar="wgvPost"
                         >
-                            <p:ajax event="toggleSelect"
-                                    update=":formControl"
-                            />
-                            <p:ajax event="rowSelect"
-                                    update=":formControl"
-                            />
-                            <p:ajax event="rowSelectCheckbox"
-                                    update=":formControl"
-                            />
-                            <p:ajax event="rowUnselect"
-                                    update=":formControl"
-                            />
-                            <p:ajax event="rowUnselectCheckbox"
-                                    update=":formControl"
-                            />
-
                             <p:column selectionMode="multiple" styleClass="w30 p-text-center"/>
 
                             <p:column headerText="Title" sortBy="#{post.postTitle}" styleClass="w25f">
-                                <p:link href="#{request.contextPath}/post/edit/#{post.id}"
-                                        value="#{post.postTitle}"
-                                        styleClass="ui-button-flat"
-                                />
+                                <div class="p-grid">
+                                    <div class="p-col-fixed" style="width: 100px">
+                                        <p:graphicImage value="#{mediaController.getPath(post.postGUID)}"
+                                                        width="64"/>
+                                    </div>
+                                    <div class="p-col">
+                                        <p:link href="#{request.contextPath}/media/edit/#{post.id}"
+                                                value="#{post.postSlug}"
+                                                styleClass="ui-button-flat"
+                                        />
+                                    </div>
+                                </div>
                             </p:column>
 
-                            <p:column headerText="Categories" styleClass="w10f">
-                                <sc:catAndTag data="#{post.categories}" type="cat"/>
+                            <p:column headerText="Author" styleClass="w10f">
+                                <h:outputText value=""/>
                             </p:column>
 
-                            <p:column headerText="Tags" styleClass="w10f">
-                                <sc:catAndTag data="#{post.tags}" type="tag"/>
-                            </p:column>
-
-                            <p:column headerText="Count" styleClass="w10f">
+                            <p:column headerText="Uploaded to" styleClass="w10f">
                                 <h:outputText value=""/>
                             </p:column>
 
                             <p:column headerText="Date" styleClass="w10f">
-                                <h:outputText value="#{post.displayDate()}"/>
+                                <h:outputText value=""/>
                             </p:column>
-                            <!--actionListener="#{postController.editPost(post, '/views/post/edit.xhtml')}"-->
+
                             <p:column styleClass="w30 p-text-center" headerText="*">
                                 <p:commandButton id="btnAction"
                                                  type="button"
@@ -138,7 +94,7 @@
                                         at="left bottom">
                                     <p:menuitem value="Edit"
                                                 icon="pi pi-pencil"
-                                                url="#{request.contextPath}/post/edit/#{post.id}"
+                                                url="#{request.contextPath}/media/edit/#{post.id}"
                                                 global="true"
                                     >
                                     </p:menuitem>
@@ -146,7 +102,7 @@
                                     <p:menuitem value="Delete"
                                                 update="@form"
                                                 icon="pi pi-trash"
-                                                actionListener="#{postController.deletePost(post.id)}"
+                                                actionListener="#{mediaController.deleteMedia(post.id)}"
                                     >
                                         <f:param name="categoryId" value="#{post.id}"/>
                                         <p:confirm header="Confirmation" message="Are you sure?"

@@ -75,7 +75,7 @@ public class FacesContextUtil {
 
     public void addMessageInfo(Long id) {
         if (id == null) {
-            addMessageInfo("Added successfully");
+            addMessageInfo("Added");
         } else {
             addMessageInfo("Updated");
         }
@@ -136,6 +136,8 @@ public class FacesContextUtil {
                 }
             }
         }
+
+        pageSize = pageSize > 0 ? pageSize : 10;
 
         if (sort != null) {
             pageRequest = PagedRequest.of(first / pageSize, pageSize, sort);

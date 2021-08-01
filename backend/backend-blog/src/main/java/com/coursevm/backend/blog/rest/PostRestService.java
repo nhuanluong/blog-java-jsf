@@ -8,6 +8,7 @@
 package com.coursevm.backend.blog.rest;
 
 import com.coursevm.backend.blog.dto.PostDTO;
+import com.coursevm.backend.blog.dto.PostRequestDTO;
 import com.coursevm.backend.blog.service.PostService;
 import com.coursevm.core.dto.request.ObjectRequest;
 import com.coursevm.core.dto.request.PageableRequest;
@@ -27,8 +28,8 @@ public class PostRestService {
     @Autowired
     private PostService postService;
 
-    public PagedResult<PostDTO> findAll(PageableRequest<Pageable> pageable) {
-        return PagedResult.of(postService.findAll(pageable.getPageable()), PostDTO.class);
+    public PagedResult<PostDTO> findAll(PageableRequest<PostRequestDTO> pageable) {
+        return PagedResult.of(postService.findAll(pageable.getParam(), pageable.getPageable()), PostDTO.class);
     }
 
     public ObjectResult<PostDTO> getPostBySlug(String slug) {
@@ -36,7 +37,7 @@ public class PostRestService {
     }
 
     public ObjectResult<PostDTO> findById(Long id) {
-        return ObjectResult.of(postService.findById(id).get(), PostDTO.class);
+        return ObjectResult.of(postService.findById(id).orElse(null), PostDTO.class);
     }
 
     public ObjectResult<PostDTO> save(ObjectRequest<PostDTO> data) {

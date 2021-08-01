@@ -57,13 +57,13 @@
                                 <div class="p-col-6">
                                     <p:commandButton id="tableButton" value="DataTable" type="button" styleClass="success-button"/>
                                     <p:overlayPanel for="tableButton" dynamic="true" style="width:300px" showCloseIcon="true" widgetVar="tableOP" showEffect="fade">
-                                        <p:dataTable var="customer" value="#{overlayDemoView.customers}" rows="5" paginator="true"
-                                            selectionMode="single" selection="#{overlayDemoView.selectedCustomer}" rowKey="#{customer.id}" onRowClick="PF('tableOP').hide()">
+                                        <p:dataTable var="media" value="#{overlayDemoView.customers}" rows="5" paginator="true"
+                                                     selectionMode="single" selection="#{overlayDemoView.selectedCustomer}" rowKey="#{customer.id}" onRowClick="PF('tableOP').hide()">
                                             <p:column headerText="Name">
-                                                <h:outputText value="#{customer.name}" />
+                                                <h:outputText value="#{media.name}" />
                                             </p:column>
                                             <p:column headerText="Country" style="width: 4rem">
-                                                <span class="flag flag-#{customer.country.code}" style="width: 30px; height: 20px"></span>
+                                                <span class="flag flag-#{media.country.code}" style="width: 30px; height: 20px"></span>
                                             </p:column>
                                         </p:dataTable>
                                     </p:overlayPanel>

@@ -87,28 +87,34 @@
 
             <div class="p-md-7">
                 <h:form id="treeData">
-                    <p:treeTable id="docs"
-                                 value="#{tagController.root}"
+                    <p:dataTable id="docs"
+                                 value="#{tagController.tags}"
                                  var="document"
                                  resizableColumns="true"
+                                 paginatorPosition="bottom"
+                                 paginator="true"
+                                 pageLinks="5"
+                                 rows="10"
+                                 paginatorAlwaysVisible="false"
+                                 lazy="true"
                     >
-                        <p:column headerText="Name" styleClass="w-10 p-text-left">
+                        <p:column headerText="Name" styleClass="w10f p-text-left">
                             <h:outputText value="#{document.categoryName}"/>
                         </p:column>
 
-                        <p:column headerText="Description" styleClass="w-10">
+                        <p:column headerText="Description" styleClass="w10f">
                             <h:outputText value="#{document.categoryDescription}"/>
                         </p:column>
 
-                        <p:column headerText="Slug" styleClass="w-20">
+                        <p:column headerText="Slug" styleClass="w20f">
                             <h:outputText value="#{document.categorySlug}"/>
                         </p:column>
 
-                        <p:column headerText="Count" styleClass="w-5">
+                        <p:column headerText="Count" styleClass="w5f">
                             <h:outputText value="#{document.categoryCount}"/>
                         </p:column>
 
-                        <p:column styleClass="w-5 p-text-center" headerText="*">
+                        <p:column styleClass="w30 p-text-center" headerText="*">
                             <p:commandButton id="btnAction"
                                              type="button"
                                              icon="pi pi-ellipsis-v"
@@ -141,7 +147,7 @@
                             </p:menu>
                         </p:column>
 
-                    </p:treeTable>
+                    </p:dataTable>
 
                 </h:form>
             </div>

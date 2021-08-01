@@ -1,81 +1,55 @@
-package com.coursevm.entity.blog.entity;
+package com.coursevm.backend.blog.dto;
 
 import com.coursevm.core.backend.entity.BaseEntity;
 import com.coursevm.core.base.entity.MarkUpdated;
 import com.coursevm.core.base.entity.NodeType;
-import com.coursevm.entity.blog.schema.BlogSchema;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
-import org.hibernate.annotations.DiscriminatorOptions;
 
-import javax.persistence.*;
-import javax.validation.constraints.NotBlank;
 import java.time.LocalDateTime;
-import java.time.ZonedDateTime;
-import java.util.Date;
+import java.util.*;
 
 import static org.apache.commons.lang3.StringUtils.trim;
 
 @Getter
 @Setter
-@Table(name = BlogSchema.posts, catalog = BlogSchema.name)
-@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
-@DiscriminatorColumn(name = "postType", discriminatorType = DiscriminatorType.STRING)
-@DiscriminatorOptions(force = true)
-@Entity
-public abstract class Node extends BaseEntity implements NodeType, MarkUpdated {
+@Builder
+@AllArgsConstructor
+public class MediaDTO extends BaseEntity implements NodeType, MarkUpdated {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    public MediaDTO() {
+    }
+
     private Long postId;
 
-    @Column
     private String postAuthor;
 
-    @Column
-    private LocalDateTime postCreatedDate;
-
-    @Column
-    private LocalDateTime postLastUpdated;
-
-    @Column
     private String postContent;
 
-    @Column
-    @NotBlank(message = "Title must not be null")
     private String postTitle;
 
-    @Column
     private String postExcerpt;
 
-    @Column
     private String postStatus;
 
-    @Column
     private String postPassword;
 
-    @Column
     private String postSlug;
 
-    @Column(insertable = false, updatable = false)
     private String postType;
 
-    @Column
     private String postMimeType;
 
-    @Column
     private Long postParentId;
 
-    @Column
     private String postGUID;
 
-    @Column
     private Integer postMenuOrder;
 
-    @Column
     private String postCommentStatus;
 
-    @Column
     private Long postCommentCount;
 
     public void setPostContent(String postContent) {
@@ -126,6 +100,6 @@ public abstract class Node extends BaseEntity implements NodeType, MarkUpdated {
 
     @Override
     public void setLastUpdated(LocalDateTime time) {
-        setPostLastUpdated(time);
+
     }
 }

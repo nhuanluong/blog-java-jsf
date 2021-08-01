@@ -1,9 +1,6 @@
 package com.coursevm.web.blog.controller;
 
-import com.coursevm.backend.blog.dto.CategoryDTO;
-import com.coursevm.backend.blog.dto.PostDTO;
-import com.coursevm.backend.blog.dto.TagDTO;
-import com.coursevm.backend.blog.dto.TermDTO;
+import com.coursevm.backend.blog.dto.*;
 import com.coursevm.backend.blog.rest.CategoryRestService;
 import com.coursevm.backend.blog.rest.PostRestService;
 import com.coursevm.backend.blog.rest.TagRestService;
@@ -15,14 +12,20 @@ import com.coursevm.core.dto.response.ObjectResult;
 import com.coursevm.core.dto.response.PagedResult;
 import com.coursevm.core.frontend.primefaces.GenericLazyDataModel;
 import com.coursevm.core.frontend.util.FacesContextUtil;
+import com.coursevm.entity.blog.entity.PostMeta;
 import com.coursevm.web.blog.component.CategoryComponent;
+import com.coursevm.web.blog.component.MediaComponent;
 import lombok.Getter;
 import lombok.Setter;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.ocpsoft.rewrite.el.ELBeanName;
+import org.omnifaces.util.Ajax;
+import org.primefaces.PF;
+import org.primefaces.component.inputtext.InputText;
 import org.primefaces.event.NodeSelectEvent;
 import org.primefaces.event.SelectEvent;
+import org.primefaces.event.ToggleSelectEvent;
 import org.primefaces.event.UnselectEvent;
 import org.primefaces.model.FilterMeta;
 import org.primefaces.model.SortMeta;
@@ -49,10 +52,16 @@ public class PostController {
     private CategoryRestService categoryRestService;
 
     @Autowired
+    private TagRestService tagRestService;
+
+    @Autowired
     private CategoryComponent categoryComponent;
 
     @Autowired
-    private TagRestService tagRestService;
+    private MediaComponent mediaComponent;
+
+    private InputText inputTextTitle;
+    private InputText inputTextSlug;
 
     private PostDTO post;
     private List<PostDTO> selectedPosts;
@@ -73,14 +82,26 @@ public class PostController {
         return true;
     }
 
+    public void preRenderIndex() {
+        selectedPosts = new ArrayList<>();
+    }
+
     public void preRenderView() {
         if (FacesContextUtil.isNotPostback()) {
             //add new
             Optional<String> status = FacesContextUtil.getRequestParam("status");
             if (status.isPresent() && status.get().equalsIgnoreCase("new")) {
                 post = new PostDTO();
+
                 editPost(post);
 
+                if (inputTextTitle != null) {
+                    inputTextTitle.setValue("");
+                }
+
+                if (inputTextSlug != null) {
+                    inputTextSlug.setValue("");
+                }
                 return;
             }
             //edit
@@ -91,20 +112,25 @@ public class PostController {
             ObjectResult<PostDTO> p = postService.findById(postId);
             if (p.isPresent()) {
                 post = p.getResult();
+
                 editPost(post);
+
+                if (inputTextTitle != null) {
+                    inputTextTitle.setValue(post.getPostTitle());
+                }
+
+                if (inputTextSlug != null) {
+                    inputTextSlug.setValue(post.getPostSlug());
+                }
             }
         }
     }
 
     public void add() {
 
-        Long id = null;
-
         if (!validateData()) return;
 
-        if (post.getId() != null) {
-            id = post.getId();
-        }
+        Long id = post.getId();
 
         if (selectedNodes != null && selectedNodes.length > 0) {
             List<CategoryDTO> categories = Arrays.stream(selectedNodes)
@@ -121,7 +147,9 @@ public class PostController {
             post.setCategories(null);
         }
 
-        if (StringUtils.isBlank(post.getSlug())) updateSlug(post);
+        if (StringUtils.isBlank(post.getSlug())) {
+            updateSlug(post);
+        }
 
         post = postService.save(ObjectRequest.of(post)).getResult();
 
@@ -132,51 +160,27 @@ public class PostController {
         }
     }
 
-    public void makeSlug() {
-        updateSlug(post);
-    }
+    public void createSlug() {
 
-    public void editPost(PostDTO post) {
-        Set<CategoryDTO> cat = post.getCategories();
-        categoryComponent.initData();
-        if (CollectionUtils.isNotEmpty(cat)) {
-            TreeNode root = categoryComponent.getRoot();
-            checkRoot(cat, root);
+        if (StringUtils.isBlank(inputTextTitle.getValue().toString())) return;
+
+        if (inputTextTitle != null
+                && inputTextTitle.getValue() != null
+                && post.getPostTitle() == null) {
+            post.setPostTitle(inputTextTitle.getValue().toString());
         }
-    }
 
-    private void updateSlug(PostDTO node) {
-
-        if (node == null || StringUtils.isBlank(node.getName())) return;
-
-        if (StringUtils.isNotBlank(node.getSlug())) {
-            node.setSlug(TextUtil.makeUrlFriendly(node.getSlug()));
-
-            return;
+        if (inputTextTitle != null
+                && inputTextTitle.getValue() != null
+                && !post.getPostTitle().equalsIgnoreCase(inputTextTitle.getValue().toString())) {
+            post.setPostTitle(inputTextTitle.getValue().toString());
         }
-        String slug = postService.makeSlug(node.getId(), node.getName());
 
-        node.setSlug(slug);
-    }
+        updateSlug(post, inputTextSlug != null && inputTextSlug.getValue() != null ? inputTextSlug.getValue().toString() : "");
 
-    public void checkRoot(Set<CategoryDTO> sub, TreeNode node) {
-        List<TreeNode> child = node.getChildren();
-
-        if (CollectionUtils.isEmpty(child)) return;
-
-        child.forEach(c -> {
-            sub.forEach(s -> {
-                CategoryDTO cat = (CategoryDTO) c.getData();
-                Long categoryId = s.getCategoryId();
-                Long categoryId1 = cat.getCategoryId();
-                if (categoryId.equals(categoryId1)) {
-                    c.setSelected(true);
-                }
-            });
-            if (CollectionUtils.isNotEmpty(c.getChildren())) {
-                checkRoot(sub, c);
-            }
-        });
+        if (inputTextSlug != null) {
+            inputTextSlug.setValue(post.getSlug());
+        }
     }
 
     public void deletePost(Long id) {
@@ -184,21 +188,18 @@ public class PostController {
         initData();
     }
 
-    public GenericLazyDataModel<PostDTO> loadData() {
+    public void deletePosts() {
+        if (CollectionUtils.isEmpty(selectedPosts)) {
+            selectedPosts = Collections.emptyList();
+        }
 
-        return new GenericLazyDataModel<>() {
-            @Override
-            public List<PostDTO> load(int first, int pageSize, Map<String, SortMeta> sortBy, Map<String, FilterMeta> filterBy) {
+        selectedPosts.forEach(item -> {
+            postService.delete(item.getId());
+        });
 
-                PagedRequest pageRequest = FacesContextUtil.getListPageRequest(first, pageSize, sortBy, filterBy);
+        posts = loadData();
 
-                PagedResult<PostDTO> result = postService.findAll(PageableRequest.of(null, pageRequest));
-
-                setRowCount((int) result.getTotalElements());
-
-                return result.getPagedList();
-            }
-        };
+        selectedPosts = Collections.emptyList(); //reset
     }
 
     public void addCat() {
@@ -217,9 +218,6 @@ public class PostController {
         post.getCategories().add(category);
 
         Set<CategoryDTO> cat = post.getCategories();
-
-        if (CollectionUtils.isEmpty(cat)) return;
-
         TreeNode root = categoryComponent.getRoot();
         checkRoot(cat, root);
 
@@ -232,35 +230,20 @@ public class PostController {
         selectedNodes = nodesSelected;
     }
 
-    private void updateSelectedNodes(List<TreeNode> nodeList, TreeNode root) {
-
-        List<TreeNode> r = root.getChildren().stream()
-                .filter(TreeNode::isSelected)
-                .collect(Collectors.toList());
-
-        if (CollectionUtils.isNotEmpty(r)) {
-            nodeList.addAll(r);
-        }
-
-        root.getChildren().forEach(c -> {
-            if (CollectionUtils.isNotEmpty(c.getChildren())) {
-                updateSelectedNodes(nodeList, c);
-            }
-        });
-    }
-
     public List<String> completeTag(String query) {
 
         List<TagDTO> tagsSearchResult = tagRestService.complete(query, 10).getResult();
 
-        if (CollectionUtils.isEmpty(tagsSearchResult)) return new ArrayList<>();
+        if (CollectionUtils.isEmpty(tagsSearchResult)) return Collections.emptyList();
 
         List<String> tagsName = tagsSearchResult.stream().map(TermDTO::getName).collect(Collectors.toList());
+
         List<TagDTO> tagsPost = post.getTags();
-        if (CollectionUtils.isNotEmpty(tagsPost)) {
-            List<String> tagsPostName = tagsPost.stream().map(TermDTO::getName).collect(Collectors.toList());
-            tagsName.removeAll(tagsPostName);
-        }
+        if (CollectionUtils.isEmpty(tagsPost)) return tagsName;
+
+        List<String> tagsPostName = tagsPost.stream().map(TermDTO::getName).collect(Collectors.toList());
+        tagsName.removeAll(tagsPostName);//remove duplicate tag name
+
         return new ArrayList<>(new HashSet<>(tagsName));
     }
 
@@ -285,11 +268,136 @@ public class PostController {
 
                 if (post.getTags().get(i).getCategoryName().equalsIgnoreCase(tagSelect)) continue;
 
-                TagDTO tag = tagRestService.findByName(tagSelect).getResult();
+                TagDTO tag = tagRestService.findByName(tagSelect, null).getResult();
                 if (tag != null) {
                     getPost().getTags().add(tag);
                 }
             }
         }
     }
+
+    public void initFeaturedImage() {
+        mediaComponent.initData();
+    }
+
+    public void chooseImage() {
+        Optional<String> imageUrl = FacesContextUtil.getRequestParam("imageUrl");
+        imageUrl.ifPresent(s -> post.getAttributes().put(PostMeta.featuredImage, s));
+    }
+
+    public void removeFeaturedImage() {
+        post.setFeaturedImage("");
+    }
+
+    //<editor-fold desc="testEvent">
+    public void selectItemEvent(SelectEvent selectEvent) {
+        if (CollectionUtils.isEmpty(selectedPosts)) {
+            selectedPosts = Collections.emptyList();
+        }
+        System.out.printf("posts:" + selectedPosts.size());
+    }
+
+    public void toggleSelectEvent(ToggleSelectEvent selectEvent) {
+        if (CollectionUtils.isEmpty(selectedPosts)) {
+            selectedPosts = Collections.emptyList();
+        }
+        System.out.printf("posts:" + selectedPosts.size());
+    }
+
+    public void unSelectItemEvent(UnselectEvent selectEvent) {
+        if (CollectionUtils.isEmpty(selectedPosts)) {
+            selectedPosts = Collections.emptyList();
+        }
+        System.out.printf("posts:" + selectedPosts.size());
+    }
+    //</editor-fold>
+
+    //<editor-fold desc="private">
+    private void editPost(PostDTO post) {
+        Set<CategoryDTO> cat = post.getCategories();
+        categoryComponent.initData();
+        if (CollectionUtils.isNotEmpty(cat)) {
+            TreeNode root = categoryComponent.getRoot();
+            checkRoot(cat, root);
+        }
+    }
+
+    private void updateSlug(PostDTO post) {
+
+        if (post == null || StringUtils.isBlank(post.getName())) return;
+
+        if (StringUtils.isBlank(post.getSlug())) {
+            String slug = postService.makeSlug(post.getId(), post.getName());
+            post.setSlug(slug);
+        }
+    }
+
+    private void updateSlug(PostDTO node, String nameOfSlug) {
+
+        if (node == null || StringUtils.isBlank(node.getName())) return;
+
+        if (StringUtils.isNotBlank(node.getName()) && StringUtils.isBlank(nameOfSlug)) {
+            String slug = postService.makeSlug(node.getId(), node.getName());
+            node.setSlug(slug);
+        }
+    }
+
+    private void checkRoot(Set<CategoryDTO> sub, TreeNode node) {
+        List<TreeNode> child = node.getChildren();
+
+        if (CollectionUtils.isEmpty(child)) return;
+
+        child.forEach(c -> {
+            sub.forEach(s -> {
+                CategoryDTO cat = (CategoryDTO) c.getData();
+                Long categoryId = s.getCategoryId();
+                Long categoryId1 = cat.getCategoryId();
+                if (categoryId.equals(categoryId1)) {
+                    c.setSelected(true);
+                }
+            });
+            if (CollectionUtils.isNotEmpty(c.getChildren())) {
+                checkRoot(sub, c);//recursion
+            }
+        });
+    }
+
+    private GenericLazyDataModel<PostDTO> loadData() {
+
+        return new GenericLazyDataModel<>() {
+            @Override
+            public List<PostDTO> load(int first, int pageSize, Map<String, SortMeta> sortBy, Map<String, FilterMeta> filterBy) {
+
+                PagedRequest pageRequest = FacesContextUtil.getListPageRequest(first, pageSize, sortBy, filterBy);
+
+                PostRequestDTO param = new PostRequestDTO();
+                param.setCateQuery(FacesContextUtil.getRequestParam("cat").orElse(""));
+                param.setTagQuery(FacesContextUtil.getRequestParam("tag").orElse(""));
+
+                PagedResult<PostDTO> result = postService.findAll(PageableRequest.of(param, pageRequest));
+
+                setRowCount((int) result.getTotalElements());
+
+                return result.getPagedList();
+            }
+        };
+    }
+
+    private void updateSelectedNodes(List<TreeNode> nodeList, TreeNode root) {
+
+        List<TreeNode> childOfRoot = root.getChildren().stream()
+                .filter(TreeNode::isSelected)
+                .collect(Collectors.toList());
+
+        if (CollectionUtils.isNotEmpty(childOfRoot)) {
+            nodeList.addAll(childOfRoot);
+        }
+
+        root.getChildren().forEach(c -> {
+            if (CollectionUtils.isNotEmpty(c.getChildren())) {
+                updateSelectedNodes(nodeList, c);//recursion
+            }
+        });
+    }
+    //</editor-fold>
 }
