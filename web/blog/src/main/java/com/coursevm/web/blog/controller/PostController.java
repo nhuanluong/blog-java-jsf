@@ -4,7 +4,6 @@ import com.coursevm.backend.blog.dto.*;
 import com.coursevm.backend.blog.rest.CategoryRestService;
 import com.coursevm.backend.blog.rest.PostRestService;
 import com.coursevm.backend.blog.rest.TagRestService;
-import com.coursevm.core.common.util.TextUtil;
 import com.coursevm.core.dto.request.ObjectRequest;
 import com.coursevm.core.dto.request.PageableRequest;
 import com.coursevm.core.dto.request.PagedRequest;
@@ -20,21 +19,17 @@ import lombok.Setter;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.ocpsoft.rewrite.el.ELBeanName;
-import org.omnifaces.util.Ajax;
-import org.primefaces.PF;
 import org.primefaces.component.inputtext.InputText;
-import org.primefaces.event.NodeSelectEvent;
 import org.primefaces.event.SelectEvent;
-import org.primefaces.event.ToggleSelectEvent;
 import org.primefaces.event.UnselectEvent;
 import org.primefaces.model.FilterMeta;
 import org.primefaces.model.SortMeta;
 import org.primefaces.model.TreeNode;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
+import javax.jcr.observation.Event;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -45,20 +40,15 @@ import java.util.stream.Collectors;
 @Setter
 public class PostController {
 
-    @Autowired
-    private PostRestService postService;
+    private final PostRestService postService;
 
-    @Autowired
-    private CategoryRestService categoryRestService;
+    private final CategoryRestService categoryRestService;
 
-    @Autowired
-    private TagRestService tagRestService;
+    private final TagRestService tagRestService;
 
-    @Autowired
-    private CategoryComponent categoryComponent;
+    private final CategoryComponent categoryComponent;
 
-    @Autowired
-    private MediaComponent mediaComponent;
+    private final MediaComponent mediaComponent;
 
     private InputText inputTextTitle;
     private InputText inputTextSlug;
@@ -67,6 +57,18 @@ public class PostController {
     private List<PostDTO> selectedPosts;
     private GenericLazyDataModel<PostDTO> posts;
     private TreeNode[] selectedNodes;
+
+    public PostController(PostRestService postService,
+                          CategoryRestService categoryRestService,
+                          TagRestService tagRestService,
+                          CategoryComponent categoryComponent,
+                          MediaComponent mediaComponent) {
+        this.postService = postService;
+        this.categoryRestService = categoryRestService;
+        this.tagRestService = tagRestService;
+        this.categoryComponent = categoryComponent;
+        this.mediaComponent = mediaComponent;
+    }
 
     @PostConstruct
     public void initData() {
@@ -77,6 +79,16 @@ public class PostController {
     public boolean validateData() {
         if (post == null) {
             FacesContextUtil.addMessageError("Post needs be init data");
+            return false;
+        }
+
+        if (StringUtils.isBlank(post.getPostTitle())) {
+            FacesContextUtil.addMessageError("Title must not be null");
+            return false;
+        }
+
+        if (selectedNodes == null || selectedNodes.length <= 0) {
+            FacesContextUtil.addMessageError("Select at least one category");
             return false;
         }
         return true;
@@ -162,25 +174,20 @@ public class PostController {
 
     public void createSlug() {
 
-        if (StringUtils.isBlank(inputTextTitle.getValue().toString())) return;
+        if (inputTextTitle == null || StringUtils.isBlank(inputTextTitle.getValue().toString())) return;
 
-        if (inputTextTitle != null
-                && inputTextTitle.getValue() != null
-                && post.getPostTitle() == null) {
+        if (inputTextTitle.getValue() != null && StringUtils.isBlank(post.getPostTitle())) {
             post.setPostTitle(inputTextTitle.getValue().toString());
         }
 
-        if (inputTextTitle != null
-                && inputTextTitle.getValue() != null
+        if (inputTextTitle.getValue() != null
                 && !post.getPostTitle().equalsIgnoreCase(inputTextTitle.getValue().toString())) {
             post.setPostTitle(inputTextTitle.getValue().toString());
         }
 
-        updateSlug(post, inputTextSlug != null && inputTextSlug.getValue() != null ? inputTextSlug.getValue().toString() : "");
+        updateSlug(post, inputTextSlug.getValue() != null ? inputTextSlug.getValue().toString() : "");
 
-        if (inputTextSlug != null) {
-            inputTextSlug.setValue(post.getSlug());
-        }
+        inputTextSlug.setValue(post.getSlug());
     }
 
     public void deletePost(Long id) {
@@ -193,9 +200,7 @@ public class PostController {
             selectedPosts = Collections.emptyList();
         }
 
-        selectedPosts.forEach(item -> {
-            postService.delete(item.getId());
-        });
+        selectedPosts.forEach(item -> postService.delete(item.getId()));
 
         posts = loadData();
 
@@ -289,29 +294,6 @@ public class PostController {
         post.setFeaturedImage("");
     }
 
-    //<editor-fold desc="testEvent">
-    public void selectItemEvent(SelectEvent selectEvent) {
-        if (CollectionUtils.isEmpty(selectedPosts)) {
-            selectedPosts = Collections.emptyList();
-        }
-        System.out.printf("posts:" + selectedPosts.size());
-    }
-
-    public void toggleSelectEvent(ToggleSelectEvent selectEvent) {
-        if (CollectionUtils.isEmpty(selectedPosts)) {
-            selectedPosts = Collections.emptyList();
-        }
-        System.out.printf("posts:" + selectedPosts.size());
-    }
-
-    public void unSelectItemEvent(UnselectEvent selectEvent) {
-        if (CollectionUtils.isEmpty(selectedPosts)) {
-            selectedPosts = Collections.emptyList();
-        }
-        System.out.printf("posts:" + selectedPosts.size());
-    }
-    //</editor-fold>
-
     //<editor-fold desc="private">
     private void editPost(PostDTO post) {
         Set<CategoryDTO> cat = post.getCategories();
@@ -352,8 +334,10 @@ public class PostController {
                 CategoryDTO cat = (CategoryDTO) c.getData();
                 Long categoryId = s.getCategoryId();
                 Long categoryId1 = cat.getCategoryId();
-                if (categoryId.equals(categoryId1)) {
-                    c.setSelected(true);
+                if (categoryId != null && categoryId1 != null) {
+                    if (categoryId.equals(categoryId1)) {
+                        c.setSelected(true);
+                    }
                 }
             });
             if (CollectionUtils.isNotEmpty(c.getChildren())) {

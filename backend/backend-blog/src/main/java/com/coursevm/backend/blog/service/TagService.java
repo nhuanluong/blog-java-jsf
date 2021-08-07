@@ -12,6 +12,7 @@ import com.coursevm.core.backend.service.AbstractBaseService;
 import com.coursevm.core.base.entity.MarkUpdated;
 import com.coursevm.core.base.entity.NodeType;
 import com.coursevm.core.common.util.TextUtil;
+import com.coursevm.entity.blog.entity.Category;
 import com.coursevm.entity.blog.entity.QTag;
 import com.coursevm.entity.blog.entity.Tag;
 import com.querydsl.core.BooleanBuilder;
@@ -145,5 +146,13 @@ public class TagService extends AbstractBaseService<Tag, Long> {
             builder.and(qTag.categoryId.ne(id));
         }
         return getQuery().selectFrom(qTag).where(builder).fetchFirst();
+    }
+
+    public void updateCount(Long categoryId, long count) {
+        Tag tag = findOne(categoryId);
+        if (tag != null) {
+            tag.setCategoryCount(count);
+            tagDAO.save(tag);
+        }
     }
 }

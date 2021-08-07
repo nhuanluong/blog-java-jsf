@@ -19,6 +19,7 @@ import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.time.ZonedDateTime;
@@ -31,7 +32,9 @@ import java.util.Set;
  */
 interface CategoryDAO extends BaseDAO<Category, Long> {
 }
+
 @Service
+@Transactional
 public class CategoryService extends AbstractBaseService<Category, Long> {
 
     @Autowired
@@ -82,7 +85,7 @@ public class CategoryService extends AbstractBaseService<Category, Long> {
     }
 
     public boolean isExistsSlug(String slugFriendly, Long categoryId) {
-         return getBySlugNotId(slugFriendly, categoryId) != null;
+        return getBySlugNotId(slugFriendly, categoryId) != null;
     }
 
     public Category getBySlugNotId(String slugFriendly, Long categoryId) {
@@ -111,5 +114,13 @@ public class CategoryService extends AbstractBaseService<Category, Long> {
         slug = makeSlug(categoryId, slug, count, length);
 
         return slug;
+    }
+
+    public void updateCount(Long categoryId, long count) {
+        Category category = findOne(categoryId);
+        if (category != null) {
+            category.setCategoryCount(count);
+            categoryDAO.save(category);
+        }
     }
 }

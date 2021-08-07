@@ -41,6 +41,10 @@ public abstract class AbstractBaseService<T, ID extends Serializable> {
         return getRepository().save(entity);
     }
 
+    public T saveAndFlush(T entity) {
+        return getRepository().saveAndFlush(entity);
+    }
+
     public void saveAll(List<T> entity) {
         getRepository().saveAll(entity);
     }

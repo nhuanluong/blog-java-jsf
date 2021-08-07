@@ -61,7 +61,8 @@
 
         <h:form id="editForm">
 
-            <input type="hidden" value="#{postController.post.postId ne null ? postController.post.postId : '0'}" id="idPost"/>
+            <input type="hidden" value="#{postController.post.postId ne null ? postController.post.postId : '0'}"
+                   id="idPost"/>
 
             <div class="card" id="formInside">
                 <div class="p-grid">
@@ -252,8 +253,6 @@
                                         </div>
                                         <p:tree id="categories"
                                                 style="padding-top: 0; max-height: 250px"
-                                                required="true"
-                                                requiredMessage="Please choose at least one category"
                                                 value="#{categoryComponent.root}"
                                                 var="cat"
                                                 resizableColumns="true"

@@ -7,19 +7,23 @@
  */
 package com.coursevm.backend.blog.service;
 
+import com.coursevm.backend.blog.component.ObserverPost;
+import com.coursevm.backend.blog.dto.PostDTO;
 import com.coursevm.backend.blog.dto.PostRequestDTO;
 import com.coursevm.core.backend.dao.BaseDAO;
 import com.coursevm.core.backend.service.AbstractBaseService;
 import com.coursevm.core.common.util.TextUtil;
+import com.coursevm.core.util.MapperUtil;
 import com.coursevm.entity.blog.entity.*;
 import com.querydsl.core.BooleanBuilder;
-import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQuery;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -35,6 +39,9 @@ interface PostDAO extends BaseDAO<Post, Long> {
 @Service
 @Transactional
 public class PostService extends AbstractBaseService<Post, Long> {
+
+    @Autowired
+    private ApplicationEventPublisher applicationEventPublisher;
 
     @Autowired
     private PostDAO postDAO;
@@ -101,21 +108,54 @@ public class PostService extends AbstractBaseService<Post, Long> {
             Set<Tag> tags = tagService.saveAsString(entity.getTagsStr());
             entity.setTags(tags);
         }
-        return super.save(entity);
+
+        PostDTO postOld = null;
+        if (entity.getId() != null) {
+            //convert to DTO to remove session's hibernate
+            postOld = MapperUtil.map(findOne(entity.getId()), PostDTO.class);
+        }
+        Post post = super.saveAndFlush(entity);
+        ObserverPost observerPost = ObserverPost
+                .source(this)
+                .post(post)
+                .postOld(postOld);
+
+        applicationEventPublisher.publishEvent(observerPost);
+
+        return post;
     }
 
     public Page<Post> findAll(PostRequestDTO param, Pageable pageable) {
         JPAQuery<Post> query = getQuery()
                 .selectFrom(qPost)
                 .distinct();
+
         if (StringUtils.isNotBlank(param.getCateQuery())) {
             query.join(qPost.categories, qCategory)
                     .where(qCategory.categorySlug.equalsIgnoreCase(param.getCateQuery()));
         }
+
         if (StringUtils.isNotBlank(param.getTagQuery())) {
             query.join(qPost.tags, qTag)
                     .where(qTag.categorySlug.equalsIgnoreCase(param.getTagQuery()));
         }
+
+        if (pageable.getSort() == Sort.unsorted()) {
+            query.orderBy(qPost.postId.desc());
+        }
         return super.findAll(query, pageable);
+    }
+
+    @Override
+    public Long delete(Long id) {
+
+        ObserverPost observerPost = ObserverPost.source(this).post(findOne(id));
+
+        Long idDeleted = super.delete(id);
+
+        //count after deleted
+        applicationEventPublisher.publishEvent(observerPost);
+
+        return idDeleted;
     }
 }

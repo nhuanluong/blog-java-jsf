@@ -12,6 +12,7 @@
     <context:annotation-config/>
 
     <context:component-scan base-package="com.coursevm.web.blog"/>
+    <context:component-scan base-package="com.coursevm.core.backend"/>
     <context:component-scan base-package="com.coursevm.backend.blog"/>
 
     <bean id="propertyConfigurer"
@@ -58,6 +59,7 @@
                 <entry key="hibernate.jdbc.batch_versioned_data" value="true"/>
                 <entry key="hibernate.format_sql" value="true"/>
                 <entry key="hibernate.show_sql" value="true"/>
+                <entry key="hibernate.enable_lazy_load_no_trans" value="true"/>
             </map>
         </property>
     </bean>

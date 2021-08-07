@@ -1,0 +1,75 @@
+/*
+ * Created on 2021.08.07 (y.M.d) 10:45
+ *
+ * Copyright(c) 2021 VietInfo Company, Inc.  All Rights Reserved.
+ * This software is the proprietary information of VietInfo Company.
+ *
+ */
+package com.coursevm.backend.blog.service;
+
+import com.coursevm.backend.blog.component.ObserverPost;
+import com.coursevm.backend.blog.dto.CategoryDTO;
+import com.coursevm.backend.blog.dto.PostDTO;
+import com.coursevm.backend.blog.dto.TagDTO;
+import com.coursevm.core.backend.util.DataSourceContext;
+import com.coursevm.entity.blog.entity.QCategoryPostMap;
+import com.coursevm.entity.blog.entity.QTagPostMap;
+import com.querydsl.jpa.impl.JPAQuery;
+import com.querydsl.jpa.impl.JPAQueryFactory;
+import org.apache.commons.collections4.CollectionUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import java.util.HashSet;
+import java.util.Optional;
+import java.util.Set;
+
+/**
+ * @author Nhuan Luong
+ */
+@Service
+@Transactional
+public class TagPostMapService {
+
+    @PersistenceContext
+    private EntityManager entityManager;
+
+    @Autowired
+    private TagService tagService;
+
+    static QTagPostMap qTagPostMap = QTagPostMap.tagPostMap;
+
+    public void updateCount(ObserverPost event) {
+
+        Set<TagDTO> tags = new HashSet<>();
+
+        Optional<PostDTO> post = event.getPost();
+        if (post.isPresent()) {
+            if (CollectionUtils.isNotEmpty(post.get().getTags())) {
+                tags.addAll(post.get().getTags());
+            }
+        }
+
+        Optional<PostDTO> postOld = event.getPostOld();
+        if (postOld.isPresent()) {
+            if (CollectionUtils.isNotEmpty(postOld.get().getTags())) {
+                tags.addAll(postOld.get().getTags());
+            }
+        }
+
+        if (CollectionUtils.isEmpty(tags)) return;
+
+        tags.forEach(item -> {
+            JPAQuery<Long> query = new JPAQueryFactory(entityManager)
+                    .select(qTagPostMap.postId)
+                    .from(qTagPostMap)
+                    .where(qTagPostMap.tagId.eq(item.getCategoryId()));
+            long count = query.fetchCount();
+
+            tagService.updateCount(item.getCategoryId(), count);
+        });
+    }
+}

@@ -13,4 +13,6 @@ dependencies {
     implementation project(':entity:entity-blog')
 
     implementation group: 'com.github.marlonlom', name: 'timeago', version: '4.0.3'
+    implementation "com.querydsl:querydsl-core:${queryDslVersion}"
+    implementation "com.querydsl:querydsl-jpa:${queryDslVersion}"
 }

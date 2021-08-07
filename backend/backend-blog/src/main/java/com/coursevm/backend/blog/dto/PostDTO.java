@@ -8,6 +8,7 @@ import com.github.marlonlom.utilities.timeago.TimeAgo;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.SneakyThrows;
+import lombok.ToString;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.BooleanUtils;
 import org.apache.commons.lang3.time.DateUtils;
@@ -24,6 +25,7 @@ import static org.apache.commons.lang3.StringUtils.trim;
 
 @Getter
 @Setter
+@ToString(callSuper = true)
 public class PostDTO extends BaseEntity implements NodeType, MarkUpdated {
 
     public PostDTO() {
@@ -43,7 +45,6 @@ public class PostDTO extends BaseEntity implements NodeType, MarkUpdated {
 
     private String postContent;
 
-    @NotBlank(message = "Title must not be null")
     private String postTitle;
 
     private String postExcerpt;

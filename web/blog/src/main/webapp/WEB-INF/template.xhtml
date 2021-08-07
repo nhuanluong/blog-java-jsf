@@ -14,16 +14,33 @@
         <meta name="apple-mobile-web-app-capable" content="yes"/>
         <link rel="icon" href="#{request.contextPath}/resources/rain-layout/images/favicon.ico" type="image/x-icon"/>
     </f:facet>
+
     <title><ui:insert name="title">PrimeFaces Rain</ui:insert></title>
+
     <h:outputScript name="js/layout.js" library="rain-layout"/>
     <h:outputScript name="sections.js" library="demo"/>
+
     <ui:insert name="head"/>
+
     <h:outputStylesheet library="webjars" name="font-awesome/5.15.2/css/all.min-jsf.css"/>
     <h:outputStylesheet library="webjars" name="font-awesome/5.15.2/css/v4-shims.min-jsf.css"/>
+    <style>
+        .ui-outputpanel-loading {
+            padding: 1rem;
+            background: url("#{resource['images/loading-1.gif']}") center center no-repeat;
+            width: 100px;
+            height: 100px;
+            right: calc(50% - 50px);
+            bottom: 50%;
+            position: absolute;
+        }
+    </style>
 </h:head>
 
 <h:body styleClass="#{guestPreferences.inputStyleClass}">
+
     <p:growl id="growl" showDetail="true" skipDetailIfEqualsSummary="true"/>
+
     <div class="layout-wrapper layout-topbar-#{guestPreferences.topbarTheme} layout-menu-#{guestPreferences.menuTheme} #{guestPreferences.menuMode}">
         <ui:include src="topbar.xhtml"/>
         <ui:include src="menu.xhtml"/>
@@ -53,7 +70,7 @@
 
     <p:ajaxStatus>
         <f:facet name="start">
-            <p:graphicImage value="#{resource['images/loading-1.svg']}" width="100" height="100"/>
+            <p:graphicImage value="#{resource['images/loading-message.svg']}" width="100" height="100"/>
         </f:facet>
 
         <f:facet name="complete">

@@ -20,21 +20,17 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
-import org.springframework.data.jpa.repository.support.JpaEntityInformation;
-import org.springframework.data.jpa.repository.support.Querydsl;
-import org.springframework.data.jpa.repository.support.QuerydslJpaPredicateExecutor;
-import org.springframework.data.jpa.repository.support.SimpleJpaRepository;
+import org.springframework.data.jpa.repository.support.*;
 import org.springframework.data.querydsl.EntityPathResolver;
 import org.springframework.data.querydsl.QSort;
 import org.springframework.data.querydsl.SimpleEntityPathResolver;
 import org.springframework.data.support.PageableExecutionUtils;
+import org.springframework.lang.Nullable;
 import org.springframework.util.Assert;
 
 import javax.persistence.EntityManager;
 import java.io.Serializable;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 import static org.springframework.data.jpa.repository.query.QueryUtils.COUNT_QUERY_STRING;
 import static org.springframework.data.jpa.repository.query.QueryUtils.getQueryString;
@@ -54,14 +50,15 @@ public abstract class GenericReadRepositoryImpl<T, ID extends Serializable> impl
     protected final SimpleJpaRepository<T, ID> simpleJpaRepository;
     protected final QuerydslJpaPredicateExecutor<T> querydslJpaPredicateExecutor;
 
-    public GenericReadRepositoryImpl(JpaEntityInformation<T, ID> entityInformation, EntityManager entityManager) {
+    public GenericReadRepositoryImpl(JpaEntityInformation<T, ID> entityInformation,
+                                     EntityManager entityManager) {
         this.entityInformation = entityInformation;
         this.em = entityManager;
-        this.simpleJpaRepository = new SimpleJpaRepository<>(entityInformation, entityManager);
         this.path = resolver.createPath(entityInformation.getJavaType());
         this.builder = new PathBuilder<>(path.getType(), path.getMetadata());
         this.querydsl = new Querydsl(entityManager, builder);
         this.querydslJpaPredicateExecutor = new QuerydslJpaPredicateExecutor<>(entityInformation, entityManager, resolver, null);
+        this.simpleJpaRepository = new SimpleJpaRepository<>(entityInformation, entityManager);
     }
 
     protected abstract JPQLQuery<T> createQuery(Predicate... predicate);
@@ -142,9 +139,11 @@ public abstract class GenericReadRepositoryImpl<T, ID extends Serializable> impl
 
     @Override
     public List<T> findAllById(Iterable<ID> ids) {
+
         if (ids == null || !ids.iterator().hasNext()) {
-            return Lists.newArrayList();
+            return Collections.emptyList();
         }
+
         return createQuery(builder.get("id").in(ids)).fetch();
     }
 
@@ -202,7 +201,7 @@ public abstract class GenericReadRepositoryImpl<T, ID extends Serializable> impl
 
     @Override
     public T getOne(ID id) {
-        return simpleJpaRepository.getOne(id);
+        return simpleJpaRepository.getById(id);
     }
 
     @Override
@@ -212,6 +211,7 @@ public abstract class GenericReadRepositoryImpl<T, ID extends Serializable> impl
 
     @Override
     public Optional<T> findById(ID id) {
+
         if (id == null) return Optional.empty();
 
         return simpleJpaRepository.findById(id);
@@ -231,7 +231,7 @@ public abstract class GenericReadRepositoryImpl<T, ID extends Serializable> impl
 
     @Override
     public boolean existsById(ID id) {
-        return findById(id).isPresent();
+        return simpleJpaRepository.existsById(id);
     }
 
     @Override
