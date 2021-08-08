@@ -109,12 +109,22 @@ public class CategoryController {
     public boolean validateData() {
 
         if (category == null) {
-            FacesContextUtil.addMessageError("Chưa nhập thông tin");
+            FacesContextUtil.showError("Please fill the data");
+            return false;
+        }
+
+        if (StringUtils.isBlank(category.getCategoryName())) {
+            FacesContextUtil.showError("Title mus not be null");
             return false;
         }
 
         if (StringUtils.isBlank(category.getCategorySlug())) {
             updateSlug();
+        }
+
+        if (StringUtils.isBlank(category.getCategorySlug())) {
+            FacesContextUtil.addMessageError("Slug mus not be null");
+            return false;
         }
 
         boolean isExists = categoryService.isExistsSlug(category.getCategorySlug(), category.getCategoryId());
@@ -124,10 +134,6 @@ public class CategoryController {
             return false;
         }
 
-        if (StringUtils.isBlank(category.getCategorySlug())) {
-            FacesContextUtil.addMessageError("Slug đang bị rỗng");
-            return false;
-        }
         return true;
     }
 
