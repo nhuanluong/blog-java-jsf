@@ -16,6 +16,7 @@ public interface BlogSchema {
     String posts = "Posts";
     String categoryPostMap = "CategoryPostMap";
     String tagPostMap = "TagPostMap";
+    String menuPostMap = "MenuPostMap";
     String options = "Options";
     String postMeta = "PostMeta";
     String userMeta = "UserMeta";

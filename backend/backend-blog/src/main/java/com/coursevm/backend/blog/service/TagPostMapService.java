@@ -8,21 +8,16 @@
 package com.coursevm.backend.blog.service;
 
 import com.coursevm.backend.blog.component.ObserverPost;
-import com.coursevm.backend.blog.dto.CategoryDTO;
 import com.coursevm.backend.blog.dto.PostDTO;
 import com.coursevm.backend.blog.dto.TagDTO;
-import com.coursevm.core.backend.util.DataSourceContext;
-import com.coursevm.entity.blog.entity.QCategoryPostMap;
+import com.coursevm.core.backend.dao.BaseDAO;
 import com.coursevm.entity.blog.entity.QTagPostMap;
-import com.querydsl.jpa.impl.JPAQuery;
-import com.querydsl.jpa.impl.JPAQueryFactory;
+import com.coursevm.entity.blog.entity.TagPostMap;
 import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
@@ -30,15 +25,18 @@ import java.util.Set;
 /**
  * @author Nhuan Luong
  */
+interface TagPostMapDAO extends BaseDAO<TagPostMap, Long> {
+}
+
 @Service
 @Transactional
 public class TagPostMapService {
 
-    @PersistenceContext
-    private EntityManager entityManager;
-
     @Autowired
     private TagService tagService;
+
+    @Autowired
+    private TagPostMapDAO tagPostMapDAO;
 
     static QTagPostMap qTagPostMap = QTagPostMap.tagPostMap;
 
@@ -47,28 +45,19 @@ public class TagPostMapService {
         Set<TagDTO> tags = new HashSet<>();
 
         Optional<PostDTO> post = event.getPost();
-        if (post.isPresent()) {
-            if (CollectionUtils.isNotEmpty(post.get().getTags())) {
-                tags.addAll(post.get().getTags());
-            }
+        if (post.isPresent() && CollectionUtils.isNotEmpty(post.get().getTags())) {
+            tags.addAll(post.get().getTags());
         }
 
         Optional<PostDTO> postOld = event.getPostOld();
-        if (postOld.isPresent()) {
-            if (CollectionUtils.isNotEmpty(postOld.get().getTags())) {
-                tags.addAll(postOld.get().getTags());
-            }
+        if (postOld.isPresent() && CollectionUtils.isNotEmpty(postOld.get().getTags())) {
+            tags.addAll(postOld.get().getTags());
         }
 
         if (CollectionUtils.isEmpty(tags)) return;
 
         tags.forEach(item -> {
-            JPAQuery<Long> query = new JPAQueryFactory(entityManager)
-                    .select(qTagPostMap.postId)
-                    .from(qTagPostMap)
-                    .where(qTagPostMap.tagId.eq(item.getCategoryId()));
-            long count = query.fetchCount();
-
+            long count = tagPostMapDAO.count(qTagPostMap.tagId.eq(item.getCategoryId()));
             tagService.updateCount(item.getCategoryId(), count);
         });
     }

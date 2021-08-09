@@ -7,16 +7,13 @@
  */
 package com.coursevm.entity.blog.entity;
 
-import lombok.experimental.UtilityClass;
-
 /**
  * @author Nhuan Luong
  */
-@UtilityClass
-public class PostMeta {
-    public final String featuredImage = "featured_image";
-    public final String allowComment = "allow_comment";
-    public final String allowPingBack = "allow_ping_back";
-    public final String isStickToTop = "stick_to_top";
-    public final String isPendingReview = "pending_review";
+public interface PostMeta {
+   String featuredImage = "featured_image";
+   String allowComment = "allow_comment";
+   String allowPingBack = "allow_ping_back";
+   String isStickToTop = "stick_to_top";
+   String isPendingReview = "pending_review";
 }

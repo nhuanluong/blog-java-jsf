@@ -12,27 +12,23 @@ import com.coursevm.core.backend.service.AbstractBaseService;
 import com.coursevm.core.base.entity.MarkUpdated;
 import com.coursevm.core.base.entity.NodeType;
 import com.coursevm.core.common.util.TextUtil;
-import com.coursevm.entity.blog.entity.Category;
 import com.coursevm.entity.blog.entity.QTag;
 import com.coursevm.entity.blog.entity.Tag;
 import com.querydsl.core.BooleanBuilder;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.time.ZonedDateTime;
-import java.util.*;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Optional;
+import java.util.Set;
 
 /**
  * @author Nhuan Luong
  */
 interface TagDAO extends BaseDAO<Tag, Long> {
-
-    Tag findFirst1CategoryByCategorySlugAndCategoryIdNot(@Param("slug") String slug, @Param("id") Long id);
-
-    Tag findFirst1CategoryByCategorySlug(@Param("slug") String slug);
 }
 
 @Service

@@ -8,13 +8,15 @@
 package com.coursevm.entity.blog.entity;
 
 import com.coursevm.core.component.TermTree;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 
 import javax.persistence.*;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 /**
  * @author Nhuan Luong
@@ -24,22 +26,11 @@ import java.util.Set;
 @Setter
 @DiscriminatorValue("nav_menu")
 @NoArgsConstructor
-public class Menu extends Term implements TermTree<Menu> {
+public class Menu extends Term {
 
-	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "categoryParentId")
-	private Menu categoryParent;
+    // inverse side: it has a mappedBy attribute, and can't decide how the association is mapped, since the other side already decided it.
+    @OneToMany(mappedBy = "menu", cascade = CascadeType.ALL, orphanRemoval = true)
+    @Fetch(FetchMode.JOIN)
+    private List<MenuItem> menuItems = new ArrayList<>();
 
-	@OneToMany(mappedBy="categoryParent", fetch = FetchType.EAGER)
-	private Set<Menu> subCategories = new HashSet<>();
-
-	@Override
-	public Menu getParent() {
-		return getCategoryParent();
-	}
-
-	@Override
-	public Set<Menu> getChildren() {
-		return getSubCategories();
-	}
 }

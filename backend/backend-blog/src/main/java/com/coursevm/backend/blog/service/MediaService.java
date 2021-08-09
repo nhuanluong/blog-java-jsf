@@ -12,7 +12,6 @@ import com.coursevm.core.backend.repository.CommandRepository;
 import com.coursevm.core.backend.service.AbstractBaseService;
 import com.coursevm.core.common.util.TextUtil;
 import com.coursevm.entity.blog.entity.Media;
-import com.coursevm.entity.blog.entity.Media;
 import com.coursevm.entity.blog.entity.QMedia;
 import com.querydsl.core.BooleanBuilder;
 import org.apache.commons.lang3.StringUtils;

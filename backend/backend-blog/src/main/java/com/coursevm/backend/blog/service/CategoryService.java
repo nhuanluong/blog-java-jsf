@@ -7,6 +7,8 @@
  */
 package com.coursevm.backend.blog.service;
 
+import com.coursevm.backend.blog.util.SlugUtil;
+import com.coursevm.backend.blog.util.UrlFriendly;
 import com.coursevm.core.backend.dao.BaseDAO;
 import com.coursevm.core.backend.service.AbstractBaseService;
 import com.coursevm.core.base.entity.MarkUpdated;
@@ -22,8 +24,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
-import java.time.ZonedDateTime;
-import java.util.Date;
 import java.util.Optional;
 import java.util.Set;
 
@@ -52,7 +52,8 @@ public class CategoryService extends AbstractBaseService<Category, Long> {
             NodeType nodeType = entity;
             String slug = nodeType.getSlug();
             if (StringUtils.isBlank(slug)) {
-                nodeType.setSlug(makeSlug(nodeType.getId(), nodeType.getName()));
+                UrlFriendly<Category> methodCheck = new CategoryFriendLy();
+                nodeType.setSlug(SlugUtil.makeSlug(nodeType.getId(), nodeType.getName(), methodCheck));
             }
         }
 
@@ -85,35 +86,11 @@ public class CategoryService extends AbstractBaseService<Category, Long> {
     }
 
     public boolean isExistsSlug(String slugFriendly, Long categoryId) {
-        return getBySlugNotId(slugFriendly, categoryId) != null;
+        return new CategoryFriendLy().makeSlug(categoryId, slugFriendly) != null;
     }
 
-    public Category getBySlugNotId(String slugFriendly, Long categoryId) {
-        BooleanBuilder builder = new BooleanBuilder();
-        builder.and(qCategory.categorySlug.containsIgnoreCase(slugFriendly));
-        if (categoryId != null && categoryId > 0) {
-            builder.and(qCategory.categoryId.ne(categoryId));
-        }
-        return getQuery().selectFrom(qCategory).where(builder).fetchFirst();
-    }
-
-    public String makeSlug(Long categoryId, String name) {
-        name = TextUtil.makeUrlFriendly(name);
-
-        return makeSlug(categoryId, name, 0, name.length());
-    }
-
-    private String makeSlug(Long categoryId, String slugFriendly, int count, int length) {
-
-        Category category = getBySlugNotId(slugFriendly, categoryId);
-
-        if (category == null) return slugFriendly;
-
-        String slug = slugFriendly.substring(0, length) + "-" + (++count);
-
-        slug = makeSlug(categoryId, slug, count, length);
-
-        return slug;
+    public String createSlug(Long categoryId, String name) {
+        return SlugUtil.makeSlug(categoryId, name, new CategoryFriendLy());
     }
 
     public void updateCount(Long categoryId, long count) {
@@ -121,6 +98,18 @@ public class CategoryService extends AbstractBaseService<Category, Long> {
         if (category != null) {
             category.setCategoryCount(count);
             categoryDAO.save(category);
+        }
+    }
+
+    class CategoryFriendLy implements UrlFriendly<Category> {
+        @Override
+        public Category makeSlug(Long categoryId, String slugFriendly) {
+            BooleanBuilder builder = new BooleanBuilder();
+            builder.and(qCategory.categorySlug.containsIgnoreCase(slugFriendly));
+            if (categoryId != null && categoryId > 0) {
+                builder.and(qCategory.categoryId.ne(categoryId));
+            }
+            return getQuery().selectFrom(qCategory).where(builder).fetchFirst();
         }
     }
 }

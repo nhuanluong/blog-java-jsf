@@ -1,0 +1,260 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+                xmlns:jsf="http://xmlns.jcp.org/jsf"
+                template="/WEB-INF/template.xhtml"
+                xmlns:o="http://omnifaces.org/ui"
+                xmlns:of="http://omnifaces.org/functions"
+                xmlns:pe="http://primefaces.org/ui/extensions"
+                xmlns:sc="http://xmlns.jcp.org/jsf/composite/shared"
+>
+    <ui:define name="content">
+
+        <f:metadata>
+            <f:viewAction action="#{menuController.preRenderIndex}"/>
+        </f:metadata>
+        <style>
+            body .ui-accordion .ui-accordion-content {
+                padding: 0.5rem;
+            }
+        </style>
+
+        <h:form id="frmMenu">
+            <p:tabView id="menuTab">
+                <p:tab title="Menu">
+                    <div class="p-grid">
+                        <div class="p-col-3">
+                            <h4>Add menu items</h4>
+                            <p:accordionPanel id="accMenuItem" style="height: 100%;" multiple="true">
+                                <p:tab title="Categories">
+                                    <p:tree id="categories"
+                                            style="border:none; padding: 0"
+                                            value="#{categoryComponent.root}"
+                                            var="cat"
+                                            selectionMode="checkbox"
+                                            selection="#{menuController.selectedNodes}"
+                                            animate="true"
+                                            propagateSelectionDown="false"
+                                            propagateSelectionUp="false"
+                                            widgetVar="itemMenuLeft"
+                                    >
+                                        <p:treeNode>
+                                            <h:outputText value="#{cat.name}"/>
+                                        </p:treeNode>
+                                    </p:tree>
+                                    <div class="p-grid p-jc-end p-mt-2">
+                                        <div class="p-col p-text-right">
+                                            <p:commandButton value="Add to menu"
+                                                             icon="pi pi-plus"
+                                                             styleClass="ui-button-outlined"
+                                                             process="@form"
+                                                             update="@form"
+                                                             actionListener="#{menuController.addToMenuContext}"
+                                                             rendered="#{menuController.menuSelect ne null}"
+
+                                            />
+                                        </div>
+                                    </div>
+                                </p:tab>
+
+                                <p:tab title="Custom link">
+                                    <div class="p-grid p-ai-center">
+                                        <div class="p-col-3">URL</div>
+                                        <div class="p-col">
+                                            <p:inputText styleClass="p-col-12"
+                                                         value="#{menuController.customLink.postGUID}"
+                                            />
+                                        </div>
+                                    </div>
+                                    <div class="p-grid p-ai-center">
+                                        <div class="p-col-3">Link text</div>
+                                        <div class="p-col">
+                                            <p:inputText styleClass="p-col-12"
+                                                         value="#{menuController.customLink.postTitle}"
+                                            />
+                                        </div>
+                                    </div>
+                                    <div class="p-grid p-jc-end p-mt-2">
+                                        <div class="p-col p-text-right">
+                                            <p:commandButton value="Add to menu"
+                                                             icon="pi pi-plus"
+                                                             styleClass="ui-button-outlined"
+                                                             actionListener="#{menuController.addMenuCustomLink}"
+                                                             update="@form"
+                                                             process="@form"
+                                                             rendered="#{menuController.menuSelect ne null}"
+                                            />
+                                        </div>
+                                    </div>
+                                </p:tab>
+                            </p:accordionPanel>
+                        </div>
+                        <div class="p-col-9">
+                            <h4>Menu structure</h4>
+                            <div class="p-grid">
+                                <div class="p-col-2">
+                                    <p:selectOneMenu converter="omnifaces.SelectItemsConverter"
+                                                     value="#{menuController.menuSelect}"
+                                    >
+                                        <p:ajax listener="#{menuController.onMenuChange}" update="@form"/>
+                                        <f:selectItem itemLabel="" itemValue="#{null}" noSelectionOption="true"/>
+                                        <f:selectItems value="#{menuController.menu}"
+                                                       var="m"
+                                                       itemValue="#{m}"
+                                                       itemLabel="#{m.name}"
+                                        />
+                                    </p:selectOneMenu>
+                                </div>
+                                <div class="p-col-2">
+                                    <p:commandButton value="Add menu"
+                                                     icon="pi pi-plus"
+                                                     styleClass="ui-button-outlined ui-button-warning"
+                                                     oncomplete="PF('wgvAddMenu').show()"
+                                                     update=":dlgAddMenu"
+                                    />
+                                </div>
+                            </div>
+                            <div class="p-grid">
+                                <div class="p-col-12">
+                                    <p:panel>
+                                        <h:outputStylesheet>
+                                            .ui-treenode-label {
+                                                width: 100%;
+                                            }
+                                        </h:outputStylesheet>
+
+                                        <p:tree id="itemMenuPost"
+                                                widgetVar="wgvItemMenuRight"
+                                                value="#{menuController.rootRight}"
+                                                var="cat"
+                                                animate="true"
+                                                draggable="true"
+                                                droppable="true"
+                                                dragdropScope="menuItemScope"
+                                                style="border: none"
+                                        >
+                                            <p:treeNode rendered="#{cat ne null}">
+                                                <div class="p-grid p-ai-baseline" style="width: 100%">
+
+                                                    <div class="p-col">
+                                                        <h:outputText value="#{cat.name}"/>
+                                                    </div>
+
+                                                    <div class="p-col-fixed">
+                                                        <p:chip label="Original: #{menuController.getCategory(cat.menuItemObjectId)}"
+                                                                styleClass="p-ml-2"
+                                                                rendered="#{cat.menuItemObject eq 'category'}"
+                                                        />
+                                                    </div>
+
+                                                    <div class="p-col-fixed">
+                                                        <p:chip label="#{cat.menuItemObject}" styleClass="p-ml-2"/>
+                                                    </div>
+
+                                                    <div class="p-col-fixed w-3rem">
+                                                        <p:commandButton
+                                                                icon="pi pi-pencil"
+                                                                styleClass="ui-button-icon-only ui-button-outlined ui-button-flat"
+                                                                actionListener="#{menuController.editMenuItem(cat)}"
+                                                                process="@this"
+                                                                update="@form"
+                                                        />
+                                                    </div>
+                                                    <div class="p-col-fixed w-3rem">
+                                                        <p:commandButton
+                                                                icon="pi pi-trash"
+                                                                styleClass="ui-button-icon-only ui-button-outlined ui-button-flat"
+                                                                actionListener="#{menuController.deleteMenuItem(cat)}"
+                                                                process="@this"
+                                                                update="@form"
+                                                        />
+                                                    </div>
+                                                </div>
+                                            </p:treeNode>
+                                        </p:tree>
+                                    </p:panel>
+                                </div>
+                            </div>
+                            <div class="p-grid">
+                                <div class="p-col">
+                                    <p:commandButton value="Save"
+                                                     icon="pi pi-save"
+                                                     process="@form"
+                                                     rendered="#{menuController.menuSelect ne null}"
+                                                     actionListener="#{menuController.saveMenu}"
+                                                     styleClass="p-mr-2"
+                                    />
+                                    <p:commandButton value="Delete menu"
+                                                     icon="pi pi-trash"
+                                                     process="@this"
+                                                     update="@form"
+                                                     rendered="#{menuController.menuSelect ne null}"
+                                                     actionListener="#{menuController.deleteMenu}"
+                                                     styleClass="ui-button-danger ui-button-outlined"
+                                    >
+                                        <p:confirm type="popup"
+                                                   header="Confirmation"
+                                                   message="Do you want to delete this menu?"
+                                                   icon="pi pi-info-circle"/>
+                                    </p:commandButton>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </p:tab>
+            </p:tabView>
+        </h:form>
+
+        <p:dialog modal="true"
+                  header="View menu item"
+                  closeOnEscape="true"
+                  widgetVar="wgvEditMenuItem"
+                  id="dlgEditMenuItem"
+                  >
+
+        </p:dialog>
+
+        <p:dialog header="Add menu"
+                  maximizable="true"
+                  closeOnEscape="true"
+                  modal="true"
+                  width="350"
+                  height="140"
+                  widgetVar="wgvAddMenu"
+                  id="dlgAddMenu"
+        >
+            <h:form id="frmEditable">
+                <p:panel>
+                    <div class="p-grid p-mt-1 p-ai-center">
+                        <div class="p-col">
+                            <p:inputText value="#{menuController.editableMenu.categoryName}"
+                                         placeholder="Type the menu name"
+                                         styleClass="p-col-12"
+                                         id="catName"
+                            />
+                            <p:focus for="catName"/>
+                        </div>
+                    </div>
+                </p:panel>
+
+                <div class="p-grid p-mt-2">
+                    <div class="p-col p-text-center">
+                        <p:commandButton styleClass="rounded-button"
+                                         icon="pi pi-plus"
+                                         actionListener="#{menuController.addMenu}"
+                                         oncomplete="PF('wgvAddMenu').hide();"
+                                         update="@([id$=frmMenu])"
+                                         process="@form"
+                        >
+                            <p:resetInput target="@form"/>
+                        </p:commandButton>
+                    </div>
+                </div>
+            </h:form>
+        </p:dialog>
+
+    </ui:define>
+</ui:composition>

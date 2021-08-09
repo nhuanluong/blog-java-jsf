@@ -29,7 +29,6 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
-import javax.jcr.observation.Event;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -76,6 +75,7 @@ public class PostController {
         posts = loadData();
     }
 
+    //TODO Bean Validation ?
     public boolean validateData() {
         if (post == null) {
             FacesContextUtil.addMessageError("Post needs be init data");

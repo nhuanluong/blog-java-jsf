@@ -40,6 +40,7 @@ public class RouterConfigurationProvider extends HttpConfigurationProvider {
                 .addRule(Join.path("/tag").to("/views/tag/index.xhtml"))
                 .addRule(Join.path("/media").to("/views/media/index.xhtml"))
                 .addRule(Join.path("/media/edit/{p}").to("/views/media/edit.xhtml?mediaId={p}"))
+                .addRule(Join.path("/menu").to("/views/menu/index.xhtml"))
                 ;
     }
 }

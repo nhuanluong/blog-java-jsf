@@ -55,7 +55,6 @@ public class CategoryComponent {
         }
         return true;
     }
-    //endregion
 
     public void initCat() {
         category = new CategoryDTO();

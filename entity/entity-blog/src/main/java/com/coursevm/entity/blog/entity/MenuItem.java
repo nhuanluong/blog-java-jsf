@@ -12,7 +12,7 @@ import java.util.*;
 @Entity
 @Getter
 @Setter
-@DiscriminatorValue("menu")
+@DiscriminatorValue("nav_menu_item")
 @ToString(callSuper = true)
 public class MenuItem extends Node {
 
@@ -20,17 +20,23 @@ public class MenuItem extends Node {
         setPostCreatedDate(LocalDateTime.now());
     }
 
+    @JoinTable(
+            name = BlogSchema.menuPostMap,
+            joinColumns = @JoinColumn(name = "postId"),
+            inverseJoinColumns = @JoinColumn(name = "menuId"))
+    @ManyToOne(fetch = FetchType.EAGER)
+    private Menu menu;
+
     @ElementCollection(fetch = FetchType.EAGER)
     @MapKeyColumn(name = "metaKey")
     @Column(name = "metaValue")
     @CollectionTable(name = BlogSchema.postMeta, schema = BlogSchema.name, joinColumns = @JoinColumn(name = "postId"))
     private Map<String, String> attributes = new HashMap<>();
 
-
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "postParentId")
-    private MenuItem menuParent;
+    @JoinColumn(name = "postParentId", insertable = false, updatable = false)
+    private MenuItem parentMenu;
 
-    @OneToMany(mappedBy="menuParent", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "parentMenu", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<MenuItem> subMenu = new HashSet<>();
 }

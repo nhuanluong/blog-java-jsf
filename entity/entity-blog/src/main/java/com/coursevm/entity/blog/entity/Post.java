@@ -46,5 +46,5 @@ public class Post extends Node {
     @MapKeyColumn(name = "metaKey")
     @Column(name = "metaValue")
     @CollectionTable(name = BlogSchema.postMeta, schema = BlogSchema.name, joinColumns = @JoinColumn(name = "postId"))
-    Map<String, String> attributes = new HashMap<>();
+    private Map<String, String> attributes = new HashMap<>();
 }

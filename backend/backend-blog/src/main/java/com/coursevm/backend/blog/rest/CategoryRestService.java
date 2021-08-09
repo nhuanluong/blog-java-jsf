@@ -23,7 +23,7 @@ import org.springframework.stereotype.Component;
 public class CategoryRestService {
 
     @Autowired
-    CategoryService categoryService;
+    private CategoryService categoryService;
 
     public ObjectResult<CategoryDTO> save(ObjectRequest<CategoryDTO> entity) {
         return ObjectResult.of(categoryService.save(entity.getParam(Category.class)), CategoryDTO.class);
@@ -34,11 +34,15 @@ public class CategoryRestService {
     }
 
     public String makeSlug(Long categoryId, String name) {
-        return categoryService.makeSlug(categoryId, name);
+        return categoryService.createSlug(categoryId, name);
     }
 
     public ListResult<CategoryDTO> findAll() {
         return ListResult.of(categoryService.findAll(), CategoryDTO.class);
+    }
+
+    public ObjectResult<CategoryDTO> findOne(Long id) {
+        return ObjectResult.of(categoryService.findOne(id), CategoryDTO.class);
     }
 
     public boolean isExistsSlug(String slugFriendly, Long categoryId) {
