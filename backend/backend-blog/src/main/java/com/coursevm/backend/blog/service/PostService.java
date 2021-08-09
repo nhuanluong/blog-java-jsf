@@ -10,12 +10,13 @@ package com.coursevm.backend.blog.service;
 import com.coursevm.backend.blog.component.ObserverPost;
 import com.coursevm.backend.blog.dto.PostDTO;
 import com.coursevm.backend.blog.dto.PostRequestDTO;
+import com.coursevm.backend.blog.util.SlugUtil;
 import com.coursevm.core.backend.dao.BaseDAO;
 import com.coursevm.core.backend.service.AbstractBaseService;
-import com.coursevm.core.common.util.TextUtil;
 import com.coursevm.core.util.MapperUtil;
 import com.coursevm.entity.blog.entity.*;
 import com.querydsl.core.BooleanBuilder;
+import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQuery;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -58,48 +59,9 @@ public class PostService extends AbstractBaseService<Post, Long> {
         return postDAO;
     }
 
-    public boolean isExistsSlug(String slugFriendly, Long termId) {
-        return checkSlugNotById(slugFriendly, termId).isPresent();
-    }
-
-    public Optional<Post> checkSlugNotById(String slug, Long id) {
-        BooleanBuilder builder = new BooleanBuilder(qPost.postSlug.equalsIgnoreCase(slug));
-        if (id != null && id > 0) {
-            builder.and(qPost.postId.ne(id));
-        }
-        Post post = getQuery().selectFrom(qPost).where(builder).fetchFirst();
-
-        return Optional.ofNullable(post);
-    }
-
-    public Optional<Post> findBySlug(String slug) {
-        return Optional.ofNullable(getQuery()
-                .selectFrom(qPost)
-                .where(qPost.postSlug.equalsIgnoreCase(slug))
-                .fetchFirst()
-        );
-    }
-
-    public String makeSlug(Long id, String name) {
-
-        if (StringUtils.isBlank(name)) return name;
-
-        name = TextUtil.makeUrlFriendly(name);
-
-        return makeSlug(id, name, 0, name.length());
-    }
-
-    private String makeSlug(Long categoryId, String slugFriendly, int count, int length) {
-
-        Optional<Post> post = checkSlugNotById(slugFriendly, categoryId);
-
-        if (post.isEmpty()) return slugFriendly;
-
-        String slug = slugFriendly.substring(0, length) + "-" + (++count);
-
-        slug = makeSlug(categoryId, slug, count, length);//recursion
-
-        return slug;
+    public String createSlug(Long id, String name) {
+        SlugUtil.Friendly<Post> slug = urlFriendly();
+        return SlugUtil.makeSlug(id, name, slug);
     }
 
     @Override
@@ -157,5 +119,18 @@ public class PostService extends AbstractBaseService<Post, Long> {
         applicationEventPublisher.publishEvent(observerPost);
 
         return idDeleted;
+    }
+
+    private SlugUtil.Friendly<Post> urlFriendly() {
+        return (Long id, String slug) -> {
+            BooleanBuilder builder = new BooleanBuilder(qPost.postSlug.equalsIgnoreCase(slug));
+
+            if (id != null && id > 0) {
+                builder.and(qPost.postId.ne(id));
+            }
+            Post post = getQuery().selectFrom(qPost).where(builder).fetchFirst();
+
+            return Optional.ofNullable(post);
+        };
     }
 }

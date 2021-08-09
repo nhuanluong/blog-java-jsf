@@ -7,11 +7,11 @@
  */
 package com.coursevm.backend.blog.service;
 
+import com.coursevm.backend.blog.util.SlugUtil;
 import com.coursevm.core.backend.dao.BaseDAO;
 import com.coursevm.core.backend.service.AbstractBaseService;
 import com.coursevm.core.base.entity.MarkUpdated;
 import com.coursevm.core.base.entity.NodeType;
-import com.coursevm.core.common.util.TextUtil;
 import com.coursevm.entity.blog.entity.QTag;
 import com.coursevm.entity.blog.entity.Tag;
 import com.querydsl.core.BooleanBuilder;
@@ -45,7 +45,7 @@ public class TagService extends AbstractBaseService<Tag, Long> {
     private static QTag qTag = QTag.tag;
 
     public boolean isExistsSlug(String slugFriendly, Long tagId) {
-        return checkSlugExistsNotBelongTo(slugFriendly, tagId).isPresent();
+        return slug().getSlug(tagId, slugFriendly).isPresent();
     }
 
     public Tag save(Tag entity) {
@@ -67,22 +67,7 @@ public class TagService extends AbstractBaseService<Tag, Long> {
     }
 
     public String makeSlug(Long categoryId, String termName) {
-        termName = TextUtil.makeUrlFriendly(termName);
-
-        return makeSlug(categoryId, termName, 0, termName.length());
-    }
-
-    private String makeSlug(Long id, String slugFriendly, int count, int length) {
-
-        Optional<Tag> tag = checkSlugExistsNotBelongTo(slugFriendly, id);
-
-        if (tag.isEmpty()) return slugFriendly;
-
-        String slug = slugFriendly.substring(0, length) + "-" + (++count);
-
-        slug = makeSlug(id, slug, count, length);
-
-        return slug;
+        return SlugUtil.makeSlug(categoryId, termName, slug());
     }
 
     public Optional<Tag> findBySlug(String slug) {
@@ -90,17 +75,6 @@ public class TagService extends AbstractBaseService<Tag, Long> {
         if (StringUtils.isBlank(slug)) return Optional.empty();
 
         BooleanBuilder builder = new BooleanBuilder().and(qTag.categorySlug.equalsIgnoreCase(slug));
-
-        return Optional.ofNullable(getQuery().selectFrom(qTag).where(builder).fetchFirst());
-    }
-
-    public Optional<Tag> checkSlugExistsNotBelongTo(String slug, Long id) {
-
-        if (id == null) return findBySlug(slug);
-
-        BooleanBuilder builder = new BooleanBuilder()
-                .and(qTag.categorySlug.equalsIgnoreCase(slug))
-                .and(qTag.categoryId.ne(id));
 
         return Optional.ofNullable(getQuery().selectFrom(qTag).where(builder).fetchFirst());
     }
@@ -150,5 +124,19 @@ public class TagService extends AbstractBaseService<Tag, Long> {
             tag.setCategoryCount(count);
             tagDAO.save(tag);
         }
+    }
+
+    private SlugUtil.Friendly<Tag> slug() {
+
+        return (Long id, String slug) -> {
+
+            if (id == null) return findBySlug(slug);
+
+            BooleanBuilder builder = new BooleanBuilder()
+                    .and(qTag.categorySlug.equalsIgnoreCase(slug))
+                    .and(qTag.categoryId.ne(id));
+
+            return Optional.ofNullable(getQuery().selectFrom(qTag).where(builder).fetchFirst());
+        };
     }
 }

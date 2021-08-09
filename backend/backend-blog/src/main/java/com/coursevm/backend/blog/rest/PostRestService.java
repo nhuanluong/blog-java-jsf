@@ -16,7 +16,6 @@ import com.coursevm.core.dto.response.ObjectResult;
 import com.coursevm.core.dto.response.PagedResult;
 import com.coursevm.entity.blog.entity.Post;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
 
 /**
@@ -30,10 +29,6 @@ public class PostRestService {
 
     public PagedResult<PostDTO> findAll(PageableRequest<PostRequestDTO> pageable) {
         return PagedResult.of(postService.findAll(pageable.getParam(), pageable.getPageable()), PostDTO.class);
-    }
-
-    public ObjectResult<PostDTO> getPostBySlug(String slug) {
-        return ObjectResult.of(postService.findBySlug(slug).get(), PostDTO.class);
     }
 
     public ObjectResult<PostDTO> findById(Long id) {
@@ -50,6 +45,6 @@ public class PostRestService {
     }
 
     public String makeSlug(Long id, String name) {
-        return postService.makeSlug(id, name);
+        return postService.createSlug(id, name);
     }
 }

@@ -95,7 +95,7 @@
                         <div class="p-col-9">
                             <h4>Menu structure</h4>
                             <div class="p-grid">
-                                <div class="p-col-2">
+                                <div class="p-col">
                                     <p:selectOneMenu converter="omnifaces.SelectItemsConverter"
                                                      value="#{menuController.menuSelect}"
                                     >
@@ -107,14 +107,6 @@
                                                        itemLabel="#{m.name}"
                                         />
                                     </p:selectOneMenu>
-                                </div>
-                                <div class="p-col-2">
-                                    <p:commandButton value="Add menu"
-                                                     icon="pi pi-plus"
-                                                     styleClass="ui-button-outlined ui-button-warning"
-                                                     oncomplete="PF('wgvAddMenu').show()"
-                                                     update=":dlgAddMenu"
-                                    />
                                 </div>
                             </div>
                             <div class="p-grid">
@@ -186,6 +178,12 @@
                                                      rendered="#{menuController.menuSelect ne null}"
                                                      actionListener="#{menuController.saveMenu}"
                                                      styleClass="p-mr-2"
+                                    />
+                                    <p:commandButton value="Add new"
+                                                     icon="pi pi-plus"
+                                                     styleClass="p-mr-2 ui-button-outlined ui-button-warning"
+                                                     oncomplete="PF('wgvAddMenu').show()"
+                                                     update=":dlgAddMenu"
                                     />
                                     <p:commandButton value="Delete menu"
                                                      icon="pi pi-trash"

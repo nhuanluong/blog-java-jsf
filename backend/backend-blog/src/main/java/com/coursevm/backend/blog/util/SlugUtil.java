@@ -8,8 +8,9 @@
 package com.coursevm.backend.blog.util;
 
 import com.coursevm.core.common.util.TextUtil;
-import com.coursevm.entity.blog.entity.Menu;
 import lombok.experimental.UtilityClass;
+
+import java.util.Optional;
 
 /**
  * @author Nhuan Luong
@@ -17,22 +18,27 @@ import lombok.experimental.UtilityClass;
 @UtilityClass
 public class SlugUtil {
 
-    public <T> String makeSlug(Long id, String name, UrlFriendly<T> checkSlugMethod) {
+    public <T> String makeSlug(Long id, String name, Friendly<T> checkSlugMethod) {
         name = TextUtil.makeUrlFriendly(name);
 
         return makeSlug(id, name, 0, name.length(), checkSlugMethod);
     }
 
-    private <T> String makeSlug(Long categoryId, String slugFriendly, int count, int length, UrlFriendly<T> checkSlugMethod) {
+    private <T> String makeSlug(Long categoryId, String slugFriendly, int count, int length, Friendly<T> checkSlugMethod) {
 
-        T category = checkSlugMethod.makeSlug(categoryId, slugFriendly);
+        Optional<T> node = checkSlugMethod.getSlug(categoryId, slugFriendly);
 
-        if (category == null) return slugFriendly;
+        if (node.isEmpty()) return slugFriendly;
 
         String slug = slugFriendly.substring(0, length) + "-" + (++count);
 
         slug = makeSlug(categoryId, slug, count, length, checkSlugMethod);//recursion
 
         return slug;
+    }
+
+    @FunctionalInterface
+    public interface Friendly<T> {
+        Optional<T> getSlug(Long id, String name);
     }
 }

@@ -8,15 +8,14 @@
 package com.coursevm.backend.blog.service;
 
 import com.coursevm.backend.blog.util.SlugUtil;
-import com.coursevm.backend.blog.util.UrlFriendly;
 import com.coursevm.core.backend.dao.BaseDAO;
 import com.coursevm.core.backend.service.AbstractBaseService;
 import com.coursevm.core.base.entity.MarkUpdated;
 import com.coursevm.core.base.entity.NodeType;
-import com.coursevm.core.common.util.TextUtil;
 import com.coursevm.entity.blog.entity.Category;
 import com.coursevm.entity.blog.entity.QCategory;
 import com.querydsl.core.BooleanBuilder;
+import com.querydsl.core.types.dsl.BooleanExpression;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -52,8 +51,7 @@ public class CategoryService extends AbstractBaseService<Category, Long> {
             NodeType nodeType = entity;
             String slug = nodeType.getSlug();
             if (StringUtils.isBlank(slug)) {
-                UrlFriendly<Category> methodCheck = new CategoryFriendLy();
-                nodeType.setSlug(SlugUtil.makeSlug(nodeType.getId(), nodeType.getName(), methodCheck));
+                nodeType.setSlug(SlugUtil.makeSlug(nodeType.getId(), nodeType.getName(), urlFriendly()));
             }
         }
 
@@ -86,11 +84,11 @@ public class CategoryService extends AbstractBaseService<Category, Long> {
     }
 
     public boolean isExistsSlug(String slugFriendly, Long categoryId) {
-        return new CategoryFriendLy().makeSlug(categoryId, slugFriendly) != null;
+        return urlFriendly().getSlug(categoryId, slugFriendly).isPresent();
     }
 
     public String createSlug(Long categoryId, String name) {
-        return SlugUtil.makeSlug(categoryId, name, new CategoryFriendLy());
+        return SlugUtil.makeSlug(categoryId, name, urlFriendly());
     }
 
     public void updateCount(Long categoryId, long count) {
@@ -101,15 +99,18 @@ public class CategoryService extends AbstractBaseService<Category, Long> {
         }
     }
 
-    class CategoryFriendLy implements UrlFriendly<Category> {
-        @Override
-        public Category makeSlug(Long categoryId, String slugFriendly) {
-            BooleanBuilder builder = new BooleanBuilder();
-            builder.and(qCategory.categorySlug.containsIgnoreCase(slugFriendly));
+    private SlugUtil.Friendly<Category> urlFriendly() {
+        return (Long categoryId, String slugFriendly) -> {
+
+            BooleanBuilder builder = new BooleanBuilder(qCategory.categorySlug.containsIgnoreCase(slugFriendly));
+
             if (categoryId != null && categoryId > 0) {
                 builder.and(qCategory.categoryId.ne(categoryId));
             }
-            return getQuery().selectFrom(qCategory).where(builder).fetchFirst();
-        }
+            return Optional.ofNullable(getQuery()
+                    .selectFrom(qCategory)
+                    .where(builder)
+                    .fetchFirst());
+        };
     }
 }
